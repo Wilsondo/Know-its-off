@@ -1,2 +1,4 @@
 constants.py
 constants.pyc
+*/node_modules
+*/build

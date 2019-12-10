@@ -1,0 +1,28 @@
+# [START runtime]
+runtime: python37
+# [END runtime]
+default_expiration: 1s
+
+# [START handlers]
+handlers:
+ - url: /api/.*
+   script: auto
+   secure: always
+
+ - url: /
+   static_files: myClient/build/index.html
+   upload: myClient/build/index.html
+   expiration: 1s
+   secure: always
+
+ - url: /
+   static_dir: myClient/build
+   expiration: 1s
+   secure: always
+
+ - url: /.*
+   static_files: myClient/build/index.html
+   upload: myClient/build/index.html
+   expiration: 1s
+   secure: always
+# [END handlers]

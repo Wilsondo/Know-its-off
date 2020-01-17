@@ -8,7 +8,7 @@ class Config(object):
         username=constants.username,
         password=constants.password,
         database=constants.database,
-        query={"unix_socket": "/cloudsql/{}".format("know-its-off:us-west2:know-its-off-my-db")},
+        host=constants.host
     )
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_size": 3,

@@ -13,7 +13,7 @@ class Config(object):
 #        hostname=constants.host
 #    )
 
-    SQLALCHEMY_DATABASE_URI = "mysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
 
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_size": 3,

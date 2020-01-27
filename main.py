@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
+from database_config import Config
 import os
 import automated_email
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 # Uncomment the below line if you need to create the tables.
-db.create_all()
+# db.create_all()
 
 from routes import *
 from models import *
@@ -57,5 +57,4 @@ if __name__ == '__main__':
         token = temp_token()
         print('Token: %s' % token)
         WEBHOOK_VERIFY_TOKEN = token
-    automated_email.send_email()
     app.run(host='127.0.0.1', port=8080, debug=True, use_reloader=False)

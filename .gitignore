@@ -2,5 +2,5 @@ constants.py
 constants.pyc
 */node_modules
 */build
-*/__pycache__/*
-__pycache__/*
+*/__pycache__/
+__pycache__/

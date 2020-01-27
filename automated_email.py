@@ -1,7 +1,7 @@
 import smtplib, imaplib
 import constants
 
-def send_email(recipient="tonyenike@gmail.com", subject="Hello there", body="Kenobi! You are a bold one."):
+def send_email(recipient="tonyenike@gmail.com", subject="Hello there", body="General Kenobi! You are a bold one."):
     SMTP_SERVER = 'smtp.gmail.com'
     SMTP_PORT = 587
 

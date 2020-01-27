@@ -7,6 +7,8 @@ import automated_email
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+# Uncomment the below line if you need to create the tables.
+db.create_all()
 
 from routes import *
 from models import *

@@ -3,13 +3,14 @@ import constants
 
 
 class Config(object):
-    
+   
+# The below code does not work as expected: host is set to localhost instead of desired host.
 #    SQLALCHEMY_DATABASE_URI = sqlalchemy.engine.url.URL(
 #        drivername="mysql+pymysql",
 #        username=constants.username,
 #        password=constants.password,
 #        database=constants.database,
-#        host=constants.host
+#        hostname=constants.host
 #    )
 
     SQLALCHEMY_DATABASE_URI = "mysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database

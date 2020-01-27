@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+import os
+import automated_email
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -53,4 +55,5 @@ if __name__ == '__main__':
         token = temp_token()
         print('Token: %s' % token)
         WEBHOOK_VERIFY_TOKEN = token
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    automated_email.send_email()
+    app.run(host='127.0.0.1', port=8080, debug=True, use_reloader=False)

@@ -1,13 +1,13 @@
 from main import db
 from sqlalchemy import inspect
-
+from sqlalchemy.orm import relationship
 
 class Appliance(db.Model):
-    __name__ = "appliances"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), nullable=False)
     type = db.Column(db.String(64))
     status = db.Column(db.Boolean, default=False, nullable=False)
+    myScouts = db.relationship("Scout", lazy="dynamic")
 
     # Convert the object to dictionary
     def to_dict(self):
@@ -50,7 +50,7 @@ class User(db.Model):
 class Scout(db.Model):
     __name__ = "scouts"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    appliance_id = db.Column(db.Integer, db.ForeignKey('appliances.id'))
+    appliance_id = db.Column(db.Integer, db.ForeignKey('appliance.id'))
     name = db.Column(db.String(64), nullable=False)
     battery_power = db.Column(db.Integer, nullable=False)
 
@@ -88,7 +88,7 @@ class Permission(db.Model):
     def __repr__(self):
         return '<Permission {}>'.format(self.name)
 
-
+'''
 class Permission_User_Scout(db.Model):
     __name__= "permissions_users_scouts"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -109,3 +109,4 @@ class Permission_User_Scout(db.Model):
     # This is how the object looks when printed out.
     def __repr__(self):
         return '<Permission User/Scout bundle {}>'.format(self.id)
+'''

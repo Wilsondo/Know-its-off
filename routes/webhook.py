@@ -1,4 +1,6 @@
 import os
+from flask import request, abort, jsonify
+from . import routes
 
 
 WEBHOOK_VERIFY_TOKEN = os.getenv('WEBHOOK_VERIFY_TOKEN')
@@ -7,7 +9,7 @@ CLIENT_AUTH_TIMEOUT = 24 # in Hours
 authorised_clients = {}
 
 
-@app.route('/webhook', methods=['GET', 'POST'])
+@routes.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
         verify_token = request.args.get('verify_token')

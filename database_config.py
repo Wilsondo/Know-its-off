@@ -16,9 +16,9 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
 
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_size": 2,
-        "max_overflow": 1,
-        "pool_timeout": 10,
-        "pool_recycle": 1
+        "pool_size": 1,
+        "max_overflow": 0,
+        "pool_timeout": 5,
+        "pool_recycle": 10
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False

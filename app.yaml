@@ -9,18 +9,18 @@ handlers:
    script: auto
    secure: always
 
- - url: /
-   static_files: myClient/build/index.html
-   upload: myClient/build/index.html
+ - url: /static
+   static_dir: myClient/build/static
    expiration: 1s
    secure: always
 
- - url: /
-   static_dir: myClient/build
+ - url: /(.*\.(json|ico|js))$
+   static_files: myClient/build/\1
+   upload: myClient/build/.*\.(json|ico|js)$
    expiration: 1s
    secure: always
 
- - url: /.*
+ - url: .*
    static_files: myClient/build/index.html
    upload: myClient/build/index.html
    expiration: 1s

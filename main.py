@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from database_config import Config
-import os
 import automated_email
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 from routes import *
 from models import *
 # Uncomment the below line if you need to create the tables.
-db.create_all()
+# db.create_all()
 app.register_blueprint(routes, url_prefix = '/api')
 
 

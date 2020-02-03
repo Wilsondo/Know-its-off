@@ -52,7 +52,7 @@ class Scout(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     appliance_id = db.Column(db.Integer, db.ForeignKey('appliance.id'))
     name = db.Column(db.String(64), nullable=False)
-    battery_power = db.Column(db.Integer, nullable=False)
+    battery_power = db.Column(db.Float, nullable=True)
 
     # Convert the object to dictionary
     def to_dict(self):

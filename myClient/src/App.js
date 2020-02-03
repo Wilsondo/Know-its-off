@@ -10,30 +10,16 @@ class App extends Component {
     render() {
         return (
 		<React.Fragment>
-		<Router>
-		<MyNavbar />
-			<Switch>
+		  <Router>
+		    <MyNavbar />
+		    <Switch>
 			<Route exact path="/" component={Users} />
 			<Route path="/appliances" component={Appliances} />
 			<Route component={Default} />
-			</Switch>
-		</Router>
+		    </Switch>
+		  </Router>
 		</React.Fragment>
         );
-    }
-
-    state = {
-	loading: true,
-        appliances: [],
-    };
-
-    componentDidMount() {
-        fetch('https://know-its-off.appspot.com/api/appliances')
-            .then(res => res.json())
-            .then((data) => {
-                this.setState({ appliances: data, loading: false })
-            })
-            .catch(console.log)
     }
 }
 

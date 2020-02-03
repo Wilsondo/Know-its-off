@@ -1,6 +1,12 @@
 from flask import jsonify
 from . import routes
 
+
+
+@routes.app_errorhandler(400)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 400
+
 @routes.app_errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404

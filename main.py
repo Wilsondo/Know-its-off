@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 from routes import *
 from models import *
 # Uncomment the below line if you need to create the tables.
-# db.create_all()
+db.create_all()
 app.register_blueprint(routes, url_prefix = '/api')
 
 

@@ -19,6 +19,6 @@ class Config(object):
         "pool_size": 1,
         "max_overflow": 0,
         "pool_timeout": 5,
-        "pool_recycle": 10
+        "pool_recycle": -1
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False

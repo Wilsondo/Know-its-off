@@ -4,13 +4,23 @@ import sys
 sys.path.append('../..')
 from main import db
 from models import *
+from cerberus import Validator
 
+user_schema = {
+                    "first_name": {"type": "string", "maxlength": 64, "nullable": True}, 
+                    "last_name": {"type": "string", "maxlength": 64, "nullable": True}, 
+                    "phone_number": {"type": "integer", "min": 0, "max": 10000000000, "nullable": True},
+                    "email": {"type": "string", "maxlength": 64, "nullable": True}
+                   }
+
+
+v = Validator(user_schema)
 
 @routes.route('/users', methods=['POST'])
 def users_post():
     if request.method == 'POST':
-        # TODO: input validation on request body
-        #       probably use the package Cerberus
+        if not v.validate(request.get_json()):
+            abort(400, description=v.errors)
         new_user = User(**request.get_json())
         db.session.add(new_user)
         db.session.commit()
@@ -24,6 +34,8 @@ def users_get_patch_delete_by_id(id):
     if request.method == 'GET':
         return jsonify(myUser.to_dict()), 200
     elif request.method == 'PATCH':
+        if not v.validate(request.get_json()):
+            abort(400, description=v.errors)
         # Note that this update function is specified in models.py
         myUser.update(request.get_json()) 
         db.session.commit()

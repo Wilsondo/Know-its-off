@@ -24,7 +24,7 @@ def appliances_get_post():
         db.session.add(new_appliance)
         db.session.commit()
         myobj = new_appliance.to_dict()
-        #db.session.close()
+        db.session.close()
         return jsonify(myobj), 201
     elif request.method == 'GET':
         results = db.session.query(Appliance, Scout).outerjoin(Scout, Appliance.id == Scout.appliance_id).all()
@@ -37,18 +37,18 @@ def appliances_get_post():
             else:
                 my_dict["scout"] = None
             myList.append(my_dict)
-        #db.session.close()
+        db.session.close()
         return jsonify(myList), 200
 
 @routes.route('/appliances/<id>', methods=['GET', 'PATCH', 'DELETE'])
 def appliances_get_patch_delete_by_id(id):
     myAppliance = Appliance.query.get(id)
     if myAppliance is None:
-        #db.session.close()
+        db.session.close()
         abort(404, description="This appliance does not exist")
     if request.method == 'GET':
         myobj = myAppliance.to_dict()
-        #db.session.close()
+        db.session.close()
         return jsonify(myobj), 200
     elif request.method == 'PATCH':
         if not v.validate(request.get_json()):
@@ -58,10 +58,10 @@ def appliances_get_patch_delete_by_id(id):
         myAppliance.update(request.get_json()) 
         db.session.commit()
         myobj = myAppliance.to_dict()
-        #db.session.close()
+        db.session.close()
         return jsonify(myobj), 200
     elif request.method == 'DELETE':
         db.session.delete(myAppliance)
         db.session.commit()
-        #db.session.close()
+        db.session.close()
         return '', 204

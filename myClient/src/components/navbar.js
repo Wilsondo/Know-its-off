@@ -1,27 +1,24 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Navbar, Nav, Form, Button, FormControl} from 'react-bootstrap';
 
 export default class MyNavbar extends Component {
 	render(){
 		return(
 
-<Navbar bg="dark" expand="lg">
-  <Navbar.Brand><Link to="/">Know it&#8217;s off</Link></Navbar.Brand>
-  <Navbar.Toggle aria-controls="basic-navbar-nav" />
-  <Navbar.Collapse id="basic-navbar-nav">
-    <Nav className="mr-auto">
-      <Nav.Link><Link to="/">Home</Link></Nav.Link>
-      <Nav.Link><Link to="/appliances">My Appliances</Link></Nav.Link>
-      <Nav.Link><Link to="/logout">Logout</Link></Nav.Link>
-    </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-success">Search</Button>
-    </Form>
-  </Navbar.Collapse>
-</Navbar>
-
+<nav className="navbar navbar-expand-lg navbar-light bg-info">
+  <a className="navbar-brand" href="#">Navbar</a>
+  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span className="navbar-toggler-icon"></span>
+  </button>
+  <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div className="navbar-nav">
+      <Link to="/" className="nav-item nav-link active">Home </Link>
+      <Link to="/appliances" className="nav-item nav-link">My appliances</Link>
+      <Link to="/user" className="nav-item nav-link">My profile</Link>
+      <Link to="/logout" className="nav-item nav-link disabled">Logout</Link>
+    </div>
+  </div>
+</nav>
 		)
 	}
 }

@@ -17,7 +17,7 @@ from models import *
 #db.drop_all()
 #db.create_all()
 
-from message_checker import BackgroundThread 
+# from message_checker import BackgroundThread 
 
 app.register_blueprint(routes, url_prefix = '/api')
 
@@ -37,5 +37,4 @@ if __name__ == '__main__':
     if WEBHOOK_VERIFY_TOKEN is None:
         token = temp_token()
         os.environ["WEBHOOK_VERIFY_TOKEN"] = token
-    my_message_checker = BackgroundThread(interval=60)
     app.run(host='127.0.0.1', port=8080, debug=True, use_reloader=False)

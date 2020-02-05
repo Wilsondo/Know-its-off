@@ -16,7 +16,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
 
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_size": 2,
+        "pool_size": 1,
         #"poolclass": NullPool
         "max_overflow": 0
     }

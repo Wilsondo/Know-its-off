@@ -1,6 +1,6 @@
-import sqlalchemy
+from sqlalchemy.pool import NullPool  # does not work without NullPool, why?
 import constants
-
+import sqlalchemy
 
 class Config(object):
    
@@ -16,9 +16,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
 
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_size": 1,
-        "max_overflow": 0,
-        "pool_timeout": 5,
-        "pool_recycle": -1
+        "pool_size": 2,
+        #"poolclass": NullPool
+        "max_overflow": 0
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False

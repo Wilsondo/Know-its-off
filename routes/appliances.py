@@ -13,7 +13,7 @@ appliance_schema = {
                    }
 
 
-v = Validator(appliance_schema)
+v = Validator(appliance_schema, allow_unknown=True)
 
 @routes.route('/appliances', methods=['POST','GET'])
 def appliances_get_post():
@@ -23,7 +23,9 @@ def appliances_get_post():
         new_appliance = Appliance(**request.get_json())
         db.session.add(new_appliance)
         db.session.commit()
-        return jsonify(new_appliance.to_dict()), 201
+        myobj = new_appliance.to_dict()
+        #db.session.close()
+        return jsonify(myobj), 201
     elif request.method == 'GET':
         results = db.session.query(Appliance, Scout).outerjoin(Scout, Appliance.id == Scout.appliance_id).all()
         myList = []
@@ -35,23 +37,31 @@ def appliances_get_post():
             else:
                 my_dict["scout"] = None
             myList.append(my_dict)
+        #db.session.close()
         return jsonify(myList), 200
 
 @routes.route('/appliances/<id>', methods=['GET', 'PATCH', 'DELETE'])
 def appliances_get_patch_delete_by_id(id):
     myAppliance = Appliance.query.get(id)
     if myAppliance is None:
+        #db.session.close()
         abort(404, description="This appliance does not exist")
     if request.method == 'GET':
-        return jsonify(myAppliance.to_dict()), 200
+        myobj = myAppliance.to_dict()
+        #db.session.close()
+        return jsonify(myobj), 200
     elif request.method == 'PATCH':
         if not v.validate(request.get_json()):
+            db.session.close()
             abort(400, description=v.errors)
         # Note that this update function is specified in models.py
         myAppliance.update(request.get_json()) 
         db.session.commit()
-        return jsonify(myAppliance.to_dict()), 200
+        myobj = myAppliance.to_dict()
+        #db.session.close()
+        return jsonify(myobj), 200
     elif request.method == 'DELETE':
         db.session.delete(myAppliance)
         db.session.commit()
+        #db.session.close()
         return '', 204

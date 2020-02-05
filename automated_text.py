@@ -9,7 +9,7 @@ def check_phone_number(phone_number):
     else:
         return 0
 
-def send_message(phone_number, message):
+def send_message(phone_number=5037017527, message="Your appliance has been left on!"):
     if check_phone_number(phone_number):
         return
     account_sid = constants.twilio_sid
@@ -36,7 +36,3 @@ def add_new_number(phone_number):
                                 friendly_name=str(phone_number),
                                 phone_number='+1' + str(phone_number)
                             )    
-
-add_new_number(5416323679)
-# Send a test text message to myself
-# send_message(5037017527, "Wuss poppin' jimbo?")

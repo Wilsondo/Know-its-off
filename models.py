@@ -32,6 +32,7 @@ class Appliance(db.Model):
 class User(db.Model):
     __name__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    password = db.Column(db.String(64), nullable=False)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)

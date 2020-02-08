@@ -37,4 +37,4 @@ if __name__ == '__main__':
     if WEBHOOK_VERIFY_TOKEN is None:
         token = temp_token()
         os.environ["WEBHOOK_VERIFY_TOKEN"] = token
-    app.run(host='127.0.0.1', port=8080, debug=True, use_reloader=False)
+    app.run(host='127.0.0.1', port=9580, debug=True, use_reloader=False)

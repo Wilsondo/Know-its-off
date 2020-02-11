@@ -45,7 +45,7 @@ export default class Appliances extends Component {
 			{this.state.myAppliances.map(appliance => (
             		<Appliance name={appliance.name} status={appliance.status} />
           		))}
-			<button className="btn btn-success m-3">Register a new appliance</button>
+			<Link className="btn btn-success m-3">Register a new appliance</Link>
 			</div>
 		)
 	}

@@ -15,7 +15,7 @@ from routes import *
 from models import *
 # Uncomment the below line if you need to create the tables.
 #db.drop_all()
-#db.create_all()
+db.create_all()
 
 # from message_checker import BackgroundThread 
 

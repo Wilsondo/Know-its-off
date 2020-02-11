@@ -1,4 +1,4 @@
-from sqlalchemy.pool import NullPool  # does not work without NullPool, why?
+from sqlalchemy.pool import NullPool, SingletonThreadPool, StaticPool  # does not work without NullPool, why?
 import constants
 import sqlalchemy
 
@@ -16,8 +16,8 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+constants.username+":"+constants.password+"@"+constants.host+"/"+constants.database
 
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_size": 1,
-        #"poolclass": NullPool
-        "max_overflow": 0
+        #"pool_size": -1,
+        "poolclass": SingletonThreadPool
+        #"max_overflow": 0
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False

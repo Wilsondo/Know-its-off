@@ -1,6 +1,8 @@
-import React, {Component} from 'react'
-import Appliance from './appliance'
-import {CircleSpinner} from 'react-spinners-kit' 
+import React, {Component} from 'react';
+import Appliance from './appliance';
+import {CircleSpinner} from 'react-spinners-kit';
+import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 export default class Appliances extends Component {
   constructor(props) {
@@ -13,39 +15,34 @@ export default class Appliances extends Component {
   }
 
     componentDidMount() {
-    fetch("https://know-its-off.appspot.com/api/appliances")
-      .then(res => res.json())
+    axios.get("/appliances")
       .then(
         (result) => {
           this.setState({
             loading: false,
-            myAppliances: result
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            loading: false,
-            error: true
+            myAppliances: result.data
           });
         }
       )
-  }
+	.catch( (error) => {
+		this.setState({loading: false, error: true});
+		console.log(error.response.data);
+	}
+	)
+    }
 	render(){
 		if (this.state.loading) {
       			return (<div className="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
     		}
 		if (this.state.error) {
-			return(<div>There was an error</div>)
+			return(<div><h3>There was an error</h3></div>)
 		}
 		return(
 			<div>
 			{this.state.myAppliances.map(appliance => (
-            		<Appliance name={appliance.name} status={appliance.status} />
+            		<Appliance name={appliance.name} status={appliance.status} id={appliance.id}/>
           		))}
-			<Link className="btn btn-success m-3">Register a new appliance</Link>
+			<Link to="/appliances/new" className="btn btn-success m-3">Register a new appliance</Link>
 			</div>
 		)
 	}

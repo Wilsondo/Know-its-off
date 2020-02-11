@@ -3,19 +3,38 @@ import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 import Appliances from './components/appliances';
 import MyNavbar from './components/navbar';
 import Users from './components/users';
+import NewAppliance from './components/newAppliance';
 import Default from './components/default';
+import Login from './components/login';
+import ApplianceDetail from './components/applianceDetail';
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
+
+axios.defaults.baseURL =
+  'https://know-its-off.appspot.com/api';
+
+const NavRoute = ({exact, path, component: Component}) => (
+    <Route exact={exact} path={path} render={(props) => (
+      <div>
+        <MyNavbar />
+        <Component {...props}/>
+      </div>
+    )}/>
+  )
+
 
 class App extends Component {
     render() {
         return (
 		<React.Fragment>
 		  <Router>
-		    <MyNavbar />
 		    <Switch>
-			<Route exact path="/" component={Users} />
-			<Route path="/appliances" component={Appliances} />
-			<Route component={Default} />
+			<Route exact path="/" component={Login} />
+		        <Route exact path="/login" component={Login} />
+			<NavRoute exact path="/appliances" component={Appliances} />
+			<NavRoute exact path="/appliances/new" component={NewAppliance} />
+			<NavRoute exact path="/appliances/:handle" component={ApplianceDetail} />
+			<NavRoute component={Default} />
 		    </Switch>
 		  </Router>
 		</React.Fragment>

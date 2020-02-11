@@ -6,4 +6,5 @@ from .appliances import *
 from .scouts import *
 from .webhook import *
 from .errors import *
+from .login import *
 # Add more routes here as we need them.

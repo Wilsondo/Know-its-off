@@ -1,6 +1,6 @@
 Flask==1.0.2
 flask_sqlalchemy
-PyMySQL==0.9.3
+PyMySQL==0.9.2
 mysqlclient
 twilio
 cerberus

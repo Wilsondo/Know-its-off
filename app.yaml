@@ -1,5 +1,8 @@
 # [START runtime]
 runtime: python37
+automatic_scaling:
+  max_instances: 1
+
 # [END runtime]
 default_expiration: 1s
 

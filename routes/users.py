@@ -12,7 +12,7 @@ user_schema = {
                     "last_name": {"type": "string", "maxlength": 64, "nullable": False}, 
                     "phone_number": {"type": "integer", "min": 0, "max": 10000000000, "nullable": True},
                     "email": {"type": "string", "maxlength": 64, "nullable": True},
-					"password": {"type": "string", "maxlength": 64, "nullable": False}
+		    "password": {"type": "string", "maxlength": 64, "nullable": False}
                    }
 
 
@@ -24,8 +24,8 @@ def users_post():
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         new_user = User(**request.get_json())
-		hashsql = text("SELECT SHA2('" + str(new_user.password) + "', 256)")
-		new_user.password = db.session.execute(hashsql)
+	hashsql = text("SELECT SHA2('" + str(new_user.password) + "', 256)")
+	new_user.password = db.session.execute(hashsql)
         db.session.add(new_user)
         db.session.commit()
         return jsonify(new_user.to_dict()), 201

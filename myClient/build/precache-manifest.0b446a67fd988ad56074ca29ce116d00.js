@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ac13d82faa600499573a4e578b5d69dd",
+    "revision": "0d0fded1f5f0835c70bbd93a4a696a94",
     "url": "/~martinb3/know-its-off/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/~martinb3/know-its-off/static/css/2.17e5ed98.chunk.css"
   },
   {
-    "revision": "9fa3f7593645317a31d0",
+    "revision": "df06eaa7194426e2df7d",
     "url": "/~martinb3/know-its-off/static/css/main.dc752c7d.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/~martinb3/know-its-off/static/js/2.249f3bb3.chunk.js.LICENSE"
   },
   {
-    "revision": "9fa3f7593645317a31d0",
-    "url": "/~martinb3/know-its-off/static/js/main.a3ff0c20.chunk.js"
+    "revision": "df06eaa7194426e2df7d",
+    "url": "/~martinb3/know-its-off/static/js/main.e22d0a3d.chunk.js"
   },
   {
     "revision": "cc4ee3b1305bf2fb70f2",

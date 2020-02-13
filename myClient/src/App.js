@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 
 axios.defaults.baseURL =
-  'https://web.engr.oregonstate.edu/cgi-wrap/cgi-bin/~martinb3/know-its-off.cgi';
+  'https://web.engr.oregonstate.edu/cgi-wrap/cgi-bin/~martinb3/know-its-off.cgi/api';
 
 const NavRoute = ({exact, path, component: Component}) => (
     <Route exact={exact} path={path} render={(props) => (

@@ -10,23 +10,45 @@ export default class Appliances extends Component {
     this.state = {
 	loading: true,
         myAppliances: [],
-	error: false
+	error: false,
+	appliancesOn: 0
     };
   }
+
+
+ countAppliancesOn = (arr) => {
+   console.log("Hello");
+    var result = 0;
+   for(var x = 0; arr.length > x; x++){
+      if(arr[x].status === true){
+	      console.log(x);
+        result++;
+      }
+   }
+   return result;
+
+}
+
 
     componentDidMount() {
     axios.get("/appliances")
       .then(
         (result) => {
+		console.log("Hi there");
           this.setState({
             loading: false,
-            myAppliances: result.data
+            myAppliances: result.data,
+            appliancesOn: this.countAppliancesOn(result.data) 
           });
         }
       )
 	.catch( (error) => {
 		this.setState({loading: false, error: true});
-		console.log(error.response.data);
+		if(error.response){
+			if(error.response.data){
+				console.log(error.response.data);
+			}
+		}
 	}
 	)
     }
@@ -39,9 +61,25 @@ export default class Appliances extends Component {
 		}
 		return(
 			<div>
+			<div className="row m-3">
+			<div className="col">
+			<h1 className="text-center">
+			My appliances
+			</h1>
+			</div>
+			</div>
+			<div className="row mb-3">
+			<div className="col">
+			<h6 className="text-muted text-center">
+			{this.state.appliancesOn} of your appliances are on.
+			</h6>
+			</div>
+			</div>
+			<div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
 			{this.state.myAppliances.map(appliance => (
             		<Appliance name={appliance.name} status={appliance.status} id={appliance.id}/>
           		))}
+			</div>
 			<Link to="/appliances/new" className="btn btn-success m-3">Register a new appliance</Link>
 			</div>
 		)

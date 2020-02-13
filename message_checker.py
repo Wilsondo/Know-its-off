@@ -36,9 +36,9 @@ class BackgroundThread(object):
         """
         self.interval = interval
 
-        thread = threading.Thread(target=self.run, args=())
-        thread.daemon = True                            # Daemonize thread
-        thread.start()                                  # Start the execution
+        #thread = threading.Thread(target=self.run, args=())
+        #thread.daemon = True                            # Daemonize thread
+        #thread.start()                                  # Start the execution
 
     def run(self):
         db.engine.dispose()
@@ -47,3 +47,9 @@ class BackgroundThread(object):
             # Do something
             check_message_queue()
             time.sleep(self.interval)
+
+
+
+if __name__ == '__main__':
+    myMessageChecker = BackgroundThread(interval=60)
+    myMessageChecker.run()

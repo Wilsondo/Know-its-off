@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
-import {Link} from 'react-router-dom';
 import axios from 'axios'
 
-export default class Login extends Component {
+export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,12 +13,12 @@ export default class Login extends Component {
 	postLoading: false
     };
   }
-     doLogin = (event) => {
+     doSignup = (event) => {
 	     this.setState({postLoading:true});
-	axios.post('/login', {email: this.state.email, password: this.state.password})
+	axios.post('/users', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
-			       this.props.history.push("/appliances"); })
+			       this.props.history.push("/login"); })
 	event.preventDefault();
      };
 handleChange = (event) => {
@@ -38,7 +37,7 @@ handleChange = (event) => {
 		return(
 <div className="mt-5 mb-5 container bg-light border">
 <div className="row justify-content-md-center mt-5">
-<h1>Log In to Know It's Off</h1>
+<h1>Sign up to Know It's Off</h1>
 </div>
 <div className="row justify-content-md-center mb-5">
 <form>
@@ -51,8 +50,7 @@ handleChange = (event) => {
     <label for="exampleInputPassword1">Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
-  <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
-  <Link id="signupHelp" to="/signup" className="form-text text-muted">Don't have an account? Click here to sign up.</Link>
+  <button onClick={this.doSignup} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
 </form>
 </div>
 </div>

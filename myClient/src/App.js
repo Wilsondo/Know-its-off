@@ -6,6 +6,7 @@ import Users from './components/users';
 import NewAppliance from './components/newAppliance';
 import Default from './components/default';
 import Login from './components/login';
+import Signup from './components/signup';
 import ApplianceDetail from './components/applianceDetail';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
@@ -31,6 +32,7 @@ class App extends Component {
 		    <Switch>
 			<Route exact path="/" component={Login} />
 		        <Route exact path="/login" component={Login} />
+		        <Route exact path="/signup" component={Signup} />
 			<NavRoute exact path="/appliances" component={Appliances} />
 			<NavRoute exact path="/appliances/new" component={NewAppliance} />
 			<NavRoute exact path="/appliances/:handle" component={ApplianceDetail} />

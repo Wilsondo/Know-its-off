@@ -64,11 +64,11 @@ handleChange = (event) => {
     <input className="form-control" name="type" id="inputType" onChange={this.handleChange} value={this.state.myAppliance.type} />
   </div>
   <div className="form-check">
-    <input type="checkbox" className="form-check-input" name="alert_email"  onChange={this.handleChange} value={this.state.myAppliance.alert_email} id="exampleCheck1" />
+    <input type="checkbox" className="form-check-input" name="alert_email"  onChange={this.handleChange} checked={this.state.myAppliance.alert_email} id="exampleCheck1" />
     <label className="form-check-label" for="exampleCheck1">Send email alerts</label>
   </div>
   <div className="form-check">
-    <input type="checkbox" className="form-check-input" id="exampleCheck2" name="alert_text" onChange={this.handleChange} value={this.state.myAppliance.alert_text} />
+    <input type="checkbox" className="form-check-input" id="exampleCheck2" name="alert_text" onChange={this.handleChange} checked={this.state.myAppliance.alert_text} />
     <label className="form-check-label" for="exampleCheck2">Send text alerts</label>
   </div>
   <button onClick={this.patchData} className="btn btn-primary">Save changes <CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>

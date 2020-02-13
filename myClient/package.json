@@ -1,6 +1,6 @@
 {
   "name": "my-react-app",
-  "homepage": "https://web.engr.oregonstate.edu/~martinb3/know-its-off/build",
+  "homepage": "https://web.engr.oregonstate.edu/~martinb3/know-its-off",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

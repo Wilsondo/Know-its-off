@@ -28,7 +28,7 @@ class App extends Component {
     render() {
         return (
 		<React.Fragment>
-		  <Router>
+		  <Router basename="/~martinb3/know-its-off">
 		    <Switch>
 			<Route exact path="/" component={Login} />
 		        <Route exact path="/login" component={Login} />

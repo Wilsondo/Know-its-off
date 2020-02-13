@@ -17,11 +17,9 @@ export default class Appliances extends Component {
 
 
  countAppliancesOn = (arr) => {
-   console.log("Hello");
     var result = 0;
    for(var x = 0; arr.length > x; x++){
       if(arr[x].status === true){
-	      console.log(x);
         result++;
       }
    }
@@ -34,7 +32,6 @@ export default class Appliances extends Component {
     axios.get("/appliances")
       .then(
         (result) => {
-		console.log("Hi there");
           this.setState({
             loading: false,
             myAppliances: result.data,

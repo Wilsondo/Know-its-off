@@ -12,4 +12,4 @@ from flask_login import login_required, current_user
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('routes.login'))
+    return redirect(url_for('routes.login', _scheme='https'))

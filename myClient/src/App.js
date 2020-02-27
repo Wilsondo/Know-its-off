@@ -15,7 +15,7 @@ axios.defaults.baseURL =
   'https://web.engr.oregonstate.edu/cgi-bin/cgiwrap/~martinb3/know-its-off.cgi/api';
 */
 axios.defaults.baseURL =
-  'https://know-its-off.appspot.com/api';
+'https://know.pineapplepop.me/api';
 
 const NavRoute = ({exact, path, component: Component}) => (
     <Route exact={exact} path={path} render={(props) => (

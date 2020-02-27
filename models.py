@@ -2,6 +2,8 @@ from main import db
 from sqlalchemy import inspect
 from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 class Appliance(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -29,15 +31,22 @@ class Appliance(db.Model):
         return '<Appliance {}>'.format(self.name)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __name__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    password = db.Column(db.String(64), nullable=False)
-    first_name = db.Column(db.String(64), nullable=False)
-    last_name = db.Column(db.String(64), nullable=False)
+    password_hash = db.Column(db.String(512), nullable=True)
+    first_name = db.Column(db.String(64), nullable=True)
+    last_name = db.Column(db.String(64), nullable=True)
     phone_number = db.Column(db.Integer, nullable=True)
-    email = db.Column(db.String(64), nullable=True)
+    email = db.Column(db.String(64), nullable=False)
     myPermission = db.relationship("Permission_User_Scout", lazy="dynamic")
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
     # Convert the object to dictionary
     def to_dict(self):

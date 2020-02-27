@@ -20,12 +20,11 @@ def login():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
-        login_user = User(**request.get_json())
-        check_user = User.query.filter_by(email=login_user.email).first()
-        hashsql = text("SELECT SHA2('" + str(login_user.password) + "', 256)")
-        login_user.password = db.session.execute(hashsql)
-	#if the user does not exist or the password does not match
-        if not check_user or not (login_user.password is check_user.password):
-            #error handler, for now we do a 404 butshould replace later
-            abort(404, description="The credentials you entered were incorrect")
+        login_user = request.get_json()
+        thing = login_user['email']
+        check_user = User.query.filter_by(email=thing).first()
+        if not check_user or not check_user.check_password(login_user['password']):
+            #error handler, if login is not successful
+            abort(403, description="The credentials you entered were incorrect")
+        db.session.close()
         return '', 204

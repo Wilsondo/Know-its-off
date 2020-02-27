@@ -50,6 +50,10 @@ handleChange = (event) => {
     <label for="exampleInputPassword1">Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
+  <div className="form-group">
+    <label for="exampleInputPassword2">Confirm Password</label>
+    <input name="passwordConf" type="password" onChange={this.handleChange} value={this.state.passwordConf} className="form-control" id="exampleInputPassword2" placeholder="Password" />
+  </div>
   <button onClick={this.doSignup} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
 </form>
 </div>

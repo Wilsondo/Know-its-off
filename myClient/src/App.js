@@ -10,9 +10,12 @@ import Signup from './components/signup';
 import ApplianceDetail from './components/applianceDetail';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
-
+/*
 axios.defaults.baseURL =
   'https://web.engr.oregonstate.edu/cgi-bin/cgiwrap/~martinb3/know-its-off.cgi/api';
+*/
+axios.defaults.baseURL =
+  'https://know-its-off.appspot.com/api';
 
 const NavRoute = ({exact, path, component: Component}) => (
     <Route exact={exact} path={path} render={(props) => (
@@ -28,7 +31,7 @@ class App extends Component {
     render() {
         return (
 		<React.Fragment>
-		  <Router basename="/~martinb3/know-its-off">
+		  <Router>
 		    <Switch>
 			<Route exact path="/" component={Login} />
 		        <Route exact path="/login" component={Login} />

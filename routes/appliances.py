@@ -5,6 +5,7 @@ sys.path.append('../..')
 from main import db
 from models import *
 from cerberus import Validator
+from flask_login import login_required, current_user
 
 appliance_schema = {
                     "name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -16,6 +17,7 @@ appliance_schema = {
 v = Validator(appliance_schema, allow_unknown=True)
 
 @routes.route('/appliances', methods=['POST','GET'])
+@login_required
 def appliances_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
@@ -41,6 +43,7 @@ def appliances_get_post():
         return jsonify(myList), 200
 
 @routes.route('/appliances/<id>', methods=['GET', 'PATCH', 'DELETE'])
+@login_required
 def appliances_get_patch_delete_by_id(id):
     myAppliance = Appliance.query.get(id)
     if myAppliance is None:

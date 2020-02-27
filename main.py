@@ -3,9 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from database_config import Config
 import os
 from sqlalchemy.orm import scoped_session, sessionmaker
+from flask_login import LoginManager
 
 app = Flask(__name__)
+
 app.config.from_object(Config)
+app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
 db = SQLAlchemy(app)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
@@ -13,13 +16,23 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 
 from routes import *
 from models import *
+
+
 # Uncomment the below line if you need to create the tables.
 #db.drop_all()
-db.create_all()
+#db.create_all()
 
 # from message_checker import BackgroundThread 
 
 app.register_blueprint(routes, url_prefix = '/api')
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'routes.login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our user table, use it in the query for the user
+    return User.query.get(int(user_id))
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

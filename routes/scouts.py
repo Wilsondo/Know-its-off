@@ -5,6 +5,7 @@ sys.path.append('../..')
 from main import db
 from models import *
 from cerberus import Validator
+from flask_login import login_required, current_user
 
 scout_schema = {
                     "name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -16,6 +17,7 @@ scout_schema = {
 v = Validator(scout_schema)
 
 @routes.route('/scouts', methods=['POST','GET'])
+@login_required
 def scouts_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
@@ -32,6 +34,7 @@ def scouts_get_post():
         return jsonify(myList), 200
 
 @routes.route('/scouts/<id>', methods=['GET', 'PATCH', 'DELETE'])
+@login_required
 def scouts_get_patch_delete_by_id(id):
     myScout = Scout.query.get(id)
     if myScout is None:

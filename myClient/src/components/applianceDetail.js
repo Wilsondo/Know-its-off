@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Appliance from './appliance'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 
 export default class ApplianceDetail extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class ApplianceDetail extends Component {
 	loading: true,
         myAppliance: {},
 	error: false,
+   redirect: null,
 	postLoading: false
     };
   }
@@ -40,13 +42,14 @@ handleChange = (event) => {
       )
 	.catch( (error) => {
 		this.setState({loading: false, error: true});
+      if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
 		console.log(error.response.data);
-	
 	}
 	)
   }
 	render(){
 		if(this.state.error){
+         if(this.state.redirect){ return(<Redirect to={this.state.redirect} />) }
 			return(<div className="m-5"><h3>There was an error</h3></div>)
 		}
 		if(this.state.loading){

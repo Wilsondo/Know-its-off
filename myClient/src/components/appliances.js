@@ -13,7 +13,8 @@ export default class Appliances extends Component {
         myAppliances: [],
 	error: false,
    redirect: null,
-	appliancesOn: 0
+	appliancesOn: 0,
+   error_response: null
     };
   }
 
@@ -44,9 +45,8 @@ export default class Appliances extends Component {
 	.catch( (error) => {
 		this.setState({loading: false, error: true});
 		if(error.response){
-			if(error.response.data == "not authorized"){
-			   this.setState({redirect: "/"})
-         }
+         this.setState({error_response: error.response.data});
+			if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
          else if (error.response.data){console.log(error.response.data)}
 		}
 	}
@@ -60,7 +60,7 @@ export default class Appliances extends Component {
          if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
          }
-			return(<div><h3>There was an error</h3></div>)
+			return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
 		}
 		return(
 			<div>

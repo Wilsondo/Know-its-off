@@ -3,6 +3,7 @@ import Appliance from './appliance';
 import {CircleSpinner} from 'react-spinners-kit';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 export default class Appliances extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class Appliances extends Component {
 	loading: true,
         myAppliances: [],
 	error: false,
+   redirect: null,
 	appliancesOn: 0
     };
   }
@@ -42,9 +44,10 @@ export default class Appliances extends Component {
 	.catch( (error) => {
 		this.setState({loading: false, error: true});
 		if(error.response){
-			if(error.response.data){
-				console.log(error.response.data);
-			}
+			if(error.response.data == "not authorized"){
+			   this.setState({redirect: "/"})
+         }
+         else if (error.response.data){console.log(error.response.data)}
 		}
 	}
 	)
@@ -54,6 +57,9 @@ export default class Appliances extends Component {
       			return (<div className="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
     		}
 		if (this.state.error) {
+         if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+         }
 			return(<div><h3>There was an error</h3></div>)
 		}
 		return(

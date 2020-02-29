@@ -14,7 +14,7 @@ export default class MyNavbar extends Component {
     <div className="navbar-nav">
       <Link to="/appliances" className="nav-item nav-link active">Home </Link>
       <Link to="/appliances" className="nav-item nav-link">My appliances</Link>
-      <Link to="/" className="nav-item nav-link">Logout</Link>
+      <Link to="/logout" className="nav-item nav-link">Logout</Link>
     </div>
   </div>
 </nav>

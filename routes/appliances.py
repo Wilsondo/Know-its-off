@@ -31,7 +31,6 @@ def appliances_get_post():
     elif request.method == 'GET':
         results = db.session.query(Appliance, Scout).outerjoin(Scout, Appliance.id == Scout.appliance_id).all()
         myList = []
-        print(results)
         for row in results:
             my_dict = row[0].to_dict()
             if row[1]:

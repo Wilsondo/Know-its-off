@@ -8,4 +8,5 @@ from .users import *
 from .webhook import *
 from .errors import *
 from .login import *
+from .logout import *
 # Add more routes here as we need them.

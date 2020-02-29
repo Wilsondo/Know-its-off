@@ -30,7 +30,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'routes.login'
 @login_manager.unauthorized_handler
 def unauthorized():
-    return 'not authorized', 404
+    return 'not authorized', 401
 
 @login_manager.user_loader
 def load_user(user_id):

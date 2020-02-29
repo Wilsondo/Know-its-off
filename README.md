@@ -6,8 +6,10 @@ First, you need to check your database settings in `config.py` and define your d
 
 `python3 -m pip install -r requirements.txt --user`
 
-then go into the `myClient` directory and run
+then go into the `myClient` directory 
+edit .env with the appropriate baseURL address for the api server
 
+and run 
 `yarn build`
 
 Then you can go back out of the `myClient` directory and run the server

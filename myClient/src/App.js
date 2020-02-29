@@ -11,12 +11,8 @@ import ApplianceDetail from './components/applianceDetail';
 import Logout from './components/logout'
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
-/*
-axios.defaults.baseURL =
-  'https://web.engr.oregonstate.edu/cgi-bin/cgiwrap/~martinb3/know-its-off.cgi/api';
-*/
-axios.defaults.baseURL =
-'https://know.pineapplepop.me/api';
+
+axios.defaults.baseURL = process.env.REACT_APP_API_BASEURL;
 
 const NavRoute = ({exact, path, component: Component}) => (
     <Route exact={exact} path={path} render={(props) => (

@@ -27,6 +27,9 @@ def login():
         if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
-        login_user(check_user)
+        result = login_user(check_user)
         db_session.close()
-        return '', 204
+        if result:
+            return '', 204
+        else:
+            return 'Unauthorized', 401

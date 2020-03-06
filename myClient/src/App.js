@@ -2,13 +2,16 @@ import React, {Component} from 'react';
 import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 import Appliances from './components/appliances';
 import MyNavbar from './components/navbar';
-import Users from './components/users';
 import NewAppliance from './components/newAppliance';
 import Default from './components/default';
 import Login from './components/login';
 import Signup from './components/signup';
-import ApplianceDetail from './components/applianceDetail';
 import Logout from './components/logout'
+import ApplianceDetail from './components/applianceDetail';
+import Home from './components/home';
+import AddScout from './components/addScout';
+import EditScout from './components/editScout';
+import EditUser from './components/editUser';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
 
@@ -34,6 +37,10 @@ class App extends Component {
 		      <Route exact path="/login" component={Login} />
 		      <Route exact path="/logout" component={Logout} />
 		      <Route exact path="/signup" component={Signup} />
+		      <NavRoute exact path="/home" component={Home} />
+		      <NavRoute exact path="/scout/new" component={AddScout} />
+		      <NavRoute exact path="/scout/:handle" component={EditScout} />
+		      <NavRoute exact path="/user/edit" component={EditUser} />
 			   <NavRoute exact path="/appliances" component={Appliances} />
 			   <NavRoute exact path="/appliances/new" component={NewAppliance} />
 			   <NavRoute exact path="/appliances/:handle" component={ApplianceDetail} />

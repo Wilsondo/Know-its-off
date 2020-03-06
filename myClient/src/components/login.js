@@ -19,7 +19,7 @@ export default class Login extends Component {
 	axios.post('/login', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
-			       this.props.history.push("/appliances"); })
+			       this.props.history.push("/home"); })
 	event.preventDefault();
      };
 handleChange = (event) => {
@@ -27,6 +27,10 @@ handleChange = (event) => {
       [event.target.name]: event.target.value
     });
   };
+   checkIfLoggedIn() {
+      axios.get('/users/test')
+      .then((result) => {this.props.history.push("/home");})
+   }
 
 	render(){
 		if(this.state.error){
@@ -35,6 +39,7 @@ handleChange = (event) => {
 		if(this.state.loading){
       			return (<div classNameName="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
 		}
+      this.checkIfLoggedIn()
 		return(
 <div className="mt-5 mb-5 container bg-light border">
 <div className="row justify-content-md-center mt-5">

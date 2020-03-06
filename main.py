@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
+#app.config['LOGIN_DISABLED'] = True
 db = SQLAlchemy(app)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
@@ -16,11 +17,11 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 
 from routes import *
 from models import *
-
-
 # Uncomment the below line if you need to create the tables.
 #db.drop_all()
 #db.create_all()
+#db_session.add_all([Permission(name="admin"), Permission(name="member")])
+#db_session.commit()
 
 # from message_checker import BackgroundThread 
 

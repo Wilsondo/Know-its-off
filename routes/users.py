@@ -13,7 +13,7 @@ user_schema = {
                     "last_name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "phone_number": {"type": "integer", "min": 0, "max": 10000000000, "nullable": True},
                     "email": {"type": "string", "maxlength": 64, "nullable": True},
-		    "password_hash": {"type": "string", "maxlength": 64, "nullable": True}
+		    "password_hash": {"type": "string", "maxlength": 512, "nullable": True}
                    }
 
 

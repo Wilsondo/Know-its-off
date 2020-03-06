@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Appliance from './appliance'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'

@@ -29,8 +29,8 @@ export default class MyNavbar extends Component {
     <div className="navbar-nav">
       <Link to="/home" className="nav-item nav-link active">Home </Link>
       <Link to="/appliances" className="nav-item nav-link">My Appliances</Link>
-      <Link to="/user/edit" className="nav-item nav-link">Edit User</Link>
       <Link to="/scout/new" className="nav-item nav-link">New Scout</Link>
+      <Link to="/user/edit" className="nav-item nav-link">Edit User</Link>
       <Link to="/logout" className="nav-item nav-link">Logout</Link>
     </div>
   </div>

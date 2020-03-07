@@ -11,7 +11,8 @@ export default class ApplianceDetail extends Component {
         myAppliance: {},
 	error: false,
    redirect: null,
-	postLoading: false
+	postLoading: false,
+   deleteLoading: false
     };
   }
      patchData = (event) => {
@@ -27,6 +28,15 @@ handleChange = (event) => {
       myAppliance : {...this.state.myAppliance, [event.target.name]: event.target.value}
     });
   };
+   deleteAppliance = (event) => {
+      this.setState({deleteLoading:true});
+      const r = window.confirm("Do you really want to delete this, it will be permanent!");
+      if(r){
+         axios.delete("/appliances/"+this.state.myAppliance.id)
+         .then((result) => {this.setState({deleteLoading:false,redirect:"/appliances"});})
+         .catch((error) => {this.setState({deleteLoading:false,error:true})})
+      }
+   }
 
     componentDidMount() {
     const handle = this.props.match.params.handle;
@@ -74,6 +84,7 @@ handleChange = (event) => {
     <label className="form-check-label" for="exampleCheck2">Send text alerts</label>
   </div>
   <button onClick={this.patchData} className="btn btn-primary">Save changes <CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
+  <button onClick={this.deleteAppliance} className="btn btn-danger">Delete Appliance<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoading} /></button>
 </form>
 </div>
 

@@ -12,8 +12,7 @@ user_schema = {
                     "first_name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "last_name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "phone_number": {"type": "integer", "min": 0, "max": 10000000000, "nullable": True},
-                    "email": {"type": "string", "maxlength": 64, "nullable": True},
-		    "password_hash": {"type": "string", "maxlength": 512, "nullable": True}
+                    "email": {"type": "string", "maxlength": 64, "nullable": True}
                    }
 
 
@@ -45,7 +44,7 @@ def users_get_patch_delete_by_id(id):
         if not v.validate(obj):
             abort(400, description=v.errors)
         # Note that this update function is specified in models.py
-        if obj['password']:
+        if "password" in obj:
             current_user.set_password(obj['password'])
         current_user.update(obj) 
         db.session.commit()

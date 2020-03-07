@@ -45,9 +45,9 @@ export default class Appliances extends Component {
 	.catch( (error) => {
 		this.setState({loading: false, error: true});
 		if(error.response){
-         this.setState({error_response: error.response.data});
+         this.setState({error_response: error.response.statusText});
 			if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-         else if (error.response.data){console.log(error.response.data)}
+         else if (error.response.data){console.log(error.response)}
 		}
 	}
 	)

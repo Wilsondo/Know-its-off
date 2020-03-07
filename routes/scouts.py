@@ -52,7 +52,8 @@ def scouts_get_patch_delete_by_id(id):
     elif request.method == 'PATCH':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
-        if request.get_json()["appliance_id"]:
+        app_id_in_req = "appliance_id" in request.get_json()
+        if app_id_in_req:
             #verify appliance exists and belongs to user.
             app_id = int(request.get_json()["appliance_id"])
             if Permission_User_Appliance.query.filter_by(appliance_id=app_id,user_id=current_user.get_id()).scalar() is None:
@@ -62,6 +63,10 @@ def scouts_get_patch_delete_by_id(id):
         db.session.commit()
         return jsonify(myScout.to_dict()), 200
     elif request.method == 'DELETE':
+        #delete the permissions first
+        perm = db.session.query(Permission_User_Scout).filter_by(scout_id=id)
+        db.session.delete(perm)
+        db.session.flush()
         db.session.delete(myScout)
         db.session.commit()
         return '', 204

@@ -14,12 +14,16 @@ export default class Login extends Component {
 	postLoading: false
     };
   }
+  componentDidMount() {
+   this.checkIfLoggedIn()
+  }
      doLogin = (event) => {
 	     this.setState({postLoading:true});
 	axios.post('/login', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
 			       this.props.history.push("/home"); })
+        .catch((error)=>{this.setState({postLoading:false});})
 	event.preventDefault();
      };
 handleChange = (event) => {
@@ -30,6 +34,7 @@ handleChange = (event) => {
    checkIfLoggedIn() {
       axios.get('/users/test')
       .then((result) => {this.props.history.push("/home");})
+      .catch((error)=>{})
    }
 
 	render(){
@@ -39,7 +44,6 @@ handleChange = (event) => {
 		if(this.state.loading){
       			return (<div classNameName="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
 		}
-      this.checkIfLoggedIn()
 		return(
 <div className="mt-5 mb-5 container bg-light border">
 <div className="row justify-content-md-center mt-5">

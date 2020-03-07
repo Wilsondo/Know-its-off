@@ -1,8 +1,39 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import Tile from './tile';
+import {GridContextProvider,GridDropZone,GridItem,swap} from "react-grid-dnd";
+
+function DnD() {
+   const [items, setItems] = React.useState([]); // supply your own state
+   useEffect(() => 
+      axios.get('/scouts')
+      .then((result) => {
+         setItems(result.data)
+      }), []);
+   // target id will only be set if dragging from one dropzone to another.
+  function onChange(sourceId, sourceIndex, targetIndex, targetId) {
+    const nextState = swap(items, sourceIndex, targetIndex);
+    setItems(nextState);
+  }
+  return (
+      <GridContextProvider onChange={onChange}>
+         <div className="container">
+            <GridDropZone id="myScouts" boxesPerRow={4} rowHeight={100} style={{height:"400px"}}>
+               {console.log(items)}
+               {items.map(scout => (
+                  <GridItem key={scout.id}>
+                     <div style={{width:"100%",height:"100%"}}>
+                        <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
+                     </div>
+                  </GridItem>
+               ))}
+            </GridDropZone>
+         </div>
+      </GridContextProvider>
+  );
+}
 
 export default class Home extends Component {
    constructor(props) {
@@ -13,9 +44,8 @@ export default class Home extends Component {
          loading: true,
          error: false,
          redirect: null
-      }
+      };
    };
-
 
 countAppliancesOn = (arr) => {
    var result = 0;
@@ -66,7 +96,6 @@ addAppliancetoScout(scouts, appliances) {
    }
 }
 
-
 render(){
    if(this.state.loading) {
        return (
@@ -83,7 +112,7 @@ render(){
    <div>
       <div className="row m-3">
          <div className="col">
-            <h1 className="text-center">My appliances</h1>
+            <h1 className="text-center">Home</h1>
          </div>
       </div>
       <div className="row mb-3">
@@ -93,11 +122,25 @@ render(){
             </h6>
          </div>
       </div>
-      <div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
-         {this.state.myScouts.map(scout => (
-            <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
-         ))}
-      </div>
+      {/*<div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
+      <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
+      </div>*/}
+{/*      <GridContextProvider onChange={this.onChange}>
+         <div className="container">
+            <GridDropZone id="myScouts" boxesPerRow={4} rowHeight={100}>
+               {this.state.myScouts.map(scout => (
+                  <GridItem key={scout.id}>
+                     <div className="grid-item">
+                        <div className="grid-item-content" style={{width:"100%",height:"100%"}}>
+                           <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
+                        </div>
+                     </div>
+                  </GridItem>
+               ))}
+            </GridDropZone>
+         </div>
+      </GridContextProvider>*/}
+   <DnD />
    </div>
    )
 }}

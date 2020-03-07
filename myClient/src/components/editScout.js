@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 
 export default class EditScout extends Component {
   constructor(props) {
@@ -62,12 +63,8 @@ export default class EditScout extends Component {
             this.setState({ myAppliance: result.data, loading: false})
          })
          .catch((error) => {
-            this.setState({loading: false, error: true});
-            if(error.response){
-               this.setState({error_response: error.response.data});
-               if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-               else if (error.response.data){console.log(error.response)}
-            }
+            //Probably authorized, an error here means the appliance doesnt exist or is inaccessible
+            this.setState({loading: false,myAppliance:{...this.state.newAppliance,id:0}});
          })
       })
       .catch((error) => {
@@ -111,7 +108,6 @@ export default class EditScout extends Component {
       .then((result) =>{
          this.setState({patchLoading: false}); 
 			alert("Appliance updated.")
-         console.log(result)
       })
       .catch((error)=>{
          this.setState({patchLoading:false,error:true})
@@ -119,11 +115,11 @@ export default class EditScout extends Component {
       })
    }
    deleteScout = (event) => {
-      console.log("delete scout")
       //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
          axios.delete("/scouts/"+this.state.scout_id)
+         .then((result) => {this.setState({redirect:"/"})})
          .catch((error) => {
             this.setState({ error: true });
             if(error.response){
@@ -145,11 +141,9 @@ export default class EditScout extends Component {
       });
    };
    handleChangeSelect = (event) => {
-      console.log(event.target.value)
       //get the appliance id of the choosen value and set in state
       //dont want to disable any fields but does need to update the fields with appliance values
       if(event.target.value === "0"){ 
-         console.log(this.state.newAppliance)
          this.setState({
             myAppliance: {...this.state.newAppliance, id: 0}, 
             myScout: {...this.state.myScout, appliance_id: 0},
@@ -159,7 +153,7 @@ export default class EditScout extends Component {
       else{
          this.setState({
             myAppliance: {...this.state.usersAppliances[parseInt(event.target.value)-1]},
-            myScout: {...this.state.myScout, appliance_id: this.state.myAppliance.id},
+            myScout: {...this.state.myScout, appliance_id: this.state.usersAppliances[parseInt(event.target.value)-1].id},
             doingNewAppliance: false
          })
       }
@@ -174,7 +168,8 @@ export default class EditScout extends Component {
    };
 
 	render(){
-		if(this.state.error){ 
+      if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
+		if(this.state.error){
          return(<div className="m-5"><h3>There was an error</h3></div>) 
       }
 		if(this.state.loading){
@@ -189,6 +184,7 @@ export default class EditScout extends Component {
          );
 		return(
 <div className="m-5">
+<h3>Edit Scout</h3>
 <form>
    <div className="form-group">
       <label>Scout name</label>

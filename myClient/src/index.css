@@ -21,3 +21,27 @@ code {
     transform: rotate(360deg);
   }
 }
+
+.CircularProgressbar {
+   width: 5rem!important;
+   position: relative;
+   right: 5%;
+}
+.card-header {
+   display: flex;
+   height: 30%;
+}
+.card-title-scout {
+   width: 100%;
+   margin: auto;
+}
+.card-body {
+   display: block;
+}
+.card-text-appliance {
+   
+}
+.card-text-status {
+   font-size: 2rem;
+   margin: 0;
+}

@@ -127,6 +127,7 @@ export default class AddScout extends Component {
       );
 		return(
 <div className="m-5">
+<h3>New Scout</h3>
 <form>
    <div className="form-group">
       <label>Scout name</label>

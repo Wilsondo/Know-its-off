@@ -66,6 +66,10 @@ def appliances_get_patch_delete_by_id(id):
         db.session.close()
         return jsonify(myobj), 200
     elif request.method == 'DELETE':
+        #need to delete the permissions first
+        perm = db.session.query(Permission_User_Appliance).filter_by(appliance_id=id).first()
+        db.session.delete(perm)
+        db.session.flush()
         db.session.delete(myAppliance)
         db.session.commit()
         db.session.close()

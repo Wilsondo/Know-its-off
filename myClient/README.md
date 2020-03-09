@@ -66,3 +66,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Other Links
+
+DnD Grid based on: https://medium.com/better-programming/how-to-build-a-drag-and-drop-grid-in-react-3008c5384b29

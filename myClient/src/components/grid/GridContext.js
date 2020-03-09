@@ -1,4 +1,5 @@
 import React, { Component, createContext } from "react";
+import Cookies from 'js-cookie';
 
 // Helper functions
 
@@ -38,7 +39,24 @@ export class GridProvider extends Component {
     );
   }
 
-  setItems = items => this.setState({ items });
+  setItems = items => {
+    var i
+    var items_copy = items.slice()
+    //retreive cookie
+    var cookie_items = JSON.parse(Cookies.get('items'));
+    var myArr = []
+    //compare each item to each other
+    for(i in cookie_items){
+      //check if it is in items
+      const j = items_copy.findIndex(item => item.id === cookie_items[i].id)
+      if(j != -1){
+         myArr.push(cookie_items[i])
+         items_copy.splice(j,1)
+      }
+    }
+    for(i in items_copy){myArr.push(items_copy[i])}
+    this.setState({items: myArr})
+  };
 
   moveItem = (sourceId, destinationId) => {
     const sourceIndex = this.state.items.findIndex(
@@ -58,6 +76,9 @@ export class GridProvider extends Component {
     this.setState(state => ({
       items: moveElement(state.items, sourceIndex, offset)
     }));
+
+    //store items in cookie
+    Cookies.set('items', this.state.items)
   };
 }
 

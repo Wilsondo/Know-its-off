@@ -41,7 +41,7 @@ componentDidMount() {
             this.setState({ myScouts: sco_result.data })
             this.addAppliancetoScout(sco_result.data, app_result.data);
             const context = this.context
-            context.setItems(this.state.myScouts)
+            context.setItems(sco_result.data)
             this.setState({loading: false})
          })
          .catch( (error) => {
@@ -83,7 +83,6 @@ render(){
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
       return(<div><h3>There was an error</h3></div>)
    }
-  
    return(
    <div>
       <div className="row m-3">

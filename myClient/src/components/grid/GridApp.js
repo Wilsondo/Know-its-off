@@ -6,7 +6,6 @@ import Tile from "../tile.js";
 
 function GridApp(props) {
   const {items, moveItem} = useContext(GridContext);
-  console.log(items)
 
   return (
     <div className="GridApp">

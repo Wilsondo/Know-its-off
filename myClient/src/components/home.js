@@ -1,41 +1,13 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component, useContext} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import Tile from './tile';
-import {GridContextProvider,GridDropZone,GridItem,swap} from "react-grid-dnd";
-
-function DnD() {
-   const [items, setItems] = React.useState([]); // supply your own state
-   useEffect(() => 
-      axios.get('/scouts')
-      .then((result) => {
-         setItems(result.data)
-      }), []);
-   // target id will only be set if dragging from one dropzone to another.
-  function onChange(sourceId, sourceIndex, targetIndex, targetId) {
-    const nextState = swap(items, sourceIndex, targetIndex);
-    setItems(nextState);
-  }
-  return (
-      <GridContextProvider onChange={onChange}>
-         <div className="container">
-            <GridDropZone id="myScouts" boxesPerRow={4} rowHeight={100} style={{height:"400px"}}>
-               {console.log(items)}
-               {items.map(scout => (
-                  <GridItem key={scout.id}>
-                     <div style={{width:"100%",height:"100%"}}>
-                        <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
-                     </div>
-                  </GridItem>
-               ))}
-            </GridDropZone>
-         </div>
-      </GridContextProvider>
-  );
-}
+import GridApp from './grid/GridApp';
+import GridContext from './grid/GridContext';
 
 export default class Home extends Component {
+   static contextType = GridContext
    constructor(props) {
       super(props);
       this.state = {
@@ -68,14 +40,18 @@ componentDidMount() {
          .then( (sco_result) => {
             this.setState({ myScouts: sco_result.data })
             this.addAppliancetoScout(sco_result.data, app_result.data);
+            const context = this.context
+            context.setItems(this.state.myScouts)
             this.setState({loading: false})
          })
          .catch( (error) => {
             this.setState({loading: false, error: true});
+            console.log(error)
          })
       })
       .catch( (error) => {
          this.setState({loading: false, error: true});
+         console.log(error)
       })
 }
 
@@ -140,7 +116,7 @@ render(){
             </GridDropZone>
          </div>
       </GridContextProvider>*/}
-   <DnD />
+      <GridApp/>      
    </div>
    )
 }}

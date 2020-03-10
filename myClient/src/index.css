@@ -25,18 +25,24 @@ code {
 .CircularProgressbar {
    width: 5rem!important;
    position: relative;
-   right: 5%;
+   right: 1rem;
+}
+.tile {
+   margin: 1rem .5rem 0rem .5rem;
 }
 .card-header {
+   /*padding-left: 0!important;*/
    display: flex;
-   height: 30%;
+   /*height: 30%;*/
+   max-height: 40%;
 }
 .card-title-scout {
    width: 100%;
    margin: auto;
 }
 .card-body {
-   display: block;
+   /*display: block;*/
+   height: 100%
 }
 .card-text-appliance {
    
@@ -44,4 +50,15 @@ code {
 .card-text-status {
    font-size: 2rem;
    margin: 0;
+   position: absolute;
+   bottom: 3%;
+   left: 5%;
+}
+.card-button {
+   width: 100px;
+   position: absolute;
+   bottom: 3%;
+   right: 5%;
+   margin: 0;
+   /*transform: translate(90%, 0);*/
 }

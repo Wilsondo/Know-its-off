@@ -159,12 +159,7 @@ export default class EditScout extends Component {
       }
    };
    handleChangeCheck = (event) => {
-      if(event.target.value === "false"){
-         this.setState({myAppliance: {...this.state.myAppliance, [event.target.name]: true}})
-      }
-      else {
-         this.setState({myAppliance: {...this.state.myAppliance, [event.target.name]: false}})
-      }
+      this.setState({myAppliance:{...this.state.myAppliance,[event.target.name]:event.target.checked}})
    };
 
 	render(){
@@ -220,12 +215,12 @@ export default class EditScout extends Component {
    </div>
 
    <div className="form-check">
-      <input type="checkbox" className="form-check-input" name="alert_email" onChange={this.handleChangeCheck} value={this.state.myAppliance.alert_email} id="inputAlertEmail" />
+      <input type="checkbox" className="form-check-input" name="alert_email" onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_email} id="inputAlertEmail" />
       <label className="form-check-label">Send email alerts</label>
    </div>
 
    <div className="form-check">
-      <input type="checkbox" className="form-check-input" id="inputAlertText" name="alert_text" onChange={this.handleChangeCheck} value={this.state.myAppliance.alert_text} />
+      <input type="checkbox" className="form-check-input" id="inputAlertText" name="alert_text" onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_text} />
       <label className="form-check-label">Send text alerts</label>
    </div>
 

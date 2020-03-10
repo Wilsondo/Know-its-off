@@ -49,7 +49,7 @@ export default class EditUser extends Component {
 
    updateUser = (event) => {
       this.setState({patchLoading:true});
-      if(this.state.current_user.password != this.state.confNewPassword){
+      if(this.state.current_user.password !== this.state.confNewPassword){
          alert("Passwords dont match!")
          return
       }

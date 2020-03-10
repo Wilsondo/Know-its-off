@@ -5,8 +5,6 @@ import {CircularProgressbar} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import {buildStyles} from 'react-circular-progressbar';
 import {CircleSpinner} from 'react-spinners-kit';
-import {DropdownButton} from 'react-bootstrap';
-import {Dropdown} from 'react-bootstrap';
 import axios from 'axios';
 
 export default class Tile extends Component {
@@ -52,7 +50,7 @@ export default class Tile extends Component {
             </div>)
       }
       return(
-         <Card bg={this.state.background} className="text-center col mt-3">
+         <Card bg={this.state.background} className="tile text-center col">
             <Card.Header>
                <CircularProgressbar value={this.state.scout_battery} maxValue={1} text={`${this.state.scout_battery}%`} styles={buildStyles({textSize: '2.2rem',textColor:'#000'})}/>
                <Card.Title className="card-title-scout">{this.state.scout_name}</Card.Title>
@@ -61,7 +59,7 @@ export default class Tile extends Component {
                <Card.Title className="card-title-appliance">{this.state.appliance_name}({this.state.appliance_type})</Card.Title>
                {/*<Card.Text className="card-text-type">{this.state.appliance_type}</Card.Text>*/}
                <Card.Text className="card-text-status">{this.state.status}</Card.Text>
-               <Link className="btn btn-primary text-wrap" to={"/scout/"+this.state.scout_id}>Edit Scout</Link>
+               <Link className="card-button btn btn-primary text-wrap" to={"/scout/"+this.state.scout_id}>Edit Scout</Link>
                {/*I was thinking about using a dropdown here instead so that you can delete a scout without having
                to go to the edit scout page, which may not load if the appliance of the scout doesnt exist
                <DropdownButton id="dropdown-button" title="Dropdown button">

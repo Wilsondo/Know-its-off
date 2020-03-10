@@ -42,16 +42,16 @@ handleChange = (event) => {
 <div className="row justify-content-md-center mb-5">
 <form>
   <div className="form-group">
-    <label for="exampleInputEmail1">Email address</label>
+    <label>Email address</label>
     <input name="email" type="email" className="form-control" value={this.state.email} onChange={this.handleChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div className="form-group">
-    <label for="exampleInputPassword1">Password</label>
+    <label>Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
   <div className="form-group">
-    <label for="exampleInputPassword2">Confirm Password</label>
+    <label>Confirm Password</label>
     <input name="passwordConf" type="password" onChange={this.handleChange} value={this.state.passwordConf} className="form-control" id="exampleInputPassword2" placeholder="Password" />
   </div>
   <button onClick={this.doSignup} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>

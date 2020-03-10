@@ -71,7 +71,7 @@ export default class Appliances extends Component {
 			</h1>
 			</div>
 			</div>
-			<div className="row mb-3">
+			<div className="row m-3">
 			<div className="col">
 			<h6 className="text-muted text-center">
 			{this.state.appliancesOn} of your appliances are on.
@@ -79,9 +79,8 @@ export default class Appliances extends Component {
 			</div>
 			</div>
 			<div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
-         { console.log(this.state) }
 			{this.state.myAppliances.map(appliance => (
-            		<Appliance name={appliance.name} status={appliance.status} id={appliance.id}/>
+            		<Appliance key={appliance.id} name={appliance.name} status={appliance.status} id={appliance.id}/>
           		))}
 			</div>
 			<Link to="/appliances/new" className="btn btn-success m-3">Register a new appliance</Link>

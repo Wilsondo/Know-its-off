@@ -35,7 +35,10 @@ def unauthorized():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    user_id = db_session.query(User).get(int(user_id))
+    #an attempt to fix the annoying "rollback" error when sqlalchemy session timesout
+    db_session.commit()
+    return user_id
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

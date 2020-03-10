@@ -17,10 +17,14 @@ export default class ApplianceDetail extends Component {
   }
      patchData = (event) => {
 	     this.setState({postLoading:true});
-	axios.patch(`/appliances/${this.state.myAppliance.id}`, {name: this.state.myAppliance.name, type: this.state.myAppliance.type})
+	axios.patch(`/appliances/${this.state.myAppliance.id}`, this.state.myAppliance)
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
 			        alert("Changes saved.")})
+        .catch((error) => {
+            this.setState({postLoading:false,error:true})
+            console.log(error.response)
+         })
 	event.preventDefault();
      };
 handleChange = (event) => {
@@ -28,6 +32,13 @@ handleChange = (event) => {
       myAppliance : {...this.state.myAppliance, [event.target.name]: event.target.value}
     });
   };
+handleChangeInt = (event) => {
+   this.setState({myAppliance:{...this.state.myAppliance,[event.target.name]:parseInt(event.target.value)}})
+}
+handleChangeCheck = (event) => {
+   this.setState({myAppliance: {...this.state.myAppliance, [event.target.name]: event.target.checked}})
+};
+
    deleteAppliance = (event) => {
       this.setState({deleteLoading:true});
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
@@ -68,20 +79,28 @@ handleChange = (event) => {
 <div className="m-5">
 <form>
   <div className="form-group">
-    <label for="inputName">Appliance name</label>
+    <label>Appliance name</label>
     <input className="form-control" name="name" id="inputName" aria-describedby="nameHelp" onChange={this.handleChange} value={this.state.myAppliance.name} />
   </div>
   <div className="form-group">
-    <label for="inputType">Appliance type</label>
+    <label>Appliance type</label>
     <input className="form-control" name="type" id="inputType" onChange={this.handleChange} value={this.state.myAppliance.type} />
   </div>
-  <div className="form-check">
-    <input type="checkbox" className="form-check-input" name="alert_email"  onChange={this.handleChange} checked={this.state.myAppliance.alert_email} id="exampleCheck1" />
-    <label className="form-check-label" for="exampleCheck1">Send email alerts</label>
+  <div className="form-group">
+    <label>Alert Message</label>
+    <input className="form-control" name="alert_message" id="inputAlertMessage" onChange={this.handleChange} value={this.state.myAppliance.alert_message} />
+  </div>
+  <div className="form-group">
+    <label>Alert Time</label>
+    <input className="form-control" name="alert_time" id="inputAlertTime" onChange={this.handleChangeInt} value={this.state.myAppliance.alert_time} />
   </div>
   <div className="form-check">
-    <input type="checkbox" className="form-check-input" id="exampleCheck2" name="alert_text" onChange={this.handleChange} checked={this.state.myAppliance.alert_text} />
-    <label className="form-check-label" for="exampleCheck2">Send text alerts</label>
+    <input type="checkbox" className="form-check-input" name="alert_email"  onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_email} id="exampleCheck1" />
+    <label className="form-check-label">Send email alerts</label>
+  </div>
+  <div className="form-check">
+    <input type="checkbox" className="form-check-input" id="exampleCheck2" name="alert_text" onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_text} />
+    <label className="form-check-label">Send text alerts</label>
   </div>
   <button onClick={this.patchData} className="btn btn-primary">Save changes <CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
   <button onClick={this.deleteAppliance} className="btn btn-danger">Delete Appliance<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoading} /></button>

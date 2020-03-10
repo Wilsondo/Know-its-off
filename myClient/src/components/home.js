@@ -1,8 +1,7 @@
-import React, {Component, useContext} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
-import Tile from './tile';
 import GridApp from './grid/GridApp';
 import GridContext from './grid/GridContext';
 
@@ -40,18 +39,21 @@ componentDidMount() {
          .then( (sco_result) => {
             this.setState({ myScouts: sco_result.data })
             this.addAppliancetoScout(sco_result.data, app_result.data);
+            //This passes the list of scouts to the context once.
             const context = this.context
             context.setItems(sco_result.data)
             this.setState({loading: false})
          })
          .catch( (error) => {
             this.setState({loading: false, error: true});
-            console.log(error)
+            console.log("error at get scouts: ", error.response)
          })
       })
       .catch( (error) => {
+         //most likely cause of error here is failed authentication, so redirect
          this.setState({loading: false, error: true});
-         console.log(error)
+         if(error.response.data === "not authorized"){this.setState({redirect:"/login"})}
+         console.log("error at get appliances: ", error.response)
       })
 }
 
@@ -60,13 +62,13 @@ addAppliancetoScout(scouts, appliances) {
    for(i in scouts){
       for(j in appliances){
          if(appliances[j].id === scouts[i].appliance_id){
-            const app = appliances[j];
-            let a = scouts.slice();
+            const app = appliances[j]; //an appliance of a scout
+            let a = scouts.slice(); //copy array
             //let newState = Object.assign({}, this.state);
             a[i].appliance_name = app.name;
             a[i].appliance_type = app.type;
             a[i].appliance_status = app.status;
-            this.setState({myScouts: a});
+            this.setState({myScouts: a}); //save appliance of scout i
          }
       }
    }
@@ -80,8 +82,9 @@ render(){
          </div>)
    }
    if(this.state.error) {
+      console.log(this.state)
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
-      return(<div><h3>There was an error</h3></div>)
+      return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
    }
    return(
    <div>
@@ -90,7 +93,7 @@ render(){
             <h1 className="text-center">Home</h1>
          </div>
       </div>
-      <div className="row mb-3">
+      <div className="row m-3">
          <div className="col">
             <h6 className="text-muted text-center">
                {this.state.appliancesOn} of your appliances are on.

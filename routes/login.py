@@ -3,7 +3,7 @@ from sqlalchemy import text
 from . import routes
 import sys
 sys.path.append('../..')
-from main import db_session
+from main import db
 from models import *
 from cerberus import Validator
 from flask_login import login_user
@@ -28,7 +28,7 @@ def login():
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user)
-        db_session.close()
+        db.session.close()
         if result:
             return '', 204
         else:

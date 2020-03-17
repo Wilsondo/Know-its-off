@@ -12,4 +12,5 @@ from flask_login import login_required, current_user, logout_user
 @login_required
 def logout():
     logout_user()
+    db.session.close()
     return redirect('/')

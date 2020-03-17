@@ -33,7 +33,8 @@ export default class EditUser extends Component {
                first_name: result.data.first_name,
                last_name: result.data.last_name,
                email: result.data.email,
-               phone_number: result.data.phone_number
+               phone_number: result.data.phone_number,
+               password: ""
             }
          });
       })
@@ -50,6 +51,7 @@ export default class EditUser extends Component {
    updateUser = (event) => {
       this.setState({patchLoading:true});
       if(this.state.current_user.password !== this.state.confNewPassword){
+         this.setState({patchLoading:false});
          alert("Passwords dont match!")
          return
       }

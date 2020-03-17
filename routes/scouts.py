@@ -22,8 +22,7 @@ def scouts_get_post():
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         #verify that the appliance exists and belongs to user
-        myApp = db.session.query(Appliance)
-        myApp = myApp.filter(Appliance.id==request.get_json()["appliance_id"])
+        myApp = Appliance.query.filter(Appliance.id==request.get_json()["appliance_id"])
         myApp = myApp.outerjoin(Permission_User_Appliance, Appliance.id == Permission_User_Appliance.appliance_id)
         myApp = myApp.filter_by(user_id=current_user.get_id()).scalar()
         if myApp is None:
@@ -32,12 +31,15 @@ def scouts_get_post():
         db.session.add(new_scout)
         db.session.commit()
         add_permission_user_scout(new_scout.id)
-        return jsonify(new_scout.to_dict()), 201
+        returnValue = jsonify(new_scout.to_dict())
+        db.session.close()
+        return returnValue, 201
     elif request.method == 'GET':
         results = Scout.query.outerjoin(Permission_User_Scout, Scout.id == Permission_User_Scout.scout_id).filter_by(user_id=current_user.get_id()).all()
         myList = []
         for row in results:
             myList.append(row.to_dict())
+        db.session.close()
         return jsonify(myList), 200
 
 @routes.route('/scouts/<id>', methods=['GET', 'PATCH', 'DELETE'])
@@ -46,9 +48,12 @@ def scouts_get_patch_delete_by_id(id):
     #need to verify that the scout belongs to the user
     myScout = Scout.query.outerjoin(Permission_User_Scout, Scout.id==Permission_User_Scout.scout_id).filter_by(scout_id=id, user_id=current_user.get_id()).first()
     if myScout is None:
+        db.session.close()
         abort(404, description="This scout does not exist")
     if request.method == 'GET':
-        return jsonify(myScout.to_dict()), 200
+        returnValue = jsonify(myScout.to_dict())
+        db.session.close()
+        return returnValue, 200
     elif request.method == 'PATCH':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
@@ -61,14 +66,17 @@ def scouts_get_patch_delete_by_id(id):
         # Note that this update function is specified in models.py
         myScout.update(request.get_json()) 
         db.session.commit()
-        return jsonify(myScout.to_dict()), 200
+        returnValue = jsonify(myScout.to_dict())
+        db.session.close()
+        return returnValue, 200
     elif request.method == 'DELETE':
         #delete the permissions first
-        perm = db.session.query(Permission_User_Scout).filter_by(scout_id=id)
+        perm = Permission_User_Scout.query.filter_by(scout_id=id).first()
         db.session.delete(perm)
         db.session.flush()
         db.session.delete(myScout)
         db.session.commit()
+        db.session.close()
         return '', 204
 
 #creates a new permission_user_scout row when posting a scout

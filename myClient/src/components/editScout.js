@@ -79,11 +79,11 @@ export default class EditScout extends Component {
 
    updateAppliance = (event) => {
       this.setState({patchLoading:true});
-      if(this.state.myScout.appliance_id === 0) {
+      if(this.state.myAppliance.id === 0) {
          //post new appliance and return id to patch scout
          axios.post('/appliances', this.state.myAppliance)
          .then((result) => {
-            this.setState({myScout: {...this.state.myScout, appliance_id: result.id}})
+            this.setState({myScout: {...this.state.myScout, appliance_id: result.data.id}})
             this.updateScout()
          })
          .catch((error)=>{
@@ -119,10 +119,11 @@ export default class EditScout extends Component {
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
          axios.delete("/scouts/"+this.state.scout_id)
-         .then((result) => {this.setState({redirect:"/"})})
+         .then((result) => {this.setState({redirect:"/home"})})
          .catch((error) => {
             this.setState({ error: true });
             if(error.response){
+               console.log(error.response)
                this.setState({error_response: error.response.data})
             }
          })
@@ -174,6 +175,7 @@ export default class EditScout extends Component {
             </div>)
 		}
       //need to set the scouts appliance as "selected"
+      //value has to match the index of usersAppliances, from that array you can fetch the id
       let options = this.state.applianceNames.map((data) =>
             {return <option key={data[2]} value={data[2]}>{data[0]}</option>}
          );
@@ -188,7 +190,7 @@ export default class EditScout extends Component {
 
    <div className="form-group">
       <label>Choose Existing Appliance</label>
-      <select className="form-control" id="inputApplianceId" onChange={this.handleChangeSelect} defaultValue={this.state.myAppliance.id}>
+      <select className="form-control" id="inputApplianceId" onChange={this.handleChangeSelect} defaultValue={this.state.usersAppliances.findIndex(app => app.id === this.state.myAppliance.id)+1}>
          <option key="0" value="0">New Appliance</option>
          {options}
       </select>

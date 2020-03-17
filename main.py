@@ -11,17 +11,16 @@ app.config.from_object(Config)
 app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
 #app.config['LOGIN_DISABLED'] = True
 db = SQLAlchemy(app)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=db.engine))
+#SQLAlchemy is supposed to have a preconfigured scoped session, so dont need this
+#db_session = scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=db.engine))
 
 from routes import *
 from models import *
 # Uncomment the below line if you need to create the tables.
 #db.drop_all()
 #db.create_all()
-#db_session.add_all([Permission(name="admin"), Permission(name="member")])
-#db_session.commit()
+#db.session.add_all([Permission(name="admin"), Permission(name="member")])
+#db.session.commit()
 
 # from message_checker import BackgroundThread 
 
@@ -35,14 +34,15 @@ def unauthorized():
 
 @login_manager.user_loader
 def load_user(user_id):
-    user_id = db_session.query(User).get(int(user_id))
+    user_id = User.query.get(int(user_id))
     #an attempt to fix the annoying "rollback" error when sqlalchemy session timesout
-    db_session.commit()
+    db.session.commit()
     return user_id
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    db_session.remove()
+    db.session.remove()
+    #db_session.remove()
 
 
 def temp_token():

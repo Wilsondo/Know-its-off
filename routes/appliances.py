@@ -26,6 +26,7 @@ def appliances_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
+        request.get_json().pop("id", None)
         new_appliance = Appliance(**request.get_json())
         db.session.add(new_appliance)
         db.session.commit()
@@ -34,7 +35,7 @@ def appliances_get_post():
         db.session.close()
         return jsonify(myobj), 201
     elif request.method == 'GET':
-        results = db.session.query(Appliance)
+        results = Appliance.query
         results = results.outerjoin(Permission_User_Appliance, Appliance.id == Permission_User_Appliance.appliance_id)
         results = results.filter(Permission_User_Appliance.user_id==current_user.get_id()).all()
         myList = []
@@ -47,7 +48,7 @@ def appliances_get_post():
 @login_required
 def appliances_get_patch_delete_by_id(id):
     #verify user has authorization
-    myAppliance = db.session.query(Appliance).filter_by(id=id).outerjoin(Permission_User_Appliance, Appliance.id==Permission_User_Appliance.appliance_id).filter_by(user_id=current_user.get_id()).first()
+    myAppliance = Appliance.query.filter_by(id=id).outerjoin(Permission_User_Appliance, Appliance.id==Permission_User_Appliance.appliance_id).filter_by(user_id=current_user.get_id()).first()
     if myAppliance is None:
         db.session.close()
         abort(404, description="This appliance does not exist")
@@ -67,9 +68,14 @@ def appliances_get_patch_delete_by_id(id):
         return jsonify(myobj), 200
     elif request.method == 'DELETE':
         #need to delete the permissions first
-        perm = db.session.query(Permission_User_Appliance).filter_by(appliance_id=id).first()
+        perm = Permission_User_Appliance.query.filter_by(appliance_id=id).first()
         db.session.delete(perm)
         db.session.flush()
+        #then delete any messages in the queue as they have a foriegn key constraint
+        mess = MessageQueue.query.filter_by(appliance_id=id).all()
+        for o in mess:
+            db.session.delete(o)
+            db.session.flush()
         db.session.delete(myAppliance)
         db.session.commit()
         db.session.close()

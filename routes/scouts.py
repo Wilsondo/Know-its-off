@@ -34,7 +34,7 @@ def scouts_get_post():
         add_permission_user_scout(new_scout.id)
         return jsonify(new_scout.to_dict()), 201
     elif request.method == 'GET':
-        results = Scout.query.all()
+        results = Scout.query.outerjoin(Permission_User_Scout, Scout.id == Permission_User_Scout.scout_id).filter_by(user_id=current_user.get_id()).all()
         myList = []
         for row in results:
             myList.append(row.to_dict())

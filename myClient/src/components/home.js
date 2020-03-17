@@ -67,7 +67,7 @@ addAppliancetoScout(scouts, appliances) {
             //let newState = Object.assign({}, this.state);
             a[i].appliance_name = app.name;
             a[i].appliance_type = app.type;
-            a[i].appliance_status = app.status;
+            a[i].status = app.status;
             this.setState({myScouts: a}); //save appliance of scout i
          }
       }

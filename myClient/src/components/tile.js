@@ -14,20 +14,20 @@ export default class Tile extends Component {
       scout_battery: this.props.scout_battery,
       appliance_name: this.props.appliance_name,
       appliance_type: this.props.appliance_type,
-      appliance_status: this.props.appliance_status,
-      status: "OFF",
+      status: this.props.status,
+      statusText: "OFF",
       background: "light",
       loading: true
    }
 
    componentDidMount() {
-      if(this.props.appliance_status){
+      if(this.props.status){
          this.setState({
             background: "success",
-            status: "ON"
+            statusText: "ON"
          })
       }
-      else if(!this.props.appliance_status){
+      else if(!this.props.status){
          this.setState({background: "danger"})
       }
       this.setState({loading: false})
@@ -58,7 +58,7 @@ export default class Tile extends Component {
             <Card.Body>
                <Card.Title className="card-title-appliance">{this.state.appliance_name}({this.state.appliance_type})</Card.Title>
                {/*<Card.Text className="card-text-type">{this.state.appliance_type}</Card.Text>*/}
-               <Card.Text className="card-text-status">{this.state.status}</Card.Text>
+               <Card.Text className="card-text-status">{this.state.statusText}</Card.Text>
                <Link className="card-button btn btn-primary text-wrap" to={"/scout/"+this.state.scout_id}>Edit Scout</Link>
                {/*I was thinking about using a dropdown here instead so that you can delete a scout without having
                to go to the edit scout page, which may not load if the appliance of the scout doesnt exist

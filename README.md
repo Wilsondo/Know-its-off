@@ -13,3 +13,7 @@ then go into the `myClient` directory and run
 Then you can go back out of the `myClient` directory and run the server
 
 `python3 main.py`
+
+## License
+
+[MIT License](https://github.com/Tonyenike/Know-its-off/edit/master/LICENSE.md)

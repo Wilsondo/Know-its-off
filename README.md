@@ -16,4 +16,4 @@ Then you can go back out of the `myClient` directory and run the server
 
 ## License
 
-[MIT License](https://github.com/Tonyenike/Know-its-off/master/LICENSE.md)
+[MIT License](https://github.com/Tonyenike/Know-its-off/blob/master/LICENSE.md)

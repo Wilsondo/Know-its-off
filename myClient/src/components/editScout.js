@@ -131,9 +131,10 @@ export default class EditScout extends Component {
    };
 
    handleChange = (event) => {
+      //REMEMBER setState is async, cant expect myAppliance to be updated before new appliance
       this.setState({
          myAppliance : {...this.state.myAppliance, [event.target.name]: event.target.value}
-      });
+      })
       if(this.state.doingNewAppliance){this.setState({newAppliance: {...this.state.myAppliance}})}
    };
    handleChangeScout = (event) => { 
@@ -161,6 +162,7 @@ export default class EditScout extends Component {
    };
    handleChangeCheck = (event) => {
       this.setState({myAppliance:{...this.state.myAppliance,[event.target.name]:event.target.checked}})
+      if(this.state.doingNewAppliance){this.setState({newAppliance: {...this.state.myAppliance,[event.target.name]:event.target.checked}})}
    };
 
 	render(){

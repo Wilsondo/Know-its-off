@@ -10,7 +10,7 @@ export default class AddScout extends Component {
 		   name: "My Appliance",
 		   type: "Oven",
          alert_message: "Appliance is left on",
-         alert_time: 420,
+         alert_time: 200,
 		   alert_email: false,
 		   alert_text: false
 	   },

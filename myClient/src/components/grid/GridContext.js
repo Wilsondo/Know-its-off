@@ -44,27 +44,30 @@ export class GridProvider extends Component {
   }
 
   setItems = items => {
-    if(!Cookies.get('items')){
+    if(!Cookies.get('idList')){
       this.setState({items})
     }
     else{
-      var i
+      var i, j
       var items_copy = items.slice()
       //retreive cookie
-      var cookie_items = JSON.parse(Cookies.get('items'));
+      var cookie_idList = JSON.parse(Cookies.get('idList'));
       var myArr = []
-      //compare each item to each other
-      for(i in cookie_items){
-        //check if it is in items
-        const j = findIndexofItems(i, items_copy, cookie_items)
-        if(j !== -1){
-           myArr.push(cookie_items[i])
-           items_copy.splice(j,1)
+      //reorder items based on cookie_idList
+      for(i in cookie_idList){
+         for(j in items_copy){
+            const itemID = items_copy[j].id
+            const cookieID = cookie_idList[i]
+            if(itemID === cookieID){
+               myArr.push(items_copy[j])
+               items_copy.splice(j,1)
+            }
+          }
         }
       }
       for(i in items_copy){myArr.push(items_copy[i])}
       this.setState({items: myArr})
-  }};
+  };
 
   moveItem = (sourceId, destinationId) => {
     const sourceIndex = this.state.items.findIndex(
@@ -86,7 +89,12 @@ export class GridProvider extends Component {
     }));
 
     //store items in cookie
-    Cookies.set('items', this.state.items)
+    var i
+    var idList = []
+    for(i in this.state.items){
+       idList.push(this.state.items[i].id)
+    }
+    Cookies.set('idList', idList)
   };
 }
 

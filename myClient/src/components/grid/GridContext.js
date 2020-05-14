@@ -44,7 +44,7 @@ export class GridProvider extends Component {
   }
 
   setItems = items => {
-    if(!Cookies.get('idList')){
+    if(!Cookies.get('idList') && items){
       this.setState({items})
     }
     else{
@@ -66,7 +66,9 @@ export class GridProvider extends Component {
         }
       }
       for(i in items_copy){myArr.push(items_copy[i])}
-      this.setState({items: myArr})
+      if(myArr){
+         this.setState({items: myArr})
+      }
   };
 
   moveItem = (sourceId, destinationId) => {

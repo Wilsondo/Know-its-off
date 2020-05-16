@@ -14,12 +14,16 @@ export default class Login extends Component {
 	postLoading: false
     };
   }
+  componentDidMount() {
+   this.checkIfLoggedIn()
+  }
      doLogin = (event) => {
 	     this.setState({postLoading:true});
 	axios.post('/login', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
-			       this.props.history.push("/appliances"); })
+			       this.props.history.push("/home"); })
+        .catch((error)=>{this.setState({postLoading:false});})
 	event.preventDefault();
      };
 handleChange = (event) => {
@@ -27,6 +31,13 @@ handleChange = (event) => {
       [event.target.name]: event.target.value
     });
   };
+   //trys to check if authenticated already and redirect
+   //when logging out its a little slow so it authenticates and redirects too quickly
+   checkIfLoggedIn() {
+      axios.get('/users/test')
+      .then((result) => {this.props.history.push("/home");})
+      .catch((error)=>{})
+   }
 
 	render(){
 		if(this.state.error){
@@ -43,12 +54,12 @@ handleChange = (event) => {
 <div className="row justify-content-md-center mb-5">
 <form>
   <div className="form-group">
-    <label for="exampleInputEmail1">Email address</label>
+    <label>Email address</label>
     <input name="email" type="email" className="form-control" value={this.state.email} onChange={this.handleChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
   <div className="form-group">
-    <label for="exampleInputPassword1">Password</label>
+    <label>Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>

@@ -148,6 +148,26 @@ class Permission_User_Scout(db.Model):
     def __repr__(self):
         return '<Permission User/Scout bundle {}>'.format(self.id)
 
+class Permission_User_Appliance(db.Model):
+    __name__= "permission_user_appliance"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    appliance_id = db.Column(db.Integer, db.ForeignKey('appliance.id'))
+    permission_id = db.Column(db.Integer, db.ForeignKey('permission.id'))
+    
+    # Convert the object to dictionary
+    def to_dict(self):
+        return {c.key: getattr(self, c.key)
+            for c in inspect(self).mapper.column_attrs}
+
+    # Updating this model.
+    def update(self, myDict):
+        for key, value in myDict.items():
+            setattr(self, key, value)
+    
+    # This is how the object looks when printed out.
+    def __repr__(self):
+        return '<Permission User/Appliance bundle {}>'.format(self.id)
 
 @db.event.listens_for(Appliance, "after_update")
 def check_for_on(mapper, connection, target):

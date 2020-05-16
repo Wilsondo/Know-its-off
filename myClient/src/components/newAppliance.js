@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Appliance from './appliance'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axios from 'axios'
 
@@ -23,7 +22,8 @@ export default class NewAppliance extends Component {
 	axios.post('/appliances', {name: this.state.myAppliance.name, type: this.state.myAppliance.type})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
-			        alert("Appliance added.")})
+			        alert("Appliance added.")
+                 console.log(result)})
 	event.preventDefault();
      };
 handleChange = (event) => {

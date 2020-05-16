@@ -10,7 +10,11 @@ from flask_login import login_required, current_user
 appliance_schema = {
                     "name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "type": {"type": "string", "maxlength": 64, "nullable": True},
-                    "status": {"type": "boolean", "nullable": True}
+                    "status": {"type": "boolean", "nullable": True},
+                    "alert_email": {"type": "boolean", "nullable": True},
+                    "alert_text": {"type": "boolean", "nullable": True},
+                    "alert_message": {"type": "string", "maxlength": 256, "nullable": True},
+                    "alert_text": {"type": "integer", "min": 0, "nullable": True}
                    }
 
 
@@ -22,30 +26,29 @@ def appliances_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
+        request.get_json().pop("id", None)
         new_appliance = Appliance(**request.get_json())
         db.session.add(new_appliance)
         db.session.commit()
+        add_permission_user_appliance(new_appliance.id)
         myobj = new_appliance.to_dict()
         db.session.close()
         return jsonify(myobj), 201
     elif request.method == 'GET':
-        results = db.session.query(Appliance, Scout).outerjoin(Scout, Appliance.id == Scout.appliance_id).all()
+        results = Appliance.query
+        results = results.outerjoin(Permission_User_Appliance, Appliance.id == Permission_User_Appliance.appliance_id)
+        results = results.filter(Permission_User_Appliance.user_id==current_user.get_id()).all()
         myList = []
-        print(results)
         for row in results:
-            my_dict = row[0].to_dict()
-            if row[1]:
-                my_dict["scout"] = row[1].to_dict()
-            else:
-                my_dict["scout"] = None
-            myList.append(my_dict)
+            myList.append(row.to_dict())
         db.session.close()
         return jsonify(myList), 200
 
 @routes.route('/appliances/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
 def appliances_get_patch_delete_by_id(id):
-    myAppliance = Appliance.query.get(id)
+    #verify user has authorization
+    myAppliance = Appliance.query.filter_by(id=id).outerjoin(Permission_User_Appliance, Appliance.id==Permission_User_Appliance.appliance_id).filter_by(user_id=current_user.get_id()).first()
     if myAppliance is None:
         db.session.close()
         abort(404, description="This appliance does not exist")
@@ -64,7 +67,27 @@ def appliances_get_patch_delete_by_id(id):
         db.session.close()
         return jsonify(myobj), 200
     elif request.method == 'DELETE':
+        #need to delete the permissions first
+        perm = Permission_User_Appliance.query.filter_by(appliance_id=id).first()
+        db.session.delete(perm)
+        db.session.flush()
+        #then delete any messages in the queue as they have a foriegn key constraint
+        mess = MessageQueue.query.filter_by(appliance_id=id).all()
+        for o in mess:
+            db.session.delete(o)
+            db.session.flush()
         db.session.delete(myAppliance)
         db.session.commit()
         db.session.close()
         return '', 204
+
+#creates a new permission_user_scout row when posting a scout
+def add_permission_user_appliance(appliance_id):
+    user_id = current_user.get_id()
+    new_user_appliance = Permission_User_Appliance()
+    new_user_appliance.user_id = user_id
+    new_user_appliance.appliance_id = appliance_id
+    new_user_appliance.permission_id = 2
+    db.session.add(new_user_appliance)
+    db.session.commit()
+    return jsonify(new_user_appliance.to_dict())

@@ -8,6 +8,8 @@ Development for this project was done largely using the yarn commands listed bel
 
 You should be able to build the static files for the flask server with either yarn or npm. On engr you will have to use npm as yarn isnt avilable. First run `npm install` to build the node_modules, also remove node_modules and run `npm install` if you have issues. Then do `npm run build`.
 
+This guide has some tips that may be helpful. [https://github.com/knightsamar/CS340_starter_flask_app](https://github.com/knightsamar/CS340_starter_flask_app)
+
 ## Available Scripts
 
 In the project directory, you can run:

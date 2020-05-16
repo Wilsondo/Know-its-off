@@ -2,6 +2,7 @@
 
 Directions for use:
 
+
 First, you need to check your database settings in `database_config.py` and define your database login credentials in `constants.py`. We have created an example of `constants.py` with the `example-constants.py` file.
 
 `python3 -m pip install -r requirements.txt --user`

@@ -1,3 +1,5 @@
+# These are example constants
+
 username="myUsername"
 password="myPassword"
 database="myDatabase"

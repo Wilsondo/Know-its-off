@@ -16,6 +16,10 @@ Then you can go back out of the `myClient` directory and run the server
 
 `python3 main.py`
 
+## Yarn
+
+Yarn is a package management tool for javascript libraries. To learn more about Yarn, you can view their [webpage](https://classic.yarnpkg.com/en/). In order to get started using Yarn, you can [look here](https://classic.yarnpkg.com/en/docs/getting-started).
+
 ## License
 
 [MIT License](https://github.com/Tonyenike/Know-its-off/blob/master/LICENSE.md)

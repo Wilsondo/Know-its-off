@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Author's Notes
+
+Development for this project was done largely using the yarn commands listed below, running the react on its own development server. This was done on a personal computer and used with nginx to connect it all together. To run the development server on OSU engr flip servers you will have to use npm as yarn is not available. There may be some errors relates to the version of npm on the servers, you might try running a virtual enviornment with a different version of npm.
+
+### To Build
+
+You should be able to build the static files for the flask server with either yarn or npm. On engr you will have to use npm as yarn isnt avilable. First run `npm install` to build the node_modules, also remove node_modules and run `npm install` if you have issues. Then do `npm run build`.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -15,7 +23,6 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
@@ -25,7 +32,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `yarn eject`
 
@@ -37,36 +43,13 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## React Resources
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-### Other Links
+## Other Links
 
 DnD Grid based on: https://medium.com/better-programming/how-to-build-a-drag-and-drop-grid-in-react-3008c5384b29
+This is where I started on the drag-and-drop style reactive home page for the scouts using cards.

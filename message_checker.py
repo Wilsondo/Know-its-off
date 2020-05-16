@@ -6,6 +6,10 @@ from datetime import datetime
 from automated_email import send_email
 from automated_text import send_message
 
+
+# This is a background process which checks the database periodically to see if an automated alert needs to be sent to
+# notify the user that an appliance has been left on.
+
 def check_message_queue():
     print("Checking messages...")
     rows = db.session.query(Appliance, MessageQueue).join(MessageQueue, Appliance.id == MessageQueue.appliance_id).all()

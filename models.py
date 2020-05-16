@@ -5,6 +5,13 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+##############
+# This file defines each table in the database. For example, the Appliance table
+# has several columns -- the name of the appliance, its ID, the status of the appliance,
+# and its alert details.
+##############
+
+
 class Appliance(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), nullable=False)

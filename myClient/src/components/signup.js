@@ -18,7 +18,9 @@ export default class Signup extends Component {
 	axios.post('/users', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
-			       this.props.history.push("/login"); })
+             this.props.history.push("/login"); })
+        .catch((error)=>{this.setState({postLoading:false});
+             alert("Invalid username and password");})
 	event.preventDefault();
      };
 handleChange = (event) => {

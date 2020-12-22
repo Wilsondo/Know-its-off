@@ -3,7 +3,7 @@ from sqlalchemy import text
 from . import routes
 import sys
 sys.path.append('../..')
-from main import db
+from __init__ import db
 from models import *
 from cerberus import Validator
 from flask_login import login_required, current_user

@@ -1,4 +1,4 @@
-from main import db
+from __init__ import db
 from sqlalchemy import inspect
 from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta

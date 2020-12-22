@@ -1,5 +1,5 @@
 from sqlalchemy.pool import NullPool, SingletonThreadPool, StaticPool  # does not work without NullPool, why?
-import constants
+from . import constants
 import sqlalchemy
 
 

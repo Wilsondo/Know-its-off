@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from database_config import Config
+from .database_config import Config
 import os
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_login import LoginManager
@@ -17,8 +17,8 @@ db = SQLAlchemy(app)
 #SQLAlchemy is supposed to have a preconfigured scoped session, so dont need this
 #db_session = scoped_session(sessionmaker(autocommit=False,autoflush=False,bind=db.engine))
 
-from routes import *
-from models import *
+from .routes import *
+from .models import *
 # Uncomment the below line if you need to create the tables.
 #db.drop_all()
 #db.create_all()

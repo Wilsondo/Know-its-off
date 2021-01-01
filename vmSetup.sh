@@ -44,4 +44,5 @@ rm -f "$$.txt"
 #Run nginx
 sudo nginx
 
+#Starts the api
 (cd myClient; yarn start-api)

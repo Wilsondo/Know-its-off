@@ -4,14 +4,15 @@ from .database_config import Config
 import os
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_login import LoginManager
-#from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
-#cors = CORS(app, resources={r"*":{"origins": "*"}})
-
+##cors = CORS(app, resources={r"*":{"origins": "*"}})
+#cors = CORS(app)
+#logging.getLogger('flask_cors').level = logging.DEBUG
 app.config['LOGIN_DISABLED'] = True
 db = SQLAlchemy(app)
 #SQLAlchemy is supposed to have a preconfigured scoped session, so dont need this

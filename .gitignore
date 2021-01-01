@@ -5,3 +5,7 @@ constants.pyc
 __pycache__/
 venv/
 start
+code_reviews
+documentation
+test_api
+

@@ -5,3 +5,4 @@ twilio
 cerberus
 flask-login
 python-dotenv
+flask_cors

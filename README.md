@@ -17,6 +17,10 @@ Then you can go back out of the `myClient` directory and run the server
 
 `python3 main.py`
 
+After that open up another terminal instance and navigate back to `myClient`. Then run
+
+`yarn start-api`
+
 ## Yarn
 
 `yarn` is a package management tool for javascript libraries. To learn more about Yarn, you can view their [webpage](https://classic.yarnpkg.com/en/). In order to get started using Yarn, you can [look here](https://classic.yarnpkg.com/en/docs/getting-started).

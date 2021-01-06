@@ -11,7 +11,7 @@ from flask_login import login_required, current_user
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "email": {"type": "string", "maxlength": 64, "nullable": True}
-                   }
+}
 
 
 v = Validator(user_schema, allow_unknown=True)

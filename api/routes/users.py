@@ -9,9 +9,7 @@ from cerberus import Validator
 from flask_login import login_required, current_user
 
 user_schema = {
-                    "first_name": {"type": "string", "maxlength": 64, "nullable": True}, 
-                    "last_name": {"type": "string", "maxlength": 64, "nullable": True}, 
-                    "phone_number": {"type": "integer", "min": 0, "max": 10000000000, "nullable": True},
+                    "username": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "email": {"type": "string", "maxlength": 64, "nullable": True}
                    }
 
@@ -58,27 +56,8 @@ def users_get_patch_delete_by_id(id):
         db.session.close()
         return returnValue, 200
     elif request.method == 'DELETE':
-        #must delete all constraints first (all permission table entries)
-        #should probably delete all the corresponding appliances/scouts
-        #otherwise they will be stuck in the db. First scouts then appliances
-        permScout = Permission_User_Scout.query.filter_by(user_id=current_user.get_id()).all()
-        for o in permScout:
-            db.session.delete(o)
-            db.session.flush()
-        userScout = Scout.query.outerjoin(Permission_User_Scout, Scout.id == Permission_User_Scout.scout_id).filter_by(user_id=current_user.get_id()).all()
-        for o in userScout:
-            db.session.delete(o)
-            db.session.flush()
-        permApp= Permission_User_Appliance.query.filter_by(user_id=current_user.get_id()).all()
-        for o in permApp:
-            db.session.delete(o)
-            db.session.flush()
-        mess = MessageQueue.query.outerjoin(Permission_User_Appliance, MessageQueue.appliance_id == Permission_User_Appliance.appliance_id).filter_by(user_id=current_user.get_id()).all()
-        for o in mess:
-            db.session.delete(o)
-            db.session.flush()
-        userApp = Appliance.query.outerjoin(Permission_User_Appliance, Appliance.id == Permission_User_Appliance.appliance_id).filter_by(user_id=current_user.get_id()).all()
-        for o in userApp:
+        userDevice = Device.query.filter_by(user_id=current_user.get_id()).all()
+        for o in userDevice:
             db.session.delete(o)
             db.session.flush()
         db.session.delete(current_user)

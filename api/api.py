@@ -18,12 +18,11 @@ sys.path.insert(1, './routes')
 from __init__ import routes
 
 
-import appliances
 import errors
 import index
 import login
 import logout
-import scouts
+import devices
 import users
 import webhook
 

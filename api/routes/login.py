@@ -10,7 +10,7 @@ from flask_login import login_user
 
 user_schema = {
                     "email": {"type": "string", "maxlength": 64, "nullable": True},
-		    "password": {"type": "string", "maxlength": 64, "nullable": False}
+		            "password": {"type": "string", "maxlength": 64, "nullable": False}
                    }
 
 

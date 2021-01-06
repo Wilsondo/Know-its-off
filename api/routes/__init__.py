@@ -2,8 +2,7 @@ from flask import Blueprint
 routes = Blueprint('routes', __name__)
 
 import index
-import appliances
-import scouts
+import devices
 import users
 import webhook
 import errors

@@ -13,8 +13,8 @@ export default class Devices extends Component {
 			<div className="card bg-light">
   				<div className="card-body">
     					<h5 className="card-title text-wrap">{this.state.appliance_name}</h5>
-    					<p className="card-text">Status:{this.state.state ? " 1" : " 0"}</p>
-    					<Link to={"/device/" + this.state.id} className="btn btn-primary text-wrap">Modify appliance details</Link>
+    					<p className="card-text">State:{this.state.state ? " 1" : " 0"}</p>
+    					<Link to={"/device/" + this.state.id} className="btn btn-primary text-wrap">Modify device details</Link>
   				</div>
 			</div>
 			</div>

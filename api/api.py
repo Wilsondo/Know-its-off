@@ -23,7 +23,7 @@ import devices
 import users
 import webhook
 
-app.register_blueprint(routes, url_prefix = '/api')
+#app.register_blueprint(routes, url_prefix = '/api')
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'routes.login'

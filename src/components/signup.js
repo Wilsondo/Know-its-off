@@ -20,7 +20,8 @@ export default class Signup extends Component {
 		     (result) =>{this.setState({postLoading: false}); 
              this.props.history.push("/login"); })
         .catch((error)=>{this.setState({postLoading:false});
-             alert("Invalid username and password");})
+             alert("Invalid username and password");
+             console.log(error);})
 	event.preventDefault();
      };
 handleChange = (event) => {

@@ -14,9 +14,6 @@ export default class Login extends Component {
 	postLoading: false
     };
   }
-  componentDidMount() {
-   this.checkIfLoggedIn()
-  }
      doLogin = (event) => {
 	     this.setState({postLoading:true});
 	axios.post('/login', {email: this.state.email, password: this.state.password})
@@ -34,11 +31,6 @@ handleChange = (event) => {
   };
    //trys to check if authenticated already and redirect
    //when logging out its a little slow so it authenticates and redirects too quickly
-   checkIfLoggedIn() {
-      axios.get('/users/test')
-      .then((result) => {this.props.history.push("/home");})
-      .catch((error)=>{})
-   }
 
 	render(){
 		if(this.state.error){

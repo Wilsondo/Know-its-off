@@ -1,5 +1,5 @@
-import os, sys
-from flask import Flask, Blueprint
+import os
+from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -11,22 +11,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from api import models
-sys.path.insert(1, './routes')
-from api.routes import routes
+from app import models
+from app.api import bp as api_bp
 
-from api.routes import errors
-from api.routes import index
-from api.routes import login
-from api.routes import logout
-from api.routes import device
-from api.routes import user
-from api.routes import webhook
-
-app.register_blueprint(routes, url_prefix = '/api')
+app.register_blueprint(api_bp, url_prefix='/api')
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'routes.login'
+login_manager.login_view = 'api.user'
+
+
 @login_manager.unauthorized_handler
 def unauthorized():
     return 'not authorized', 401
@@ -50,6 +43,5 @@ def temp_token():
 WEBHOOK_VERIFY_TOKEN = os.getenv('WEBHOOK_VERIFY_TOKEN')
 
 if WEBHOOK_VERIFY_TOKEN is None:
-    token = temp_token()
-    os.environ["WEBHOOK_VERIFY_TOKEN"] = token
-
+        token = temp_token()
+        os.environ["WEBHOOK_VERIFY_TOKEN"] = token

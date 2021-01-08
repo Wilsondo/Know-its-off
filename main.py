@@ -1,5 +1,5 @@
-from api import app, db
-from api.models import User, Device
+from app import app, db
+from app.models import User, Device
 
 @app.shell_context_processor
 def make_shell_context():

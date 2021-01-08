@@ -2,22 +2,21 @@ from flask import request, abort, jsonify
 from sqlalchemy import text
 import sys
 sys.path.append('../..')
-from api import db
-from __init__ import routes
-import models
+from api import db, models
+from api.routes import routes
 from cerberus import Validator
 from flask_login import login_required, current_user
 
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "email": {"type": "string", "maxlength": 64, "nullable": True}
-                   }
+}
 
 
 v = Validator(user_schema, allow_unknown=True)
 
-@routes.route('/users', methods=['POST'])
-def users_post():
+@routes.route('/user', methods=['POST'])
+def user_post():
     if request.method == 'POST':
         obj = request.get_json()
         if not v.validate(obj):
@@ -32,9 +31,9 @@ def users_post():
         print("New user added")
         return returnValue, 201
 
-@routes.route('/users/<id>', methods=['GET', 'PATCH', 'DELETE'])
+@routes.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
-def users_get_patch_delete_by_id(id):
+def user_get_patch_delete_by_id(id):
     #Note that id here is garbage. Use current_user.get_id() instead
     if current_user is None:
         db.session.close()

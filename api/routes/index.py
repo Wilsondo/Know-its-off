@@ -1,4 +1,4 @@
-from __init__ import routes
+from api.routes import routes
 
 @routes.route('/')
 def index():

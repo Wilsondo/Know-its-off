@@ -1,0 +1,55 @@
+import os, sys
+from flask import Flask, Blueprint
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+
+app = Flask(__name__)
+app.config.from_object(Config)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+from api import models
+sys.path.insert(1, './routes')
+from api.routes import routes
+
+from api.routes import errors
+from api.routes import index
+from api.routes import login
+from api.routes import logout
+from api.routes import device
+from api.routes import user
+from api.routes import webhook
+
+app.register_blueprint(routes, url_prefix = '/api')
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'routes.login'
+@login_manager.unauthorized_handler
+def unauthorized():
+    return 'not authorized', 401
+
+@login_manager.user_loader
+def load_user(user_id):
+    user_id = User.query.get(int(user_id))
+    db.session.commit()
+    return user_id
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
+
+
+def temp_token():
+    import binascii
+    temp_token = binascii.hexlify(os.urandom(24))
+    return temp_token.decode('utf-8')
+
+WEBHOOK_VERIFY_TOKEN = os.getenv('WEBHOOK_VERIFY_TOKEN')
+
+if WEBHOOK_VERIFY_TOKEN is None:
+    token = temp_token()
+    os.environ["WEBHOOK_VERIFY_TOKEN"] = token
+

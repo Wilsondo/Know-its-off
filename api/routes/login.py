@@ -2,16 +2,15 @@ from flask import request, abort, jsonify, Response, redirect
 from sqlalchemy import text
 import sys
 sys.path.append('../..')
-from api import db
-from __init__ import routes
-import models
+from api import db, models
+from api.routes import routes
 from cerberus import Validator
 from flask_login import login_user
 
 user_schema = {
                     "email": {"type": "string", "maxlength": 64, "nullable": True},
 		            "password": {"type": "string", "maxlength": 64, "nullable": False}
-                   }
+}
 
 
 v = Validator(user_schema, allow_unknown=True)

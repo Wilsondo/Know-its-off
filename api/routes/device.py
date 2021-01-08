@@ -1,8 +1,7 @@
 from flask import request, abort, jsonify
 import sys, os
-from api import db
-from __init__ import routes
-import models
+from api import db, models
+from api.routes import routes
 from cerberus import Validator
 from flask_login import login_required, current_user
 
@@ -15,9 +14,9 @@ device_schema = {
 
 v = Validator(device_schema, allow_unknown=True)
 
-@routes.route('/devices', methods=['POST', 'GET'])
+@routes.route('/device', methods=['POST', 'GET'])
 @login_required
-def devices_get_post():
+def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
@@ -37,7 +36,7 @@ def devices_get_post():
         db.session.close()
         return jsonify(myList), 200
 
-@routes.route('/devices/<id>', methods=['GET', 'PATCH', 'DELETE'])
+@routes.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
 def device_get_patch_delete_by_id(id):
     myDevice = device.filter_by(scout_id=id, user_id=current_user.get_id()).first()

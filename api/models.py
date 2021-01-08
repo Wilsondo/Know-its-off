@@ -10,23 +10,24 @@ from flask_login import UserMixin
 ##############
 
 class Device(db.Model):
-    __name__ = "devices"
+    __name__ = "device"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     appliance_name = db.Column(db.String(64), nullable=False)
     device_state = db.Column(db.Integer, default=False, nullable=False)
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
     timestamp = db.Column(db.DateTime, nullable=False)
-    user = db.relationship("User", lazy="dynamic")
+    username = db.relationship("User", lazy="dynamic")
 
     def __repr__(self):
         return '<Device {}>'.format(self.name)
 
 class User(UserMixin, db.Model):
-    __name__ = "users"
+    __name__ = "user"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     password = db.Column(db.String(512), nullable=True)
     username = db.Column(db.String(64), nullable=True)
     email = db.Column(db.String(64), nullable=False)
+    devices = db.relationship("Device", lazy="dynamic")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

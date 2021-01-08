@@ -1,5 +1,5 @@
 import os
-from __init__ import routes
+from api.routes import routes
 from flask import request, abort, jsonify
 
 WEBHOOK_VERIFY_TOKEN = os.getenv('WEBHOOK_VERIFY_TOKEN')

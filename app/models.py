@@ -15,11 +15,11 @@ class Device(db.Model):
     appliance_name = db.Column(db.String(64), nullable=False)
     device_state = db.Column(db.Integer, default=False, nullable=False)
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
-    timestamp = db.Column(db.DateTime, nullable=False)
-    username = db.relationship("User", lazy="dynamic")
+    timestamp = db.Column(db.DateTime, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Device {}>'.format(self.name)
+        return '<Device {}>'.format(self.id)
 
 class User(UserMixin, db.Model):
     __name__ = "user"
@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(512), nullable=True)
     username = db.Column(db.String(64), nullable=True)
     email = db.Column(db.String(64), nullable=False)
-    devices = db.relationship("Device", lazy="dynamic")
+    devices = db.relationship('Device', backref='owner', lazy='dynamic')
 
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
@@ -75,4 +75,4 @@ class User(UserMixin, db.Model):
     
     # This is how the object looks when printed out.
     def __repr__(self):
-        return '<User {}>'.format(self.first_name)
+        return '<User {}>'.format(self.username)

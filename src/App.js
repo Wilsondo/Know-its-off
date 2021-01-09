@@ -12,11 +12,9 @@ import EditUser from './components/editUser';
 import addDevice from './components/addDevice';
 import editDevice from './components/editDevice';
 import Devices from './components/device';
-
-
 import axios from 'axios';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASEURL;
+axios.defaults.baseURL = process.env.BASE_URL;
 
 const NavRoute = ({exact, path, component: Component}) => (
   <Route exact={exact} path={path} render={(props) => (

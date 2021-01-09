@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom';
-import axios from 'axios'
+import axiosBaseURL from '../axios.js'
+
 
 export default class Logout extends Component {
    constructor(props) {
@@ -16,7 +17,7 @@ export default class Logout extends Component {
 			return(<div classNameName="m-5"><h3>There was an error</h3></div>)
 		}
 	   // http call to /api/logout
-      axios.get('/logout')
+      axiosBaseURL.get('/logout')
 		return(   
          // redirect to /
          <Redirect to={this.state.redirect} />

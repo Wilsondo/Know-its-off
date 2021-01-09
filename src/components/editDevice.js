@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
-import axios from 'axios'
+import axiosBaseURL from '../axios.js'
+
 import {Redirect} from 'react-router-dom'
 
 export default class editDevice extends Component {
@@ -30,7 +31,7 @@ export default class editDevice extends Component {
    componentDidMount() {
       const handle = this.props.match.params.handle;
       this.setState({scout_id: handle})
-      axios.get("/devices")
+      axiosBaseURL.get("/devices")
       .then((result) => {
          this.setState({ usersAppliances: result.data });
          //build a list called applianceNames used to create the options for the <select>
@@ -50,11 +51,11 @@ export default class editDevice extends Component {
          }
       })
       //get the details of the scout
-      axios.get(`/scouts/${handle}`)
+      axiosBaseURL.get(`/scouts/${handle}`)
       .then((result) => {
          this.setState({ myScout: {name: result.data.name, appliance_id: result.data.appliance_id} });
          //get the details of the appliance that we are editing
-         axios.get("/appliances/"+result.data.appliance_id)
+         axiosBaseURL.get("/appliances/"+result.data.appliance_id)
          .then((result) => {
             this.setState({ myAppliance: result.data, loading: false})
          })
@@ -77,7 +78,7 @@ export default class editDevice extends Component {
       this.setState({patchLoading:true});
       if(this.state.myAppliance.id === 0) {
          //post new appliance and return id to patch scout
-         axios.post('/appliances', this.state.myAppliance)
+         axiosBaseURL.post('/appliances', this.state.myAppliance)
          .then((result) => {
             this.setState({myScout: {...this.state.myScout, appliance_id: result.data.id}})
             this.updateScout()
@@ -88,7 +89,7 @@ export default class editDevice extends Component {
          })
       }
       else {
-         axios.patch('/appliances/'+parseInt(this.state.myAppliance.id), this.state.myAppliance)
+         axiosBaseURL.patch('/appliances/'+parseInt(this.state.myAppliance.id), this.state.myAppliance)
          .then((result) => {
             this.updateScout()
          })
@@ -100,7 +101,7 @@ export default class editDevice extends Component {
 	   event.preventDefault();
    };
    updateScout() {
-      axios.patch('/scouts/'+this.state.scout_id, this.state.myScout)
+      axiosBaseURL.patch('/scouts/'+this.state.scout_id, this.state.myScout)
       .then((result) =>{
          this.setState({patchLoading: false}); 
 			alert("Appliance updated.")
@@ -114,7 +115,7 @@ export default class editDevice extends Component {
       //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
-         axios.delete("/scouts/"+this.state.scout_id)
+         axiosBaseURL.delete("/scouts/"+this.state.scout_id)
          .then((result) => {this.setState({redirect:"/home"})})
          .catch((error) => {
             this.setState({ error: true });

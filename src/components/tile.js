@@ -5,7 +5,8 @@ import {CircularProgressbar} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import {buildStyles} from 'react-circular-progressbar';
 import {CircleSpinner} from 'react-spinners-kit';
-import axios from 'axios';
+import axiosBaseURL from '../axios.js'
+;
 
 export default class Tile extends Component {
    state={
@@ -36,7 +37,7 @@ export default class Tile extends Component {
       //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
-         axios.delete("/scouts/"+this.state.scout_id)
+         axiosBaseURL.delete("/scouts/"+this.state.scout_id)
          .then((result) => {this.setState({redirect:"/"})})
          .catch((error) => {this.setState({ error: true });})
       }

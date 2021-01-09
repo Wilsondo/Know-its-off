@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
-import axios from 'axios'
+import axiosBaseURL from '../axios.js'
+
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export default class EditUser extends Component {
 
    //Get users appliances, add the names to the select form element
    componentDidMount() {
-      axios.get("/users/current")  //can put anything in for an id here, it will always return the current_user
+      axiosBaseURL.get("/users/current")  //can put anything in for an id here, it will always return the current_user
       .then((result) => {
          this.setState({
             loading: false,
@@ -55,9 +56,9 @@ export default class EditUser extends Component {
          alert("Passwords dont match!")
          return
       }
-      axios.post('/login', {email: this.state.current_user.email, password: this.state.myPassword})
+      axiosBaseURL.post('/login', {email: this.state.current_user.email, password: this.state.myPassword})
       .then((result) => {
-         axios.patch('/users/current', this.state.current_user)
+         axiosBaseURL.patch('/users/current', this.state.current_user)
          .then((result) => {
             this.setState({patchLoading: false});
             alert("User updated.");
@@ -78,7 +79,7 @@ export default class EditUser extends Component {
       this.setState({deleteLoading:true});
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
-         axios.delete('/users/current')
+         axiosBaseURL.delete('/users/current')
          .then((result) => { 
             alert("Your account had been deleted")
             this.setState({deleteLoading: false, redirect:"/"});

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
-import axios from 'axios'
+import axiosBaseURL from '../axios.js'
+
 
 export default class addDevice extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class addDevice extends Component {
 
    //Get users appliances, add the names to the select form element
    componentDidMount() {
-      axios.get("/devices")
+      axiosBaseURL.get("/devices")
       .then((result) => {
          this.setState({
             loading: false,
@@ -51,7 +52,7 @@ export default class addDevice extends Component {
       this.setState({postLoading:true});
       //if creating a new appliance post it first
       if(this.state.myDevice.device_id === 0){
-         axios.post('/appliances', this.state.myDevice)
+         axiosBaseURL.post('/appliances', this.state.myDevice)
          .then((result) => {
             console.log(result)
             this.setState({ myDevice: {...this.state.myDevice, device_id: result.data.id} })
@@ -64,7 +65,7 @@ export default class addDevice extends Component {
    };
    postScout() {
       console.log(this.state)
-      axios.post('/scouts', this.state.myDevice)
+      axiosBaseURL.post('/scouts', this.state.myDevice)
       .then((result) =>{
          this.setState({postLoading: false}); 
 			alert("Appliance added.")

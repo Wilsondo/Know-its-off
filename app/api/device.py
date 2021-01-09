@@ -2,6 +2,7 @@ from flask import request, abort, jsonify
 from flask_login import login_required, current_user
 from app.api import bp
 from app.models import Device
+from app import db
 from cerberus import Validator
 
 

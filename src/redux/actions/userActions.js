@@ -7,6 +7,8 @@ import {
   LOADING_USER,
   MARK_NOTIFICATIONS_READ
 } from '../types';
+import axiosBaseURL from '../axios.js'
+;
 import axios from 'axios';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -47,7 +49,7 @@ export const signupUser = (newUserData, history) => (dispatch) => {
 
 export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('FBIdToken');
-  delete axios.defaults.headers.common['Authorization'];
+  delete axiosBaseURL.defaults.headers.common['Authorization'];
   dispatch({ type: SET_UNAUTHENTICATED });
 };
 

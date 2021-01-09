@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
 import {Link} from 'react-router-dom';
-import axios from 'axios'
+import axiosBaseURL from '../axios.js'
 
 export default class Login extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class Login extends Component {
   }
      doLogin = (event) => {
 	     this.setState({postLoading:true});
-	axios.post('/login', {email: this.state.email, password: this.state.password})
+	axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password}) //http://localhost:5000/api
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
 			      this.props.history.push("/home"); })

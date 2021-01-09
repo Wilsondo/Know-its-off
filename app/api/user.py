@@ -3,6 +3,7 @@ from flask_login import login_required, current_user, login_user
 from cerberus import Validator
 from app.models import User
 from app.api import bp
+from app import db
 
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -49,9 +50,9 @@ def login():
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         user_data = request.get_json()
-        user_email = user_data.email
+        user_email = user_data['email']
         check_user = User.query.filter_by(email=user_email).first()
-        if not check_user or not check_user.check_password(user_data.password):
+        if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user)

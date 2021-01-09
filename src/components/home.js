@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import axiosBaseURL from '../axios.js'
+;
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import GridApp from './grid/GridApp';
@@ -10,8 +11,7 @@ export default class Home extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         myAppliances: [],
-         myScouts: [],
+         myDevices: [],
          loading: true,
          error: false,
          redirect: null
@@ -29,10 +29,10 @@ countAppliancesOn = (arr) => {
 }
 
 componentDidMount() {
-   axios.get("/devices")
+   axiosBaseURL.get("/devices")
       .then( (app_result) => {
          this.setState({
-            myAppliances: app_result.data,
+            myDevices: app_result.data,
             appliancesOn: this.countAppliancesOn(app_result.data)
          })
       })
@@ -75,8 +75,8 @@ render(){
       </div>*/}
 {/*      <GridContextProvider onChange={this.onChange}>
          <div className="container">
-            <GridDropZone id="myScouts" boxesPerRow={4} rowHeight={100}>
-               {this.state.myScouts.map(scout => (
+            <GridDropZone id="myDevices" boxesPerRow={4} rowHeight={100}>
+               {this.state.myDevices.map(scout => (
                   <GridItem key={scout.id}>
                      <div className="grid-item">
                         <div className="grid-item-content" style={{width:"100%",height:"100%"}}>

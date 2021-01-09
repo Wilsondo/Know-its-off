@@ -56,6 +56,8 @@ def login():
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user)
+        if(result):
+            print("User Succesfully Logged In")
         db.session.close()
         if result:
             return '', 204

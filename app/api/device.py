@@ -38,7 +38,7 @@ def device_get_patch_delete_by_id(id):
         return '', 204
 
 @bp.route('/device', methods=['POST', 'GET'])
-@login_required
+#@login_required
 def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

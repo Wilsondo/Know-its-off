@@ -29,7 +29,7 @@ countAppliancesOn = (arr) => {
 }
 
 componentDidMount() {
-   axiosBaseURL.get("/devices")
+   axiosBaseURL.get("/device")
       .then( (app_result) => {
          this.setState({
             myDevices: app_result.data,

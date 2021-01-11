@@ -52,59 +52,20 @@ export default class addDevice extends Component {
       this.setState({postLoading:true});
       //if creating a new appliance post it first
       if(this.state.myDevice.device_id === 0){
-         axiosBaseURL.post('/appliances', this.state.myDevice)
+         axiosBaseURL.post('/devices', this.state.myDevice)
          .then((result) => {
             console.log(result)
             this.setState({ myDevice: {...this.state.myDevice, device_id: result.data.id} })
-            this.postScout()
          })
          .catch((error) => {this.setState({postLoading:false, error:true})})
       }
-      else {this.postScout()}
 	   event.preventDefault();
    };
-   postScout() {
-      console.log(this.state)
-      axiosBaseURL.post('/scouts', this.state.myDevice)
-      .then((result) =>{
-         this.setState({postLoading: false}); 
-			alert("Appliance added.")
-      })
-      .catch((error) => {this.setState({postLoading:false, error:true})})
-   };
 
-   handleChange = (event) => {
+   handleChangeDevice = (event) => {
       this.setState({
          myDevice : {...this.state.myDevice, [event.target.appliance_name]: event.target.value}
       });
-   };
-   handleChangeScout = (event) => {
-      this.setState({
-         myDevice : {...this.state.myDevice, [event.target.appliance_name]: event.target.value}
-      });
-   };
-   handleChangeSelect = (event) => {
-      //get the appliance id of the choosen value and set in state
-      if(event.target.value === "New Device"){ 
-         this.setState({
-            disabled: false, 
-            myDevice: {...this.state.myDevice, device_id: 0}
-         })
-      }
-      else{
-         this.setState({
-            disabled: true, 
-            myDevice: {...this.state.myDevice, device_id: parseInt(event.target.value)}
-         })
-      }
-   };
-   handleChangeCheck = (event) => {
-      if(event.target.value === "false"){
-         this.setState({myDevice: {...this.state.myDevice, [event.target.appliance_name]: true}})
-      }
-      else {
-         this.setState({myDevice: {...this.state.myDevice, [event.target.appliance_name]: false}})
-      }
    };
 
 	render(){
@@ -125,22 +86,10 @@ export default class addDevice extends Component {
 <h3>New Device</h3>
 <form>
    <div className="form-group">
-      <label>Device name</label>
-      <input className="form-control" appliance_name="appliance_name" id="inputScoutName" aria-describedby="nameHelp" onChange={this.handleChangeScout} value={this.state.myDevice.appliance_name} />
-   </div>
-
-   <div className="form-group">
-      <label>Choose Existing Device</label>
-      <select className="form-control" id="inputDeviceId" onChange={this.handleChangeSelect}>
-         <option>New Device</option>
-         {options}
-      </select>
-   </div>
-
-   <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control" appliance_name="appliance_name" id="inputApplianceName" disabled={this.state.disabled} onChange={this.handleChange} value={this.state.myDevice.appliance_name} />
+      <input className="form-control" appliance_name="appliance_name" id="inputScoutName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
    </div>
+
    <button onClick={this.postData} className="btn btn-success">Add this device<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
 </form>
 </div>

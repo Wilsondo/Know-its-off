@@ -8,10 +8,8 @@ export default class EditUser extends Component {
     super(props);
     this.state = {
       current_user: {
-         first_name: "",
-         last_name: "",
+         username: "",
          email: "",
-         phone_number: "",
          password: ""
       },
       myPassword: "",
@@ -31,10 +29,8 @@ export default class EditUser extends Component {
          this.setState({
             loading: false,
             current_user: {
-               first_name: result.data.first_name,
-               last_name: result.data.last_name,
+               username: result.data.username,
                email: result.data.email,
-               phone_number: result.data.phone_number,
                password: ""
             }
          });
@@ -122,23 +118,13 @@ export default class EditUser extends Component {
 <h3>Edit User - Some fields are optional.</h3>
 <form>
    <div className="form-group">
-      <label>First Name</label>
-      <input className="form-control" name="first_name" id="inputFirstName" aria-describedby="nameHelp" onChange={this.handleChange} value={this.state.current_user.first_name} placeholder="first name"/>
-   </div>
-
-   <div className="form-group">
-      <label>Last Name</label>
-      <input className="form-control" name="last_name" id="inputLastName" onChange={this.handleChange} value={this.state.current_user.last_name} placeholder="last name"/>
+      <label>Username</label>
+      <input className="form-control" name="username" id="inputUser" aria-describedby="nameHelp" onChange={this.handleChange} value={this.state.current_user.username} placeholder="username"/>
    </div>
 
    <div className="form-group">
       <label>Email - Required</label>
       <input className="form-control" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current_user.email} placeholder="email"/>
-   </div>
-
-   <div className="form-group">
-      <label>Phone Number</label>
-      <input className="form-control" name="phone_number" id="inputPhoneNumber" onChange={this.handlePhoneChange} value={this.state.current_user.phone_number} placeholder="5555555555"/>
    </div>
 
    <div className="form-group">

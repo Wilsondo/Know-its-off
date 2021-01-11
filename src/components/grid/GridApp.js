@@ -13,7 +13,7 @@ function GridApp(props) {
         {items.map(item => (
           <DragItem key={item.id} id={item.id} onMoveItem={moveItem}>
             <GridItem>
-              <Tile key={item.id} scout_id={item.id} scout_name={item.name} scout_battery={item.battery_power} appliance_name={item.appliance_name} appliance_type={item.appliance_type} status={item.status}/>
+              <Tile key={item.id} device_id={item.id} device_battery={item.device_battery} appliance_name={item.appliance_name} state={item.device_state}/>
             </GridItem>
           </DragItem>
         ))}

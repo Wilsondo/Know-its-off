@@ -18,7 +18,7 @@ export default class Home extends Component {
       };
    };
 
-countAppliancesOn = (arr) => {
+count_dev_state = (arr) => {
    var result = 0;
    for(var x = 0; arr.length > x; x++){
       if(arr[x].state === true){
@@ -29,11 +29,11 @@ countAppliancesOn = (arr) => {
 }
 
 componentDidMount() {
-   axiosBaseURL.get("/device")
+   axiosBaseURL.get("/devices")
       .then( (app_result) => {
          this.setState({
             myDevices: app_result.data,
-            appliancesOn: this.countAppliancesOn(app_result.data)
+            dev_state: this.count_dev_state(app_result.data)
          })
       })
       .catch( (error) => {
@@ -66,7 +66,7 @@ render(){
       <div className="row m-3">
          <div className="col">
             <h6 className="text-muted text-center">
-               {this.state.appliancesOn} of your appliances are on.
+               {this.state.dev_state} of your appliances are on.
             </h6>
          </div>
       </div>

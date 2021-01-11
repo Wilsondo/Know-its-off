@@ -1,3 +1,5 @@
+// This file is muk
+
 import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axiosBaseURL from '../axios.js'
@@ -15,9 +17,9 @@ export default class editDevice extends Component {
           timestamp: "2019-04-30T08:59:00.000Z",
           id: null,
        },
-      usersAppliances: [],
-      applianceNames: [],
-      doingNewAppliance: false,
+      userDevices: [],
+      deviceNames: [],
+      newDevice_flag: false,
       disabled: true,
 	   loading: true,
 	   error: false,
@@ -33,14 +35,14 @@ export default class editDevice extends Component {
       this.setState({scout_id: handle})
       axiosBaseURL.get("/devices")
       .then((result) => {
-         this.setState({ usersAppliances: result.data });
-         //build a list called applianceNames used to create the options for the <select>
+         this.setState({ userDevices: result.data });
+         //build a list called deviceNames used to create the options for the <select>
          var myList = [];
          var i;
-         for(i in this.state.usersAppliances) {
-            myList.push([this.state.usersAppliances[i].name, this.state.usersAppliances[i].id, parseInt(i)+1])
+         for(i in this.state.userDevices) {
+            myList.push([this.state.userDevices[i].name, this.state.userDevices[i].id, parseInt(i)+1])
          }
-         this.setState({ applianceNames: myList })
+         this.setState({ deviceNames: myList })
       })
       .catch( (error) => {
          this.setState({loading: false, error: true});
@@ -50,38 +52,15 @@ export default class editDevice extends Component {
             else if (error.response.data){console.log(error.response)}
          }
       })
-      //get the details of the scout
-      axiosBaseURL.get(`/scouts/${handle}`)
-      .then((result) => {
-         this.setState({ myScout: {name: result.data.name, appliance_id: result.data.appliance_id} });
-         //get the details of the appliance that we are editing
-         axiosBaseURL.get("/appliances/"+result.data.appliance_id)
-         .then((result) => {
-            this.setState({ myAppliance: result.data, loading: false})
-         })
-         .catch((error) => {
-            //Probably authorized, an error here means the appliance doesnt exist or is inaccessible
-            this.setState({loading: false,myAppliance:{...this.state.newAppliance,id:0}});
-         })
-      })
-      .catch((error) => {
-         this.setState({loading: false, error: true});
-         if(error.response){
-            this.setState({error_response: error.response.data});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response)}
-         }
-      })
    }
 
-   updateAppliance = (event) => {
+   updateDevice = (event) => {
       this.setState({patchLoading:true});
-      if(this.state.myAppliance.id === 0) {
+      if(this.state.myDevice.id === 0) {
          //post new appliance and return id to patch scout
-         axiosBaseURL.post('/appliances', this.state.myAppliance)
+         axiosBaseURL.post('/devices', this.state.myDevice) // unsure of plurality
          .then((result) => {
-            this.setState({myScout: {...this.state.myScout, appliance_id: result.data.id}})
-            this.updateScout()
+            this.setState({myDevice: {...this.state.myDevice, device_id: result.data.id}})
          })
          .catch((error)=>{
             this.setState({patchLoading:false,error:true})
@@ -89,9 +68,8 @@ export default class editDevice extends Component {
          })
       }
       else {
-         axiosBaseURL.patch('/appliances/'+parseInt(this.state.myAppliance.id), this.state.myAppliance)
+         axiosBaseURL.patch('/device/'+parseInt(this.state.myDevice.id), this.state.myDevice)
          .then((result) => {
-            this.updateScout()
          })
          .catch((error)=>{
             this.setState({patchLoading:false,error:true})
@@ -100,22 +78,11 @@ export default class editDevice extends Component {
       }
 	   event.preventDefault();
    };
-   updateScout() {
-      axiosBaseURL.patch('/scouts/'+this.state.scout_id, this.state.myScout)
-      .then((result) =>{
-         this.setState({patchLoading: false}); 
-			alert("Appliance updated.")
-      })
-      .catch((error)=>{
-         this.setState({patchLoading:false,error:true})
-         if(error.response.data){console.log(error.response)}
-      })
-   }
-   deleteScout = (event) => {
+   deleteDevice = (event) => {
       //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
-         axiosBaseURL.delete("/scouts/"+this.state.scout_id)
+         axiosBaseURL.delete("/device/"+this.state.scout_id)
          .then((result) => {this.setState({redirect:"/home"})})
          .catch((error) => {
             this.setState({ error: true });
@@ -126,17 +93,9 @@ export default class editDevice extends Component {
          })
       }
    };
-
-   handleChange = (event) => {
-      //REMEMBER setState is async, cant expect myAppliance to be updated before new appliance
+   handleChangeDevice = (event) => { 
       this.setState({
-         myAppliance : {...this.state.myAppliance, [event.target.name]: event.target.value}
-      })
-      if(this.state.doingNewAppliance){this.setState({newAppliance: {...this.state.myAppliance}})}
-   };
-   handleChangeScout = (event) => { 
-      this.setState({
-         myScout : {...this.state.myScout, [event.target.name]: event.target.value}
+         myDevice : {...this.state.myDevice, [event.target.name]: event.target.value}
       });
    };
    handleChangeSelect = (event) => {
@@ -144,22 +103,22 @@ export default class editDevice extends Component {
       //dont want to disable any fields but does need to update the fields with appliance values
       if(event.target.value === "0"){ 
          this.setState({
-            myAppliance: {...this.state.newAppliance, id: 0}, 
-            myScout: {...this.state.myScout, appliance_id: 0},
-            doingNewAppliance: true
+            myDevice: {...this.state.newDevice, id: 0}, 
+            myDevice: {...this.state.myDevice, device_id: 0},
+            newDevice_flag: true
          })
       }
       else{
          this.setState({
-            myAppliance: {...this.state.usersAppliances[parseInt(event.target.value)-1]},
-            myScout: {...this.state.myScout, appliance_id: this.state.usersAppliances[parseInt(event.target.value)-1].id},
-            doingNewAppliance: false
+            myDevice: {...this.state.userDevices[parseInt(event.target.value)-1]},
+            myDevice: {...this.state.myDevice, device_id: this.state.userDevices[parseInt(event.target.value)-1].id},
+            newDevice_flag: false
          })
       }
    };
    handleChangeCheck = (event) => {
-      this.setState({myAppliance:{...this.state.myAppliance,[event.target.name]:event.target.checked}})
-      if(this.state.doingNewAppliance){this.setState({newAppliance: {...this.state.myAppliance,[event.target.name]:event.target.checked}})}
+      this.setState({myDevice:{...this.state.myDevice,[event.target.name]:event.target.checked}})
+      if(this.state.newDevice_flag){this.setState({newDevice: {...this.state.myDevice,[event.target.name]:event.target.checked}})}
    };
 
 	render(){
@@ -174,59 +133,21 @@ export default class editDevice extends Component {
             </div>)
 		}
       //need to set the scouts appliance as "selected"
-      //value has to match the index of usersAppliances, from that array you can fetch the id
-      let options = this.state.applianceNames.map((data) =>
+      //value has to match the index of userDevices, from that array you can fetch the id
+      let options = this.state.deviceNames.map((data) =>
             {return <option key={data[2]} value={data[2]}>{data[0]}</option>}
          );
 		return(
 <div className="m-5">
-<h3>Edit Scout</h3>
+<h3>Edit Device</h3>
 <form>
    <div className="form-group">
-      <label>Scout name</label>
-      <input className="form-control" name="name" id="inputScoutName" aria-describedby="nameHelp" onChange={this.handleChangeScout} value={this.state.myScout.name} />
+      <label>Appliance Name</label>
+      <input className="form-control" name="name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
    </div>
 
-   <div className="form-group">
-      <label>Choose Existing Appliance</label>
-      <select className="form-control" id="inputApplianceId" onChange={this.handleChangeSelect} defaultValue={this.state.usersAppliances.findIndex(app => app.id === this.state.myAppliance.id)+1}>
-         <option key="0" value="0">New Appliance</option>
-         {options}
-      </select>
-   </div>
-
-   <div className="form-group">
-      <label>Appliance name</label>
-      <input className="form-control" name="name" id="inputApplianceName" onChange={this.handleChange} value={this.state.myAppliance.name} />
-   </div>
-
-   <div className="form-group">
-      <label>Appliance type</label>
-      <input className="form-control" name="type" id="inputApplianceType" onChange={this.handleChange} value={this.state.myAppliance.type} />
-   </div>
-
-   <div className="form-group">
-      <label>Alert Message</label>
-      <input className="form-control" name="alert_message" id="inputAlertMessage" onChange={this.handleChange} value={this.state.myAppliance.alert_message} />
-   </div>
-
-   <div className="form-group">
-      <label>Alert Time</label>
-      <input className="form-control" name="alert_time" id="inputAlertTime" onChange={this.handleChange} value={this.state.myAppliance.alert_time} />
-   </div>
-
-   <div className="form-check">
-      <input type="checkbox" className="form-check-input" name="alert_email" onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_email} id="inputAlertEmail" />
-      <label className="form-check-label">Send email alerts</label>
-   </div>
-
-   <div className="form-check">
-      <input type="checkbox" className="form-check-input" id="inputAlertText" name="alert_text" onChange={this.handleChangeCheck} checked={this.state.myAppliance.alert_text} />
-      <label className="form-check-label">Send text alerts</label>
-   </div>
-
-   <button onClick={this.updateAppliance} className="btn btn-success">Update this scout<CircleSpinner size={20} color="#3BBCE5" loading={this.state.patchLoading} /></button>
-   <button onClick={this.deleteScout} className="btn btn-danger">Delete this scout<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoading} /></button>
+   <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.patchLoading} /></button>
+   <button onClick={this.deleteDevice} className="btn btn-danger">Delete<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoading} /></button>
 </form>
 </div>
 		)

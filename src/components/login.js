@@ -16,7 +16,7 @@ export default class Login extends Component {
   }
      doLogin = (event) => {
 	     this.setState({postLoading:true});
-	axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password}) //http://localhost:5000/api
+	axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password})
 	     .then(
 		     (result) =>{this.setState({postLoading: false}); 
 			      this.props.history.push("/home"); })

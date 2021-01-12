@@ -4,10 +4,15 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+<<<<<<< HEAD:app/__init__.py
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+=======
+
+app = Flask(__name__)
+>>>>>>> new_backend:api/api.py
 app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -18,11 +23,16 @@ from app.api import bp as api_bp
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
+<<<<<<< HEAD:app/__init__.py
 #TODO Fix logins, they aren't triggering properly, giving us 401's
 #As we can't log in, we can't get user ID either
 login_manager = LoginManager(app)
 login_manager.login_view = 'api.user'
 login_manager.init_app(app)
+=======
+login_manager = LoginManager(app)
+login_manager.login_view = 'api.user'
+>>>>>>> new_backend:api/api.py
 
 
 @login_manager.unauthorized_handler

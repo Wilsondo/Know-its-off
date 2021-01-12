@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import jsonify
 from app import db
 from app.api import bp
@@ -9,3 +10,12 @@ def get_token():
     token = basic_auth.current_user().get_token()
     db.session.commit()
     return jsonify({'token': token})
+=======
+from app.api import bp
+
+def get_token():
+    pass
+
+def revoke_token():
+    pass
+>>>>>>> new_backend

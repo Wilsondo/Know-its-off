@@ -5,6 +5,10 @@ from app.models import Device
 from app import db
 from cerberus import Validator
 
+<<<<<<< HEAD:app/api/device.py
+=======
+#TODO add SQL translations to every function
+>>>>>>> new_backend:api/routes/devices.py
 
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -37,8 +41,26 @@ def device_get_patch_delete_by_id(id):
         db.session.close()
         return '', 204
 
+<<<<<<< HEAD:app/api/device.py
 @bp.route('/device', methods=['POST', 'GET'])
 #@login_required
+=======
+#This function gets all of the devices that the user owns
+@bp.route('/devices', methods=['GET'])
+@login_required
+def device_get_patch_delete_by_id():
+    #Select * From Device
+    #Where Device.user_id = user_id
+    deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
+    db.session.close
+    #Converts the variable into a Python dictionary
+    #Then it can be turned into a JSON for easier parsing.
+    return jsonify(deviceUserList.to_dict())
+
+#The get request for this route is never used.
+@bp.route('/device', methods=['POST', 'GET'])
+@login_required
+>>>>>>> new_backend:api/routes/devices.py
 def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

@@ -13,11 +13,31 @@ import addDevice from './components/addDevice';
 import editDevice from './components/editDevice';
 import Devices from './components/device';
 
+<<<<<<< HEAD
 const NavRoute = ({exact, path, component: Component}) => (
   <Route exact={exact} path={path} render={(props) => (
     <div>
       <MyNavbar />
       <Component {...props}/>
+=======
+function App() {
+  const [currentTime, setCurrentTime] = useState(0);
+
+  useEffect(() => {
+    fetch('/time').then(res => res.json()).then(data => {
+      setCurrentTime(data.time);
+    });
+  }, []);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+
+        ... no changes in this part ...
+
+        <p>The current time is {currentTime}.</p>
+      </header>
+>>>>>>> new_backend
     </div>
   )}/>
 )

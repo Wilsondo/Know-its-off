@@ -97,11 +97,6 @@ export default class EditUser extends Component {
    handlePassChange = (event) => {
       this.setState({[event.target.name]: event.target.value})
    }
-   handlePhoneChange = (event) => {
-      this.setState({
-         current_user: {...this.state.current_user,[event.target.name]:parseInt(event.target.value)}
-      })
-   }
 
 	render(){
 		if(this.state.error){ 

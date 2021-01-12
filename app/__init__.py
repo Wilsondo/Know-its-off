@@ -16,8 +16,11 @@ from app.api import bp as api_bp
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
+#TODO Fix logins, they aren't triggering properly, giving us 401's
+#As we can't log in, we can't get user ID either
 login_manager = LoginManager(app)
 login_manager.login_view = 'api.user'
+login_manager.init_app(app)
 
 
 @login_manager.unauthorized_handler

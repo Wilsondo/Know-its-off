@@ -2,6 +2,8 @@ from flask import jsonify
 from werkzeug.http import HTTP_STATUS_CODES
 from app.api import bp
 
+#TODO add SQL translations to every function
+
 def bad_request():
     return error_response(400, message)
 

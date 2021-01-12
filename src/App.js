@@ -33,8 +33,8 @@ class App extends Component {
         <Route exact path="/signup" component={Signup} />
         <NavRoute exact path="/home" component={Home} />
         <NavRoute exact path="/devices" component={Devices} />
-        <NavRoute exact path="/devices/new" component={addDevice} />
-        <NavRoute exact path="/devices/:handle" component={editDevice} />
+        <NavRoute exact path="/device/new" component={addDevice} />
+        <NavRoute exact path="/device/:handle" component={editDevice} />
         <NavRoute exact path="/user/edit" component={EditUser} />
        <NavRoute component={Default} />
       </Switch>

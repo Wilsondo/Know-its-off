@@ -26,7 +26,7 @@ def unauthorized():
 
 @login_manager.user_loader
 def load_user(user_id):
-    user_id = User.query.get(int(id))
+    user_id = User.query.get(int(user_id))
     db.session.commit()
     return user_id
 

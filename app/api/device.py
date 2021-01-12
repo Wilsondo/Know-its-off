@@ -19,7 +19,7 @@ v = Validator(device_schema, allow_unknown=True)
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
 def device_get_patch_delete_by_id(id):
-    myDevice = device.filter_by(scout_id=id, user_id=current_user.get_id()).first()
+    myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
     if request.method == 'GET':
         returnValue = jsonify(myDevice.to_dict())
         db.session.close
@@ -41,7 +41,7 @@ def device_get_patch_delete_by_id(id):
 #This function gets all of the devices that the user owns
 @bp.route('/devices', methods=['GET'])
 @login_required
-def device_get_patch_delete_by_id():
+def getUserDevices():
     #Select * From Device
     #Where Device.user_id = user_id
     deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()

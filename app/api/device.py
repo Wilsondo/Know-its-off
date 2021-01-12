@@ -38,7 +38,7 @@ def device_get_patch_delete_by_id(id):
         db.session.close()
         return '', 204
 
-#This function gets all of the devices that the user owns
+#This function gets all of the devices that the user owns.
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():

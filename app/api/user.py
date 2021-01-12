@@ -3,6 +3,7 @@ from flask_login import login_required, current_user, login_user
 from cerberus import Validator
 from app.models import User
 from app.api import bp
+from app import db
 
 #TODO add SQL translations to every function
 
@@ -57,7 +58,6 @@ def login():
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user)
-        print("User Login: ", result)
         db.session.close()
         if result:
             return '', 204

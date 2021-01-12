@@ -33,7 +33,7 @@ componentDidMount() {
       .then( (app_result) => {
          this.setState({
             myDevices: app_result.data,
-            dev_state: this.count_dev_state(app_result.data)
+            num_on: this.count_dev_state(app_result.data)
          })
       })
       .catch( (error) => {
@@ -66,7 +66,7 @@ render(){
       <div className="row m-3">
          <div className="col">
             <h6 className="text-muted text-center">
-               {this.state.dev_state} of your appliances are on.
+               {this.state.num_on} of your appliances are on.
             </h6>
          </div>
       </div>

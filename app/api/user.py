@@ -4,6 +4,8 @@ from cerberus import Validator
 from app.models import User
 from app.api import bp
 
+#TODO add SQL translations to every function
+
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "email": {"type": "string", "maxlength": 64, "nullable": True}

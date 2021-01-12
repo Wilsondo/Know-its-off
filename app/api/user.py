@@ -65,10 +65,10 @@ def login():
             return 'Unauthorized', 401
 
 @bp.route('/user', methods=['POST'])
-@login_required
 def user_post():
     if request.method == 'POST':
         obj = request.get_json()
+        print(obj)
         if not v.validate(obj):
             abort(400, description=v.errors)
         myPassword = obj.pop('password', None)

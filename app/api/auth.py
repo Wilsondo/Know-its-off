@@ -2,11 +2,8 @@ from flask_httpauth import HTTPBasicAuth
 from app.models import User
 from app.api.errors import error_response
 
-<<<<<<< HEAD
-=======
 #TODO add SQL translations to every function
 
->>>>>>> new_backend
 basic_auth = HTTPBasicAuth()
 
 @basic_auth.verify_password

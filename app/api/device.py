@@ -41,7 +41,7 @@ def device_get_patch_delete_by_id(id):
 #This function gets all of the devices that the user owns.
 #login does not work correctly
 @bp.route('/devices', methods=['GET'])
-#@login_required
+@login_required
 def getUserDevices():
     print("CURRENT USER ID: ", current_user.get_id())
     #Select * From Device
@@ -50,7 +50,8 @@ def getUserDevices():
     db.session.close
     #Converts the variable into a Python dictionary
     #Then it can be turned into a JSON for easier parsing.
-    return jsonify(deviceUserList.to_dict())
+    #return jsonify(deviceUserList.to_dict())
+    return deviceUserList
 
 #The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])

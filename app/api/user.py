@@ -63,13 +63,15 @@ def login():
         if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
-        result = login_user(check_user)
+        result = login_user(check_user, force=True)
+        print("Result is:", result)
+
         print(current_user.is_authenticated)
         print(current_user.id)
         deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
         print(deviceUserList)
-
         db.session.close()
+
         print("Is user authenticated:", current_user.is_authenticated)
         print("What is current user id:", current_user.id)
         if result:

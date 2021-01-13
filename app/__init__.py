@@ -36,8 +36,10 @@ def load_user(user_id):
 
     #may or may not work, depends on what user_id is. Is it the id from user 
     #or something that Flask assigns?
-     return User.query.filter_by(id=user_id).first()
+    print("User ID is", user_id)
+    return User.query.filter_by(id=user_id).first()
 
+     #return User.query.get(int(user_id))
     #This seems to get the unicode user ID and does an SQL query to get the object
     #But I'm pretty sure we never stored the object in the database
     #What is the point of the query specifically?

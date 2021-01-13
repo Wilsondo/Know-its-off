@@ -59,6 +59,7 @@ def login():
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user)
         db.session.close()
+
         if result:
             return '', 204
         else:

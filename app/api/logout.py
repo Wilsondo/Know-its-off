@@ -6,4 +6,4 @@ from app.api import bp
 def logout():
     logout_user()
     db.session.close()
-    return redirect('/')
+    return redirect('/login')

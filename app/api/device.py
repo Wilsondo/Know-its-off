@@ -19,7 +19,7 @@ v = Validator(device_schema, allow_unknown=True)
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
 def device_get_patch_delete_by_id(id):
-    myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
+    myDevice = Device.filter_by(user_id=current_user.get_id()).first()
     if request.method == 'GET':
         returnValue = jsonify(myDevice.to_dict())
         db.session.close
@@ -41,15 +41,14 @@ def device_get_patch_delete_by_id(id):
 #This function gets all of the devices that the user owns.
 #login does not work correctly
 @bp.route('/devices', methods=['GET'])
-@login_required
+#@login_required
 def getUserDevices():
-    print("CURRENT USER ID: ",current_user.get_id())
     #Select * From Device
     #Where Device.user_id = user_id
     deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
     db.session.close
     #Converts the variable into a Python dictionary
-    #Then it can be turned into a JSON for easier parsing. 
+    #Then it can be turned into a JSON for easier parsing.
     return jsonify(deviceUserList.to_dict())
 
 #The get request for this route is never used.

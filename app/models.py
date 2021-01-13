@@ -19,6 +19,10 @@ class Device(db.Model):
     timestamp = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key)
+            for c in inspect(self).mapper.column_attrs}
+
     def __repr__(self):
         return '<Device {}>'.format(self.id)
 

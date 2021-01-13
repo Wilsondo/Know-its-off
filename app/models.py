@@ -53,6 +53,10 @@ class User(UserMixin, db.Model):
         if new_user and 'password' in data:
             self.set_password(data['password'])
 
+    #Overload Userminx get)id function, not sure if this will work out correctly
+    def get_id(self):
+        return self.id
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -81,3 +85,8 @@ class User(UserMixin, db.Model):
     # This is how the object looks when printed out.
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    
+# @login_manager.user_loader
+# def load_user(user_id):
+#      return User.query.filter_by(id=user_id).first()

@@ -43,6 +43,7 @@ def device_get_patch_delete_by_id(id):
 @bp.route('/devices', methods=['GET'])
 #@login_required
 def getUserDevices():
+    print("CURRENT USER ID: ", current_user.get_id())
     #Select * From Device
     #Where Device.user_id = user_id
     deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()

@@ -20,7 +20,7 @@ app.register_blueprint(api_bp, url_prefix='/api')
 #As we can't log in, we can't get user ID either
 login_manager = LoginManager(app)
 #Is this supposed to be api.user, its supposed to define the route for login
-login_manager.login_view = 'api.user'
+login_manager.login_view = 'api.home'
 login_manager.init_app(app)
 
 
@@ -33,13 +33,19 @@ def unauthorized():
 # method sqlalchemy.orm.Query.get(ident)
 @login_manager.user_loader
 def load_user(user_id):
+
+    #may or may not work, depends on what user_id is. Is it the id from user 
+    #or something that Flask assigns?
+     return User.query.filter_by(id=user_id).first()
+
     #This seems to get the unicode user ID and does an SQL query to get the object
     #But I'm pretty sure we never stored the object in the database
     #What is the point of the query specifically?
-   user_id = User.session.get(int(user_id))
-   db.session.commit()
+ #  user_id = User.query.get(int(user_id))
+  # db.session.commit()
 #    Why are we running get twice?
-   return User.get(user_id)
+   #return User.get(user_id)
+   #Use this according to Flask mega tutorial
    #return user_id
 
 @app.teardown_appcontext

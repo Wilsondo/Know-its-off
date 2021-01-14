@@ -43,15 +43,14 @@ def device_get_patch_delete_by_id(id):
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
-    print("CURRENT USER ID: ", current_user.get_id())
     #Select * From Device
     #Where Device.user_id = user_id
     deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
     db.session.close
     #Converts the variable into a Python dictionary
     #Then it can be turned into a JSON for easier parsing.
-    #return jsonify(deviceUserList.to_dict())
-    return deviceUserList
+    return jsonify(deviceUserList)
+    #return deviceUserList
 
 #The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])

@@ -54,8 +54,8 @@ class User(UserMixin, db.Model):
             self.set_password(data['password'])
 
     #Overload Userminx get)id function, not sure if this will work out correctly
-    def get_id(self):
-        return self.id
+    #def get_id(self):
+    #    return self.id
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

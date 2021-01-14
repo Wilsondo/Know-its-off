@@ -31,6 +31,7 @@ count_dev_state = (arr) => {
 componentDidMount() {
    axiosBaseURL.get("/devices")
       .then( (app_result) => {
+         console.log(app_result);
          this.setState({
             myDevices: app_result.data,
             num_on: this.count_dev_state(app_result.data)

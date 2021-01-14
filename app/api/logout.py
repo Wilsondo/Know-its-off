@@ -1,4 +1,5 @@
 from flask_login import login_required, logout_user
+from app import db
 from app.api import bp
 
 @bp.route('/logout')

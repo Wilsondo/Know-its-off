@@ -52,28 +52,14 @@ def login():
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         user_data = request.get_json()
-        print("User data is:", user_data)
         user_email = user_data['email']
-
-        print("User email is:", type(user_email))
-        print("User email is:", user_email)
         check_user = User.query.filter_by(email=user_email).first()
-        print("CheckUser is:", check_user)
-        print("CheckUserID is:", check_user.id)
         if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user, force=True)
-        print("Result is:", result)
-
-        print(current_user.is_authenticated)
-        print(current_user.id)
         deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
-        print(deviceUserList)
         db.session.close()
-
-        print("Is user authenticated:", current_user.is_authenticated)
-        print("What is current user id:", current_user.id)
         if result:
             return '', 204
         else:

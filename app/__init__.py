@@ -13,6 +13,7 @@ migrate = Migrate(app, db)
 
 from app import models
 from app.api import bp as api_bp
+from app.models import User
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
@@ -34,21 +35,11 @@ def unauthorized():
 @login_manager.user_loader
 def load_user(user_id):
 
-    #may or may not work, depends on what user_id is. Is it the id from user 
-    #or something that Flask assigns?
-    print("User ID is", user_id)
-    return User.query.filter_by(id=user_id).first()
+    user_id = User.query.get(int(user_id))
+    db.session.commit()
+    print(user_id)
+    return user_id
 
-     #return User.query.get(int(user_id))
-    #This seems to get the unicode user ID and does an SQL query to get the object
-    #But I'm pretty sure we never stored the object in the database
-    #What is the point of the query specifically?
- #  user_id = User.query.get(int(user_id))
-  # db.session.commit()
-#    Why are we running get twice?
-   #return User.get(user_id)
-   #Use this according to Flask mega tutorial
-   #return user_id
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

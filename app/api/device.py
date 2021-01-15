@@ -4,6 +4,9 @@ from app.api import bp
 from app.models import Device
 from app import db
 from cerberus import Validator
+from flask import abort
+from app.api.auth import token_auth
+
 
 #TODO add SQL translations to every function
 
@@ -17,7 +20,7 @@ device_schema = {
 v = Validator(device_schema, allow_unknown=True)
 
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
-@login_required
+@token_auth.login_required
 def device_get_patch_delete_by_id(id):
     myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
     if request.method == 'GET':
@@ -40,7 +43,7 @@ def device_get_patch_delete_by_id(id):
 
 #This function gets all of the devices that the user owns.
 @bp.route('/devices', methods=['GET'])
-@login_required
+@token_auth.login_required
 def getUserDevices():
     #Select * From Device
     #Where Device.user_id = user_id
@@ -52,7 +55,7 @@ def getUserDevices():
 
 #The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])
-@login_required
+@token_auth.login_required
 def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

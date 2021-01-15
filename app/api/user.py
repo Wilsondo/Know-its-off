@@ -6,7 +6,6 @@ from app.api import bp
 from app import db
 from app.api.auth import token_auth
 
-#TODO add SQL translations to every function
 
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -54,6 +53,9 @@ def login():
             abort(400, description=v.errors)
         user_data = request.get_json()
         user_email = user_data['email']
+        #SELECT *
+        #FROM User
+        #WHERE User.email = user_email
         check_user = User.query.filter_by(email=user_email).first()
         if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful

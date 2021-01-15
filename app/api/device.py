@@ -8,7 +8,6 @@ from flask import abort
 from app.api.auth import token_auth
 
 
-#TODO add SQL translations to every function
 
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -45,8 +44,9 @@ def device_get_patch_delete_by_id(id):
 @bp.route('/devices', methods=['GET'])
 @token_auth.login_required
 def getUserDevices():
-    #Select * From Device
-    #Where Device.user_id = user_id
+    #SELECT * 
+    #FROM Device
+    #WHERE Device.user_id = current_user's id
     deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
     db.session.close
     #Converts the variable into a Python dictionary
@@ -69,6 +69,8 @@ def device_get_post():
         db.session.close()
         return jsonify(myobj), 201
     elif request.method == 'GET':
+        #Select *
+        #From Device
         results = Device.query
         myList = []
         for row in results:

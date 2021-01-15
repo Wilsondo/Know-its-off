@@ -4,6 +4,7 @@ from cerberus import Validator
 from app.models import User, Device
 from app.api import bp
 from app import db
+from app.api.auth import token_auth
 
 #TODO add SQL translations to every function
 
@@ -15,7 +16,7 @@ user_schema = {
 v = Validator(user_schema, allow_unknown=True)
 
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
-@login_required
+@token_auth.login_required
 def user_get_patch_delete_by_id(id):
     if current_user is None:
         db.session.close()

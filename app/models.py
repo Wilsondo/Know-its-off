@@ -19,6 +19,7 @@ class Device(db.Model):
     timestamp = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    #To dictionary functions are used to format the data to make it easier to JSONIFY    
     def to_dict(self):
         return {c.key: getattr(self, c.key)
             for c in inspect(self).mapper.column_attrs}

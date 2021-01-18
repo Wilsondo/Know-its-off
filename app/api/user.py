@@ -6,8 +6,8 @@ from app.api import bp
 from app import db
 from app.api.auth import token_auth
 
-#TODO add SQL translations to every function
-
+#Do we have to update user schema?
+#Used with the validator to ensure that the incoming data is a user
 user_schema = {
                     "username": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "email": {"type": "string", "maxlength": 64, "nullable": True}
@@ -15,16 +15,19 @@ user_schema = {
 
 v = Validator(user_schema, allow_unknown=True)
 
+#Multifunction route that does things depending on the user id
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @token_auth.login_required
 def user_get_patch_delete_by_id(id):
     if current_user is None:
         db.session.close()
         abort(404, description="This user does not exist")
+    #Returns the specific User
     if request.method == 'GET':
         returnValue = jsonify(current_user.to_dict())
         db.session.close()
         return returnValue, 200
+    #Updates the user password
     elif request.method == 'PATCH':
         obj = request.get_json()
         if not v.validate(obj):
@@ -37,6 +40,7 @@ def user_get_patch_delete_by_id(id):
         returnValue = jsonify(current_user.to_dict())
         db.session.close()
         return returnValue, 200
+    #Removes the user and its devices from the database
     elif request.method == 'DELETE':
         userDevice = Device.query.filter_by(user_id=current_user.get_id()).all()
         for o in userDevice:
@@ -47,6 +51,7 @@ def user_get_patch_delete_by_id(id):
         db.session.close()
         return '', 204
 
+#Logs the user in
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -54,6 +59,9 @@ def login():
             abort(400, description=v.errors)
         user_data = request.get_json()
         user_email = user_data['email']
+        #SELECT *
+        #FROM User
+        #WHERE User.email = user_email
         check_user = User.query.filter_by(email=user_email).first()
         if not check_user or not check_user.check_password(user_data['password']):
             #error handler, if login is not successful
@@ -65,7 +73,7 @@ def login():
             return '', 204
         else:
             return 'Unauthorized', 401
-
+#Adds a new user
 @bp.route('/user', methods=['POST'])
 
 def user_post():

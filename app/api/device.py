@@ -8,7 +8,6 @@ from flask import abort
 from app.api.auth import token_auth
 
 
-#TODO add SQL translations to every function
 
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -19,14 +18,27 @@ device_schema = {
 
 v = Validator(device_schema, allow_unknown=True)
 
+#Multi use Route to get specific information about devices
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @token_auth.login_required
 def device_get_patch_delete_by_id(id):
+<<<<<<< HEAD
     myDevice = Device.filter_by(user_id=current_user.get_id()).first()
+=======
+    #SELECT *
+    #FROM device
+    #WHERE device.id = id AND device.user_id = current_user id
+    #We make sure that the current_user can't put down devices 
+    #that they do not have access to
+    myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
+    
+    #Returns the specific device
+>>>>>>> new_backend
     if request.method == 'GET':
         returnValue = jsonify(myDevice.to_dict())
         db.session.close
         return returnValue, 200
+    #Updates the device tuple with new information
     elif request.method == 'PATCH':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
@@ -35,6 +47,7 @@ def device_get_patch_delete_by_id(id):
         returnValue = jsonify(myDevice.to_dict())
         db.session.close()
         return returnValue, 200
+    #Deletes device from database
     elif request.method == 'DELETE':
         db.session.delete(myDevice)
         db.session.commit()
@@ -51,8 +64,6 @@ def getUserDevices():
     for row in results:
         myList.append(row.to_dict())
     db.session.close()
-    print("WTF IS MY LIST:", myList)
-    print("WTF IS MY LIST (but jsonify):", jsonify(myList))
 
     return jsonify(myList), 200
 
@@ -81,6 +92,8 @@ def device_get_post():
         db.session.close()
         return jsonify(myobj), 201
     elif request.method == 'GET':
+        #Select *
+        #From Device
         results = Device.query
         myList = []
         for row in results:
@@ -88,6 +101,7 @@ def device_get_post():
         db.session.close()
         return jsonify(myList), 200
 
+#Adds a new user device to the database.
 def add_user_device(device_id):
     user_id = current_user.get_id()
     new_user_device.user_id = user_id

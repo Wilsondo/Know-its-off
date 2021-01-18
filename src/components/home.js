@@ -21,7 +21,7 @@ export default class Home extends Component {
 count_dev_state = (arr) => {
    var result = 0;
    for(var x = 0; arr.length > x; x++){
-      if(arr[x].state === true){
+      if(arr[x].device_state === 1){
          result++;
       }
    }
@@ -31,11 +31,14 @@ count_dev_state = (arr) => {
 componentDidMount() {
    axiosBaseURL.get("/devices")
       .then( (app_result) => {
-         console.log(app_result);
+         //console.log(app_result);
          this.setState({
             myDevices: app_result.data,
             num_on: this.count_dev_state(app_result.data)
          })
+         const context = this.context
+         context.setItems(app_result.data)
+         this.setState({loading: false})
       })
       .catch( (error) => {
          //most likely cause of error here is failed authentication, so redirect
@@ -72,16 +75,16 @@ render(){
          </div>
       </div>
       {/*<div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
-      <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
-      </div>*/}
+      <Tile key={this.state.myDevices.id} appliance_name={this.state.myDevices.appliance_name} device_battery={this.state.myDevices.battery_power} device_state={this.state.myDevices.device_state}/>
+   </div>*/}
 {/*      <GridContextProvider onChange={this.onChange}>
          <div className="container">
-            <GridDropZone id="myDevices" boxesPerRow={4} rowHeight={100}>
-               {this.state.myDevices.map(scout => (
-                  <GridItem key={scout.id}>
+            <GridDropZone id="this.state.myDevices" boxesPerRow={4} rowHeight={100}>
+               {this.state.this.state.myDevices.map(device => (
+                  <GridItem key={device.id}>
                      <div className="grid-item">
                         <div className="grid-item-content" style={{width:"100%",height:"100%"}}>
-                           <Tile key={scout.id} scout_id={scout.id} scout_name={scout.name} scout_battery={scout.battery_power} appliance_name={scout.appliance_name} appliance_type={scout.appliance_type} appliance_status={scout.appliance_status}/>
+                           <Tile key={device.id} appliance_name={device.appliance_name} device_battery={device.battery_power} device_state={device.device_state}/>
                         </div>
                      </div>
                   </GridItem>

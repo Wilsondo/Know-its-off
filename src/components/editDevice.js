@@ -12,13 +12,13 @@ export default class editDevice extends Component {
      this.state = {
        myDevice: {
           appliance_name: "My Appliance",
-          device_state: "1", 
-          device_battery: "100.0",
+          device_state: 1, 
+          device_battery: 100.0,
           timestamp: "2019-04-30T08:59:00.000Z",
-          id: null,
+          id: 1,
        },
       userDevices: [],
-      deviceNames: [],
+      appNames: [],
       newDevice_flag: false,
       disabled: true,
 	   loading: true,
@@ -36,13 +36,13 @@ export default class editDevice extends Component {
       axiosBaseURL.get("/devices")
       .then((result) => {
          this.setState({ userDevices: result.data });
-         //build a list called deviceNames used to create the options for the <select>
+         //build a list called appNames used to create the options for the <select>
          var myList = [];
          var i;
          for(i in this.state.userDevices) {
-            myList.push([this.state.userDevices[i].name, this.state.userDevices[i].id, parseInt(i)+1])
+            myList.push([this.state.userDevices[i].appliance_name, this.state.userDevices[i].id, parseInt(i)+1])
          }
-         this.setState({ deviceNames: myList })
+         this.setState({ appNames: myList })
       })
       .catch( (error) => {
          this.setState({loading: false, error: true});
@@ -95,30 +95,8 @@ export default class editDevice extends Component {
    };
    handleChangeDevice = (event) => { 
       this.setState({
-         myDevice : {...this.state.myDevice, [event.target.name]: event.target.value}
+         myDevice : {...this.state.myDevice, [event.target.appliance_name]: event.target.value}
       });
-   };
-   handleChangeSelect = (event) => {
-      //get the appliance id of the choosen value and set in state
-      //dont want to disable any fields but does need to update the fields with appliance values
-      if(event.target.value === "0"){ 
-         this.setState({
-            myDevice: {...this.state.newDevice, id: 0}, 
-            myDevice: {...this.state.myDevice, device_id: 0},
-            newDevice_flag: true
-         })
-      }
-      else{
-         this.setState({
-            myDevice: {...this.state.userDevices[parseInt(event.target.value)-1]},
-            myDevice: {...this.state.myDevice, device_id: this.state.userDevices[parseInt(event.target.value)-1].id},
-            newDevice_flag: false
-         })
-      }
-   };
-   handleChangeCheck = (event) => {
-      this.setState({myDevice:{...this.state.myDevice,[event.target.name]:event.target.checked}})
-      if(this.state.newDevice_flag){this.setState({newDevice: {...this.state.myDevice,[event.target.name]:event.target.checked}})}
    };
 
 	render(){
@@ -132,11 +110,6 @@ export default class editDevice extends Component {
                <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
             </div>)
 		}
-      //need to set the scouts appliance as "selected"
-      //value has to match the index of userDevices, from that array you can fetch the id
-      let options = this.state.deviceNames.map((data) =>
-            {return <option key={data[2]} value={data[2]}>{data[0]}</option>}
-         );
 		return(
 <div className="m-5">
 <h3>Edit Device</h3>

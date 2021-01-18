@@ -31,7 +31,6 @@ count_dev_state = (arr) => {
 componentDidMount() {
    axiosBaseURL.get("/devices")
       .then( (app_result) => {
-         //console.log(app_result);
          this.setState({
             myDevices: app_result.data,
             num_on: this.count_dev_state(app_result.data)
@@ -56,7 +55,6 @@ render(){
          </div>)
    }
    if(this.state.error) {
-      console.log(this.state)
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
       return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
    }

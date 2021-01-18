@@ -32,7 +32,7 @@ export default class editDevice extends Component {
    //Get users appliances, add the names to the select form element
    componentDidMount() {
       const handle = this.props.match.params.handle;
-      this.setState({scout_id: handle})
+      this.setState({id: handle})
       axiosBaseURL.get("/devices")
       .then((result) => {
          this.setState({ userDevices: result.data });
@@ -52,6 +52,7 @@ export default class editDevice extends Component {
             else if (error.response.data){console.log(error.response)}
          }
       })
+      console.log(this.state.myDevice)
    }
 
    updateDevice = (event) => {
@@ -82,7 +83,7 @@ export default class editDevice extends Component {
       //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
-         axiosBaseURL.delete("/device/"+this.state.scout_id)
+         axiosBaseURL.delete("/device/"+this.state.id)
          .then((result) => {this.setState({redirect:"/home"})})
          .catch((error) => {
             this.setState({ error: true });

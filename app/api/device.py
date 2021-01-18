@@ -22,9 +22,6 @@ v = Validator(device_schema, allow_unknown=True)
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @token_auth.login_required
 def device_get_patch_delete_by_id(id):
-<<<<<<< HEAD
-    myDevice = Device.filter_by(user_id=current_user.get_id()).first()
-=======
     #SELECT *
     #FROM device
     #WHERE device.id = id AND device.user_id = current_user id
@@ -33,7 +30,6 @@ def device_get_patch_delete_by_id(id):
     myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
     
     #Returns the specific device
->>>>>>> new_backend
     if request.method == 'GET':
         returnValue = jsonify(myDevice.to_dict())
         db.session.close
@@ -57,7 +53,7 @@ def device_get_patch_delete_by_id(id):
 #This function gets all of the devices that the user owns.
 #login does not work correctly
 @bp.route('/devices', methods=['GET'])
-@token_auth.login_required
+#@token_auth.login_required
 def getUserDevices():
     results = Device.query
     myList = []

@@ -18,7 +18,7 @@ device_schema = {
 
 v = Validator(device_schema, allow_unknown=True)
 
-#Multi use Route
+#Multi use Route to get specific information about devices
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @token_auth.login_required
 def device_get_patch_delete_by_id(id):

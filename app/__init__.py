@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
+#Creation of app and database
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -16,25 +17,28 @@ from app.api import bp as api_bp
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
+#Activate login functionality and turn redirects to login page
 login_manager = LoginManager(app)
 login_manager.login_view = 'api.user'
 
-
+#Returns 401 errors if you access pages while not logged in
 @login_manager.unauthorized_handler
 def unauthorized():
     return 'not authorized', 401
 
+#Gets the current user from cookie data stored in browser
 @login_manager.user_loader
 def load_user(user_id):
     user_id = User.query.get(int(user_id))
     db.session.commit()
     return user_id
 
+#Used to shutdown the session
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db.session.remove()
 
-
+#Issues temporary tokens
 def temp_token():
     import binascii
     temp_token = binascii.hexlify(os.urandom(24))

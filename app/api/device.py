@@ -5,9 +5,11 @@ from app.models import Device
 from app import db
 from cerberus import Validator
 from flask import abort
-from app.api.auth import token_auth
+from app.api.auth import token_auth, basic_auth
 
-
+#Note token_auth is disabled as the backend never seems to recieve the token
+#This may be because of our odd problems working with local host
+#Change login_required to token_auth.login_required when we get a server
 
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
@@ -20,14 +22,14 @@ v = Validator(device_schema, allow_unknown=True)
 
 #Multi use Route to get specific information about devices
 @bp.route('/device/<id>', methods=['GET', 'PATCH', 'DELETE'])
-@token_auth.login_required
+@login_required
 def device_get_patch_delete_by_id(id):
     #SELECT *
     #FROM device
     #WHERE device.id = id AND device.user_id = current_user id
     #We make sure that the current_user can't put down devices 
     #that they do not have access to
-    myDevice = device.filter_by(id=id, user_id=current_user.get_id()).first()
+    myDevice = Device.query.filter_by(id=id, user_id=current_user.get_id()).first()
     
     #Returns the specific device
     if request.method == 'GET':
@@ -53,9 +55,10 @@ def device_get_patch_delete_by_id(id):
 #This function gets all of the devices that the user owns.
 #login does not work correctly
 @bp.route('/devices', methods=['GET'])
-@token_auth.login_required
+@login_required
 def getUserDevices():
-    results = Device.query
+    print("current_user is:", current_user.get_id())
+    results = Device.query.filter_by(user_id = current_user.get_id())
     myList = []
     for row in results:
         myList.append(row.to_dict())
@@ -74,7 +77,7 @@ def getUserDevices():
 
 #The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])
-@token_auth.login_required
+@login_required
 def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

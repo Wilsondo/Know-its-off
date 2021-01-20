@@ -43,6 +43,7 @@ export default class EditUser extends Component {
             else if (error.response.data){console.log(error.response.data)}
          }
       })
+      console.log(this.state)
    }
 
    updateUser = (event) => {

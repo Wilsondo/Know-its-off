@@ -58,8 +58,8 @@ export default class Tile extends Component {
                <Card.Title className="card-title-status">{this.state.statusText}</Card.Title>
                {/*<Card.Text className="card-text-type">{this.state.appliance_name}</Card.Text>*/}
                <Card.Text className="card-text-device_state">{this.state.state}</Card.Text>
-               <Card.Text classname="card-text-timestamp">Last Seen: {this.state.timestamp}</Card.Text>
-               <Link className="card-button btn btn-primary text-wrap" to={"/device/"+this.state.device_id}>Edit Device</Link>
+               <Card.Text className="card-text-timestamp">Last Seen: {this.state.timestamp}</Card.Text>
+               <Link className="card-button btn btn-primary text-wrap" to={"/device/"+this.state.device_id}>Details</Link>
                {/*I was thinking about using a dropdown here instead so that you can delete a scout without having
                to go to the edit scout page, which may not load if the appliance of the scout doesnt exist
                <DropdownButton device_id="dropdown-button" title="Dropdown button">

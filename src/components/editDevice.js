@@ -1,10 +1,10 @@
-// This file is muk
-
-import React, {Component} from 'react'
-import {CircleSpinner} from 'react-spinners-kit' 
+import React, {Component} from 'react';
+import {CircleSpinner} from 'react-spinners-kit' ;
 import axiosBaseURL from '../axios.js'
 
 import {Redirect} from 'react-router-dom'
+
+var dbString
 
 export default class editDevice extends Component {
    constructor(props) {
@@ -19,13 +19,11 @@ export default class editDevice extends Component {
          },
 	   loading: true,
 	   error: false,
-    };
-  }
-
-   //Get users appliances, add the names to the select form element
+      }
+   };
    componentDidMount() {
       const handle = this.props.match.params.handle;
-		var dbString = "/device/" + handle
+		dbString = "/device/" + handle
 		axiosBaseURL.get(dbString)
 		.then((result) => {
 			this.setState({ 
@@ -43,7 +41,7 @@ export default class editDevice extends Component {
          this.setState({loading: false, error: true});
          if(error.response){
             this.setState({error_response: error.response.data});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+            if(error.response.data === "not authorized"){ this.setState({redirect: dbString}) }
             else if (error.response.data){console.log(error.response)}
          }
       })
@@ -51,34 +49,22 @@ export default class editDevice extends Component {
 
    updateDevice = (event) => {
       this.setState({loading:true});
-      if(this.state.myDevice.id === 0) {
-         //post new appliance and return id to patch scout
-         axiosBaseURL.post('/device', this.state.myDevice) // unsure of plurality
-         .then((result) => {
-            this.setState({myDevice: {...this.state.myDevice, device_id: result.data.id}})
-         })
-         .catch((error)=>{
-            this.setState({loading:false,error:true})
-            if(error.response.data){console.log(error.response)}
-         })
-      }
-      else {
-         axiosBaseURL.patch('/device/'+parseInt(this.state.myDevice.id), this.state.myDevice)
-         .then((result) => {
-         })
-         .catch((error)=>{
-            this.setState({loading:false,error:true})
-            if(error.response.data){console.log(error.response)}
-         })
-      }
+      axiosBaseURL.patch(dbString, this.state.myDevice)
+      .then((result) => {
+         this.setState({loading: false});
+            alert("Device Updated Successfully!")
+      })
+      .catch((error)=>{
+         this.setState({loading:false, error:true})
+         if(error.response.data){console.log(error.response)}
+      })
 	   event.preventDefault();
    };
    deleteDevice = (event) => {
-      //need to confirm first
       const r = window.confirm("Do you really want to delete this, it will be permanent!");
       if(r === true){
          axiosBaseURL.delete("/device/"+this.state.id)
-         .then((result) => {this.setState({redirect:"/home"})})
+         .then((result) => {this.setState({redirect: dbString})})
          .catch((error) => {
             this.setState({ error: true });
             if(error.response){
@@ -95,8 +81,8 @@ export default class editDevice extends Component {
    };
 
 	render(){
-      if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
-		if(this.state.error){
+		if(this.state.error) {
+         if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
          return(<div className="m-5"><h3>There was an error</h3></div>) 
       }
 		if(this.state.loading){
@@ -111,7 +97,7 @@ export default class editDevice extends Component {
 <form>
    <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control" appliance_name="name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <input className="form-control" appliance_name="appliance_name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
    </div>
 
    <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>

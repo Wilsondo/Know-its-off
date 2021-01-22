@@ -39,7 +39,7 @@ export default class EditUser extends Component {
          this.setState({loading: false, error: true});
          if(error.response){
             this.setState({error_response: error.response.status});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+            if(error.response.data === "not authorized"){ this.setState({redirect: "/home"}) }
             else if (error.response.data){console.log(error.response.data)}
          }
       })

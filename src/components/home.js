@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import axiosBaseURL from '../axios.js'
-;
+import axiosBaseURL from '../axios.js';
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import GridApp from './grid/GridApp';
@@ -40,9 +39,7 @@ componentDidMount() {
          this.setState({loading: false})
       })
       .catch( (error) => {
-         //most likely cause of error here is failed authentication, so redirect
          this.setState({loading: false, error: true});
-         //if(error.response.data === "not authorized"){this.setState({redirect:"/login"})}
          console.log("error at get device: ", error.response)
       })
 }

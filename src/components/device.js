@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
-import axiosBaseURL from '../axios.js'
+import React, {Component} from 'react';
+import {Link, Redirect} from 'react-router-dom';
+import {CircleSpinner} from 'react-spinners-kit';
+import axiosBaseURL from '../axios.js';
 
 
 export default class Devices extends Component {
@@ -14,7 +15,8 @@ export default class Devices extends Component {
 				timestamp: "2019-04-30T08:59:00.000Z",
 				id: 1
 			},
-		error: false
+		error: false,
+		loading: true
 		}
 	};
 	componentDidMount() {
@@ -31,14 +33,25 @@ export default class Devices extends Component {
 					timestamp: result.data.timestamp
 				}
 			});
+			this.setState({loading: false})
 		})
 		.catch( (error) => {
-			this.setState({error: true});
+			this.setState({error: true, loading:false});
 			if(error.response.data === "not authorized"){ this.setState({redirect: "/home"}) }
             else if (error.response.data){console.log(error.response)}
 		})
 	};
 	render() {
+		if(this.state.loading) {
+			return (
+			  <div className="d-flex justify-content-center m-5">
+				 <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
+			  </div>)
+		}
+		if(this.state.error) {
+			if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
+			return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
+		 }
 		return(
 			<div className="col mt-3">
 			<div className="card bg-light">

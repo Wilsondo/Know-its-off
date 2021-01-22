@@ -17,8 +17,9 @@ v = Validator(user_schema, allow_unknown=True)
 
 #Multifunction route that does things depending on the user id
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
-@token_auth.login_required
+@login_required
 def user_get_patch_delete_by_id(id):
+    print("We got here")
     if current_user is None:
         db.session.close()
         abort(404, description="This user does not exist")
@@ -67,7 +68,6 @@ def login():
             #error handler, if login is not successful
             abort(403, description="The credentials you entered were incorrect")
         result = login_user(check_user, force=True)
-        deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
         db.session.close()
         if result:
             return '', 204
@@ -75,7 +75,6 @@ def login():
             return 'Unauthorized', 401
 #Adds a new user
 @bp.route('/user', methods=['POST'])
-
 def user_post():
     if request.method == 'POST':
         obj = request.get_json()

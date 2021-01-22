@@ -3,7 +3,9 @@ from sqlalchemy import inspect
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
+import base64
+from datetime import datetime, timedelta
+import os
 ##############
 # This file defines each table in the database. For example, the Appliance table
 # has several columns -- the name of the appliance, its ID, the status of the appliance,

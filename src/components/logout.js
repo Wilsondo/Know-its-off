@@ -11,17 +11,25 @@ export default class Logout extends Component {
          redirect: "/"
       };
    }
-	
+    
    render(){
-		if(this.state.error){
-			return(<div classNameName="m-5"><h3>There was an error</h3></div>)
-		}
-	   // http call to /api/logout
+        if(this.state.error){
+            return(<div classNameName="m-5"><h3>There was an error</h3></div>)
+        }
+       // http call to /api/logout
       axiosBaseURL.get('/logout')
-		return(   
-         // redirect to /
-         <Redirect to={this.state.redirect} />
+      .then(() => {
+           return(   
+            <Redirect to={this.state.redirect} />
+         )
+      })
+      .catch(() => {
+         return(   
+            <Redirect to={this.state.invalid} />
+         )
+      })
+      return(   
+         <Redirect to={this.state.invalid} />
       )
-	}
+    }
 }
-

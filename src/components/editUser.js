@@ -24,7 +24,7 @@ export default class EditUser extends Component {
 
    //Get users appliances, add the names to the select form element
    componentDidMount() {
-      axiosBaseURL.get("/users/current")  //can put anything in for an id here, it will always return the current_user
+      axiosBaseURL.get("/user/current")  //can put anything in for an id here, it will always return the current_user
       .then((result) => {
          this.setState({
             loading: false,

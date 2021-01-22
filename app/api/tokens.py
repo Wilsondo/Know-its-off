@@ -4,11 +4,16 @@ from app.api import bp
 from app.api.auth import basic_auth
 from app.api.auth import token_auth
 
+
 #This function returns the basic login token to the user for identification
 @bp.route('/tokens', methods=['POST'])
 @basic_auth.login_required
 def get_token():
+   # print("THe current user is", current_user.get_id())
+    print("we are getting a token now")
     token = basic_auth.current_user().get_token()
+    print("The token is ", token)
+    print("ALL DONE")
     db.session.commit()
     return jsonify({'token': token})
 

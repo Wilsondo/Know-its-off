@@ -38,7 +38,8 @@ def user_get_patch_delete_by_id(id):
             abort(400, description=v.errors)
         # Note that this update function is specified in models.py
         if "password" in obj:
-            current_user.set_password(obj['password'])
+            myPassword = obj.pop('password', None)
+            current_user.set_password(myPassword)
         current_user.update(obj) 
         db.session.commit()
         returnValue = jsonify(current_user.to_dict())
@@ -47,7 +48,6 @@ def user_get_patch_delete_by_id(id):
     #Removes the user and its devices from the database
     elif request.method == 'DELETE':
         user = User.query.filter_by(id = current_user.get_id())
-        print(user)
         for o in user:
             db.session.delete(o)
             db.session.flush()
@@ -82,7 +82,6 @@ def login():
 def user_post():
     if request.method == 'POST':
         obj = request.get_json()
-        print(obj)
         if not v.validate(obj):
             abort(400, description=v.errors)
         myPassword = obj.pop('password', None)

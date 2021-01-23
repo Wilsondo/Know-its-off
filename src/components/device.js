@@ -9,10 +9,10 @@ export default class Devices extends Component {
 		super(props);
 		this.state = {	
 			myDevice: {
-				appliance_name: "My Appliance",
+				appliance_name: "",
 				device_state: 1, 
 				device_battery: 100.0,
-				timestamp: "2019-04-30T08:59:00.000Z",
+				timestamp: "",
 				id: 1
 			},
 		error: false,

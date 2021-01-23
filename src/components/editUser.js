@@ -9,32 +9,30 @@ export default class EditUser extends Component {
             current: {
                 username: "", 
                 email: "", 
-                password: ""
+                password: "",
             },
             currentPass: "", 
-            confirmPass: "", 
-            detail_form_hidden: false, 
+            confirmPass: "",
+            detail_form: false, 
             flag: false,
             loading: true, 
             verifyLoad: false,
             deleteLoad: false, 
-            changeEmailLoad: false, 
-            changeUserLoad: false, 
-            changePassLoad: false, 
+            changeLoad: false, 
             error: false, 
             redirect: null
         };
     }
 
    componentDidMount() {
+      if(this.state.detail_form === false)
          axiosBaseURL.get("/user/current")
          .then((result) => {
             this.setState({
                loading: false, 
                current: {
                   username: result.data.username, 
-                  email: result.data.email, 
-                  password: ""
+                  email: result.data.email
                }
             });
          })
@@ -49,16 +47,17 @@ export default class EditUser extends Component {
    }
 
    verify = (event) => {
-        this.setState({verifyLoad : true});
-        axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.password})
-        .then((result) => {
-            this.setState({verifyLoad: false, detail_form_hidden: true, false: false});
-        })
-        .catch((error) => {
-            this.setState({verifyLoad: false, flag:true, error_response: error.response.status});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response.data)}
-        })
+      this.setState({verifyLoad : true});
+      axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
+      .then((result) => {
+         this.setState({verifyLoad: false, detail_form: true, flag: false});
+      })
+      .catch((error) => {
+         this.setState({verifyLoad: false, flag:true, error_response: error.response.status});
+         if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+         else if (error.response.data){console.log(error.response.data)}
+      })
+      event.preventDefault();
    }
 
    delete = (event) => {
@@ -90,13 +89,40 @@ export default class EditUser extends Component {
    };
 
 
-    update = (event) => {
-        //this.setState({buttonLoad: true});
-        console.log(event.target.value)
-        switch (event.target.value) {
-
-        }
-    };
+   update = (event) => {
+      this.setState({changeLoad: true})
+      if(this.state.current.email === undefined || this.state.current.username === undefined) {
+         alert("Fill out Username field.");
+         this.setState({changeLoad: false});
+         event.preventDefault();
+      }
+      else if(this.state.confirmPass !== this.state.currentPass) {
+         alert("Passwords do not match.");
+         this.setState({changeLoad: false});
+         event.preventDefault();
+      }
+      else {
+         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
+         .then((result) => {
+            axiosBaseURL.patch('/user/current', {email: this.state.current.email, password: this.state.confirmPass, username: this.state.current.username})
+            .then((result) => {
+               this.setState({changeLoad: false})
+               alert("User Information Successfully Updated!");
+            })
+            .catch((error) => {
+               this.setState({changeLoad: false, error: true, error_response: error.response.data})
+               if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+               else if (error.response.data){console.log(error.response.data)}
+            });
+         })
+         .catch((error) => {
+            this.setState({changeLoad: false, error: true, error_response: error.response.data})
+            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+            else if (error.response.data){console.log(error.response.data)}
+         });
+         event.preventDefault();
+      }
+   };
 
    render() {
       if(this.state.error) {
@@ -108,7 +134,7 @@ export default class EditUser extends Component {
                <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
             </div>)
          }
-      const {detail_form_hidden, flag} = this.state;
+      const {detail_form, flag} = this.state;
       return(
 <div className="m-5">
 {flag && (
@@ -126,31 +152,29 @@ export default class EditUser extends Component {
         <input className="form-control" name="password" id="inputPassword" type="password" onChange={this.handleChange} value={this.state.current.password}></input>
     </div>
 
-    <button onClick={this.verify} className="btn btn-success">Verify and Change User Details<CircleSpinner size={20} color="#3BBCE5" loading={this.state.verifyLoad} /></button>
-    <button onClick={this.delete} className="btn btn-danger">Delete User<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoad} /></button>
+    <button onClick={this.verify} className="btn btn-success">Verify and Change User Details<CircleSpinner size={10} color="#3BBCE5" loading={this.state.verifyLoad} /></button>
+    <button onClick={this.delete} className="btn btn-danger">Delete User<CircleSpinner size={10} color="#3BBCE5" loading={this.state.deleteLoad} /></button>
 </form>
-{detail_form_hidden && (
+{detail_form && (
     <form>
         <div className="form-group">
             <label>Change Username</label>
             <input className="form-control" name="username" id="inputUsername" type="username" onChange={this.handleChange} value={this.state.current.username} placeholder={this.state.current.username}/>
-            <button onClick={this.update} className="btn btn-success">Change Username<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changeUserLoad} /></button>
         </div>
         
         <div className="form-group">
             <label>Change Email</label>
             <input className="form-control" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current.email} placeholder={this.state.current.email}/>
-            <button onClick={this.update} className="btn btn-success">Change Email<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changeEmailLoad} /></button>
         </div>
 
         <div className="form-group">
             <label>Change Password</label>
-            <input className="form-control" name="currentPass" id="inputcurrentPass" type="password" onChange={this.handleChange} value={this.state.currentPass} placeholder={this.state.currentPass}/>
+            <input className="form-control" name="currentPass" id="inputCurrentPass" type="password" onChange={this.handlePassChange} value={this.state.currentPass} placeholder={this.state.currentPass}/>
         </div>
         <div className="form-group">
             <label>Confirm Password</label>
-            <input className="form-control" name="confirmPass" id="inputconfirmPass" type="password" onChange={this.handleChange} value={this.state.confirmPass} placeholder={this.state.confirmPass}/>
-            <button onClick={this.update} className="btn btn-success">Change Password<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changePassLoad} /></button>
+            <input className="form-control" name="confirmPass" id="inputConfirmPass" type="password" onChange={this.handlePassChange} value={this.state.confirmPass} placeholder={this.state.confirmPass}/>
+            <button onClick={this.update} className="btn btn-success">Update Information<CircleSpinner size={10} color="#3BBCE5" loading={this.state.changeLoad} /></button>
         </div>
     </form>
     )}

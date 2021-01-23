@@ -57,8 +57,8 @@ export default class Devices extends Component {
 			<div className="card bg-light">
   				<div className="card-body">
     					<h5 className="card-title text-wrap">{this.state.myDevice.appliance_name}</h5>
-    					<p className="card-text">State: {this.state.myDevice.device_state}</p>
-    					<p className="card-text">Battery: {this.state.myDevice.device_battery}</p>
+    					<p className="card-text">State: {this.state.myDevice.device_state ? 'ON' : 'OFF'}</p>
+    					<p className="card-text">Battery: {this.state.myDevice.device_battery}%</p>
 						<p className="card-text">Last Seen: {this.state.myDevice.timestamp}</p>
     					<Link to={"/device/" + this.state.myDevice.id + "/edit"} className="btn btn-primary text-wrap">Modify device details</Link>
   				</div>

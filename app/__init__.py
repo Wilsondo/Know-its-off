@@ -21,7 +21,7 @@ app.register_blueprint(api_bp, url_prefix='/api')
 #Activate login functionality and turn redirects to login page
 login_manager = LoginManager(app)
 #Is this supposed to be api.user, its supposed to define the route for login
-login_manager.login_view = 'api.home'
+login_manager.login_view = 'api.login'
 login_manager.init_app(app)
 
 #Returns 401 errors if you access pages while not logged in

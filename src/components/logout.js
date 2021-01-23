@@ -8,8 +8,7 @@ export default class Logout extends Component {
       super(props);
       this.state = {
          error: false,
-         redirect: "/login",
-         invalid: "/"
+         redirect: "/"
       };
    }
     

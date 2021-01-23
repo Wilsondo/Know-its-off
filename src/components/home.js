@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import axiosBaseURL from '../axios.js'
-;
+import axiosBaseURL from '../axios.js';
 import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import GridApp from './grid/GridApp';
@@ -31,7 +30,6 @@ count_dev_state = (arr) => {
 componentDidMount() {
    axiosBaseURL.get("/devices")
       .then( (app_result) => {
-         //console.log(app_result);
          this.setState({
             myDevices: app_result.data,
             num_on: this.count_dev_state(app_result.data)
@@ -41,9 +39,7 @@ componentDidMount() {
          this.setState({loading: false})
       })
       .catch( (error) => {
-         //most likely cause of error here is failed authentication, so redirect
          this.setState({loading: false, error: true});
-         //if(error.response.data === "not authorized"){this.setState({redirect:"/login"})}
          console.log("error at get device: ", error.response)
       })
 }
@@ -56,7 +52,6 @@ render(){
          </div>)
    }
    if(this.state.error) {
-      console.log(this.state)
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
       return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
    }

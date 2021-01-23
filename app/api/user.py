@@ -19,7 +19,6 @@ v = Validator(user_schema, allow_unknown=True)
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
 def user_get_patch_delete_by_id(id):
-    print("We got here")
     if current_user is None:
         db.session.close()
         abort(404, description="This user does not exist")
@@ -74,6 +73,7 @@ def login():
         else:
             return 'Unauthorized', 401
 #Adds a new user
+#TODO add username
 @bp.route('/user', methods=['POST'])
 def user_post():
     if request.method == 'POST':

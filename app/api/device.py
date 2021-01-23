@@ -57,7 +57,6 @@ def device_get_patch_delete_by_id(id):
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
-    print("current_user is:", current_user.get_id())
     results = Device.query.filter_by(user_id = current_user.get_id())
     myList = []
     for row in results:

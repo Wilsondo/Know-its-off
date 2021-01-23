@@ -2,147 +2,159 @@ import React, {Component} from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axiosBaseURL from '../axios.js'
 
-
 export default class EditUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      current_user: {
-         username: "",
-         email: "",
-         password: ""
-      },
-      myPassword: "",
-      confNewPassword: "",
-	   loading: true,
-	   error: false,
-	   patchLoading: false,
-      deleteLoading: false,
-      redirect: null
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            current: {
+                username: "", 
+                email: "", 
+                password: ""
+            },
+            currentPass: "", 
+            confirmPass: "", 
+            detail_form_hidden: false, 
+            flag: false,
+            loading: true, 
+            verifyLoad: false,
+            deleteLoad: false, 
+            changeEmailLoad: false, 
+            changeUserLoad: false, 
+            changePassLoad: false, 
+            error: false, 
+            redirect: null
+        };
+    }
 
-   //Get users appliances, add the names to the select form element
    componentDidMount() {
-      axiosBaseURL.get("/user/current")  //can put anything in for an id here, it will always return the current_user
-      .then((result) => {
-         this.setState({
-            loading: false,
-            current_user: {
-               username: result.data.username,
-               email: result.data.email,
-               password: ""
-            }
-         });
-      })
-      .catch( (error) => {
-         this.setState({loading: false, error: true});
-         if(error.response){
-            this.setState({error_response: error.response.status});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/home"}) }
+         axiosBaseURL.get("/user/current")
+         .then((result) => {
+            this.setState({
+               loading: false, 
+               current: {
+                  username: result.data.username, 
+                  email: result.data.email, 
+                  password: ""
+               }
+            });
+         })
+         .catch((error) => {
+            this.setState({loading: false, error: true});
+            if(error.response){
+               this.setState({error_response: error.response.status});
+               if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
             else if (error.response.data){console.log(error.response.data)}
          }
       })
-      console.log(this.state)
    }
 
-   updateUser = (event) => {
-      this.setState({patchLoading:true});
-      if(this.state.current_user.password !== this.state.confNewPassword){
-         this.setState({patchLoading:false});
-         alert("Passwords dont match!")
-         return
-      }
-      axiosBaseURL.post('/login', {email: this.state.current_user.email, password: this.state.myPassword})
-      .then((result) => {
-         axiosBaseURL.patch('/users/current', this.state.current_user)
-         .then((result) => {
-            this.setState({patchLoading: false});
-            alert("User updated.");
-         })
-         .catch((error) => {
-            this.setState({patchLoading:false, error_response: error.response.status});
+   verify = (event) => {
+        this.setState({verifyLoad : true});
+        axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.password})
+        .then((result) => {
+            this.setState({verifyLoad: false, detail_form_hidden: true, false: false});
+        })
+        .catch((error) => {
+            this.setState({verifyLoad: false, flag:true, error_response: error.response.status});
             if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
             else if (error.response.data){console.log(error.response.data)}
-         })
-      })
-      .catch((error) => {
-         this.setState({patchLoading:false})
-         alert("Please enter a valid password")
-      })
-      event.preventDefault();
+        })
    }
-   deleteUser = (event) => {
-      this.setState({deleteLoading:true});
-      const r = window.confirm("Do you really want to delete this, it will be permanent!");
-      if(r === true){
-         axiosBaseURL.delete('/users/current')
-         .then((result) => { 
-            alert("Your account had been deleted")
-            this.setState({deleteLoading: false, redirect:"/"});
-         })
-         .catch((error) => {
-            this.setState({deleteLoading:false,error_response: error.response.data});
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response.data)}
-         })
-      }
-      else{ this.setState({deleteLoading: false}) }
+
+   delete = (event) => {
+        this.setState({deleteLoad : true});
+        const r = window.confirm("Are you sure?");
+        if(r === true) {
+            axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
+            .then((result) => {
+                axiosBaseURL.delete('/user/current')
+                this.setState({deleteLoad: false, redirect: "/"})
+            })
+            .catch((error) => {
+                this.setState({deleteLoad: false, flag:true, error_response: error.response.status});
+                if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
+                else if (error.response.data){console.log(error.response.data)}
+            })
+        }
+        else this.setState({loading : false})
    }
 
    handleChange = (event) => {
-      this.setState({
-         current_user: {...this.state.current_user,[event.target.name]: event.target.value}
-      });
+        this.setState({
+           current: {...this.state.current,[event.target.name]: event.target.value}
+        });
    };
+
    handlePassChange = (event) => {
       this.setState({[event.target.name]: event.target.value})
-   }
+   };
 
-	render(){
-		if(this.state.error){ 
-         return(<div className="m-5"><h3>There was an error</h3></div>) 
+
+    update = (event) => {
+        //this.setState({buttonLoad: true});
+        console.log(event.target.value)
+        switch (event.target.value) {
+
+        }
+    };
+
+   render() {
+      if(this.state.error) {
+         return(<div className="m-5"><h3>Error: Not Logged In</h3></div>)  
       }
-		if(this.state.loading){
+      if(this.state.loading){
          return (
             <div className="d-flex justify-content-center m-5">
                <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
             </div>)
-		}
-		return(
+         }
+      const {detail_form_hidden, flag} = this.state;
+      return(
 <div className="m-5">
-<h3>Edit User - Some fields are optional.</h3>
+{flag && (
+    <div color="red">Email or password incorrect</div>
+)}
+<h3>Enter User Details:</h3>
 <form>
-   <div className="form-group">
-      <label>Username</label>
-      <input className="form-control" name="username" id="inputUser" aria-describedby="nameHelp" onChange={this.handleChange} value={this.state.current_user.username} placeholder="username"/>
-   </div>
+    <div className="form-group">
+        <label>Email</label>
+        <input className="form-control" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current.email}></input>
+    </div>
 
-   <div className="form-group">
-      <label>Email - Required</label>
-      <input className="form-control" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current_user.email} placeholder="email"/>
-   </div>
+    <div className="form-group">
+        <label>Password</label>
+        <input className="form-control" name="password" id="inputPassword" type="password" onChange={this.handleChange} value={this.state.current.password}></input>
+    </div>
 
-   <div className="form-group">
-      <label>New Password</label>
-      <input className="form-control" name="password" id="inputNewPassword" type="password" onChange={this.handleChange} value={this.state.current_user.password} placeholder="new password"/>
-   </div>
-   
-   <div className="form-group">
-      <label>Confirm New Password</label>
-      <input className="form-control" name="confNewPassword" id="inputConfNewPassword" type="password" onChange={this.handlePassChange} value={this.state.confNewPassword} placeholder="new password"/>
-   </div>
-
-   <div className="form-group">
-      <label>Current Password - Required</label>
-      <input className="form-control" name="myPassword" id="inputCurrentPassword" type="password" onChange={this.handlePassChange} value={this.state.myPassword} placeholder="current password"/>
-   </div>
-
-   <button onClick={this.updateUser} className="btn btn-success">Update User Settings<CircleSpinner size={20} color="#3BBCE5" loading={this.state.patchLoading} /></button>
-   <button onClick={this.deleteUser} className="btn btn-danger">Delete User Permantenly<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoading} /></button>
+    <button onClick={this.verify} className="btn btn-success">Verify and Change User Details<CircleSpinner size={20} color="#3BBCE5" loading={this.state.verifyLoad} /></button>
+    <button onClick={this.delete} className="btn btn-danger">Delete User<CircleSpinner size={20} color="#3BBCE5" loading={this.state.deleteLoad} /></button>
 </form>
-</div>
-		)
-	}
-}
+{detail_form_hidden && (
+    <form>
+        <div className="form-group">
+            <label>Change Username</label>
+            <input className="form-control" name="username" id="inputUsername" type="username" onChange={this.handleChange} value={this.state.current.username} placeholder={this.state.current.username}/>
+            <button onClick={this.update} className="btn btn-success">Change Username<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changeUserLoad} /></button>
+        </div>
+        
+        <div className="form-group">
+            <label>Change Email</label>
+            <input className="form-control" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current.email} placeholder={this.state.current.email}/>
+            <button onClick={this.update} className="btn btn-success">Change Email<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changeEmailLoad} /></button>
+        </div>
 
+        <div className="form-group">
+            <label>Change Password</label>
+            <input className="form-control" name="currentPass" id="inputcurrentPass" type="password" onChange={this.handleChange} value={this.state.currentPass} placeholder={this.state.currentPass}/>
+        </div>
+        <div className="form-group">
+            <label>Confirm Password</label>
+            <input className="form-control" name="confirmPass" id="inputconfirmPass" type="password" onChange={this.handleChange} value={this.state.confirmPass} placeholder={this.state.confirmPass}/>
+            <button onClick={this.update} className="btn btn-success">Change Password<CircleSpinner size={20} color="#3BBCE5" loading={this.state.changePassLoad} /></button>
+        </div>
+    </form>
+    )}
+</div>
+        )
+    }
+}

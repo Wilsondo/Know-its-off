@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy import inspect
+from sqlalchemy import inspect, UniqueConstraint, TIMESTAMP
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -18,7 +18,7 @@ class Device(db.Model):
     appliance_name = db.Column(db.String(64), nullable=False)
     device_state = db.Column(db.Integer, default=False, nullable=False)
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
-    timestamp = db.Column(db.DateTime, nullable=True)
+    timestamp = db.Column(db.TIMESTAMP, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     #To dictionary functions are used to format the data to make it easier to JSONIFY    
@@ -38,8 +38,9 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     password = db.Column(db.String(512), nullable=True)
     username = db.Column(db.String(64), nullable=True)
-    email = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(64), nullable=False, unique=True)
     devices = db.relationship('Device', backref='owner', lazy='dynamic')
+
 
     token = db.Column(db.String(32), index=True, unique=True)
     token_expiration = db.Column(db.DateTime)

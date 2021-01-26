@@ -1,5 +1,6 @@
 from flask import request, abort, jsonify, Response, redirect
 from flask_login import login_required, current_user, login_user
+from flask_cors import cross_origin
 from cerberus import Validator
 from app.models import User, Device
 from app.api import bp
@@ -58,6 +59,7 @@ def user_get_patch_delete_by_id(id):
 
 #Logs the user in
 @bp.route('/login', methods=['POST'])
+@cross_origin()
 def login():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

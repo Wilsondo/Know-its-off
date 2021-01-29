@@ -1,0 +1,5 @@
+Yarn doesn't work???
+Flask won't get a socket because I don't actually know what I'm routing to yet (have yet to try the source url)
+I think I fucked up the nvm install
+
+Guess we're in tech support hell till it just clicks

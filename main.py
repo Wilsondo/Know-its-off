@@ -6,4 +6,4 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Device': Device}
 
 if __name__ == '__main__':
-    app.run(host='flip3.engr.oregonstate.edu', port=7778, use_reloader=True, debug=False)
+    app.run(host='totalsundae.com/know-its-off', port=12323, use_reloader=True, debug=False)

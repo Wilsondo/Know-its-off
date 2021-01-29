@@ -1,8 +1,7 @@
 {
   "name": "know-its-off",
   "version": "0.1.0",
-  "homepage": "http://web.engr.oregonstate.edu/~titswort/know-its-off/", 
-  "private": true,
+  "homepage": "https://totalsundae.com/know-its-off",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -30,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn build && cp -r build/* ~/public_html/know-its-off/ && chmod -R 775 ~/public_html/know-its-off"
+    "deploy": "yarn build && cp -r build/* /home3/rlcjjomy/public_html/know-its-off/ && chmod -R 775 home3/rlcjjomy/public_html/know-its-off"
   },
   "eslintConfig": {
     "extends": [
@@ -50,5 +49,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "flip.engr.oregonstate.edu:7778/api/"
+  "proxy": "totalsundae.com:12323/know-its-off/api/",
+  "main": "index.js",
+  "repository": "http://github.com/Wilsondo/know-its-off.git",
+  "license": "MIT"
 }

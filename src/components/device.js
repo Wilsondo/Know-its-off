@@ -54,7 +54,7 @@ export default class Devices extends Component {
 		 }
 		return(
 			<div className="col mt-3">
-			<div className="card bg-light">
+			<div className="card bg-dark">
   				<div className="card-body">
     					<h5 className="card-title text-wrap">{this.state.myDevice.appliance_name}</h5>
     					<p className="card-text">State: {this.state.myDevice.device_state ? 'ON' : 'OFF'}</p>

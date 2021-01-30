@@ -1,8 +1,3 @@
-html {
-  height: 100%;
-  background-color: #fff;
-}
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,15 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#app {
-  background-color: #fff;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 
 @keyframes load8 {
   0% {

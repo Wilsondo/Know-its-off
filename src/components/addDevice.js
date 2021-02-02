@@ -86,7 +86,7 @@ export default class addDevice extends Component {
       }
       const {revealDetails} = this.state;
 		return(
-<div className="m-5">
+<div className="m-5 text-light">
 <h3>New Device</h3>
 <form>
    <div className="form-group">

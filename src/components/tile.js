@@ -39,7 +39,7 @@ export default class Tile extends Component {
             </div>)
       }
       return(
-         <Card bg={this.state.background} className="tile text-center col">
+         <Card bg={this.state.background} className="tile text-center col ">
             <Card.Header>
                <CircularProgressbar value={this.state.device_battery} maxValue={1} text={`${this.state.device_battery}%`} styles={buildStyles({textSize: '2.2rem',textColor:'#000'})}/>
                <Card.Title className="card-title-device">{this.state.appliance_name}</Card.Title>

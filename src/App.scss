@@ -18,8 +18,8 @@ html {
 }
 
 .App-header {
-  background-color: var(--primary-color);
-  min-height: 10vh;
+  background-color: var(--primary-color);;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,10 +39,17 @@ html {
   }
 }
 
+.modal-backdrop {
+  background-color: var(--primary-color);
+}
+
 .bg-primary {
   background-color: #D73F09!important;
 }
 
+.btn-space {
+  margin-right: 5px;
+}
 
 /* CSS styling for our switch */
 /* This switch was styled with the help of w3schools */

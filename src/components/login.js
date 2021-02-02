@@ -45,10 +45,10 @@ export default class Login extends Component {
     const {flag} = this.state;
 		return(
 <div className="mt-5 mb-5 container bg-dark border">
-<div className="row justify-content-md-center mt-5">
+<div className="row justify-content-md-center text-light mt-5">
 <h1>Log In to Know It's Off</h1>
 </div>
-<div className="row justify-content-md-center mb-5">
+<div className="row justify-content-md-center text-light mb-5">
 <form>
   <div className="form-group">
     {flag && (

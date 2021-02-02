@@ -1,6 +1,6 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
-import './App.css';
+import './App.scss';
 import MyNavbar from './components/navbar';
 import Default from './components/default';
 import Login from './components/login';
@@ -12,9 +12,6 @@ import addDevice from './components/addDevice';
 import editDevice from './components/editDevice';
 import Device from './components/device';
 
-import {ThemeProvider} from "styled-components";
-import { GlobalStyles } from "./components/theme/globalstyles"
-import { lightTheme, darkTheme } from "./components/theme/themes"
 
 const NavRoute = ({exact, path, component: Component}) => (
   <Route exact={exact} path={path} render={(props) => (
@@ -27,29 +24,23 @@ const NavRoute = ({exact, path, component: Component}) => (
 
 class App extends Component {
   render() {
-    const theme = 'dark';
     return (
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        <>
-        <GlobalStyles/>
-          <React.Fragment>
-            <Router>
-              <Switch>
-                <Route exact path="/" component={Login} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/logout" component={Logout} />
-                <Route exact path="/signup" component={Signup} />
-                <NavRoute exact path="/home" component={Home} />
-                <NavRoute exact path="/device/new" component={addDevice} />
-                <NavRoute exact path="/device/:handle" component={Device} />
-                <NavRoute exact path="/device/:handle/edit" component={editDevice} />
-                <NavRoute exact path="/user/edit" component={EditUser} />
-                <NavRoute component={Default} />
-              </Switch>
-            </Router>
-          </React.Fragment>
-      </>
-    </ThemeProvider>
+      <React.Fragment>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/logout" component={Logout} />
+            <Route exact path="/signup" component={Signup} />
+            <NavRoute exact path="/home" component={Home} />
+            <NavRoute exact path="/device/new" component={addDevice} />
+            <NavRoute exact path="/device/:handle" component={Device} />
+            <NavRoute exact path="/device/:handle/edit" component={editDevice} />
+            <NavRoute exact path="/user/edit" component={EditUser} />
+            <NavRoute component={Default} />
+          </Switch>
+        </Router>
+      </React.Fragment>
     );
   }
 }

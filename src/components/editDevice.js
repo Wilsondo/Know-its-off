@@ -96,12 +96,12 @@ export default class editDevice extends Component {
             </div>)
 		}
 		return(
-<div className="m-5">
+<div className="m-5 text-light">
 <h3>Edit Device</h3>
 <form>
    <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control" name="appliance_name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <input className="form-control text-light" name="appliance_name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
    </div>
 
    <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>

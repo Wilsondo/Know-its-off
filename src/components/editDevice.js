@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {CircleSpinner} from 'react-spinners-kit' ;
-import axiosBaseURL from '../axios.js'
-
-import {Redirect} from 'react-router-dom'
+import axiosBaseURL from '../axios.js';
+import { Redirect } from 'react-router-dom';
 
 var dbString
 
@@ -53,6 +52,7 @@ export default class editDevice extends Component {
       .then((result) => {
          this.setState({loading: false});
             alert("Device Updated Successfully!")
+            this.context.history.push('/home');
       })
       .catch((error)=>{
          this.setState({loading:false, error:true})
@@ -68,6 +68,7 @@ export default class editDevice extends Component {
          .then((result) => {
             this.setState({redirect: '/home', loading: false});
             alert("Device Removed Successfully!");
+            this.props.history.push('/home');
          })
          .catch((error) => {
             this.setState({ error: true });
@@ -76,6 +77,7 @@ export default class editDevice extends Component {
                this.setState({error_response: error.response.data})
             }
          })
+         event.preventDefault();
       }
    };
    handleChangeDevice = (event) => { 

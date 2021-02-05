@@ -57,6 +57,7 @@ export default class addDevice extends Component {
          .then((result) => {
             this.setState({ myDevice: {...this.state.myDevice, id: result.data.id}, postLoading:false, revealDetails:true })
             alert("Device Creation Successful!");
+            this.props.history.push('/home');
          })
          .catch((error) => {
             this.setState({postLoading:false, error:true, error_response: error.response.data})

@@ -30,10 +30,11 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'api.login'
 login_manager.init_app(app)
 
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
-    
+
 #Returns 401 errors if you access pages while not logged in
 @login_manager.unauthorized_handler
 def unauthorized():

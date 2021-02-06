@@ -6,4 +6,5 @@ from app.models import User, Device
 def make_shell_context():
     return {'db': db, 'User': User, 'Device': Device}
 
-#serve(app, host='https://know-its-off.totalsundae.com', port= 4937)
+if __name__ == '__main__':
+    app.run()

@@ -1,2 +1,3 @@
 FLASK_APP=main.py
-FLASK_ENV=production
+FLASK_ENV=development
+GOOGLE_APPLICATION_CREDENTIALS=""

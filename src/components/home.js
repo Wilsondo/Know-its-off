@@ -57,12 +57,12 @@ render(){
    }
    return(
    <div>
-      <div className="row m-3">
+      <div className="row m-3 text-light">
          <div className="col">
             <h1 className="text-center">Home</h1>
          </div>
       </div>
-      <div className="row m-3">
+      <div className="row m-3 text-light">
          <div className="col">
             <h6 className="text-muted text-center">
                {this.state.num_on} of your appliances are on.

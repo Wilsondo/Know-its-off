@@ -59,7 +59,6 @@ def user_get_patch_delete_by_id(id):
 
 #Logs the user in
 @bp.route('/login', methods=['POST'])
-@cross_origin()
 def login():
     if request.method == 'POST':
         if not v.validate(request.get_json()):

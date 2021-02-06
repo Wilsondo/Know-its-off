@@ -8,7 +8,7 @@ from flask_login import LoginManager
 from flask_cors import CORS
 
 #Creation of app and database
-app = Flask(__name__, static_folder='../build', static_url_path='/')
+app = Flask(__name__, static_folder='/nfs/stak/users/titswort/capstone/build', static_url_path='/')
 #run_with_ngrok(app)
 app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

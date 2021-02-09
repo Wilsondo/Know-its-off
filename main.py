@@ -6,4 +6,4 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Device': Device}
 
 if __name__ == '__main__':
-    app.run()
+    app.run(ssl_context='adhoc')

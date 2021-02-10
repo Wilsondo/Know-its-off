@@ -19,9 +19,7 @@ export default class Logout extends Component {
        // http call to /api/logout
       axiosBaseURL.get('/logout')
       .then(() => {
-           return(   
-            <Redirect to={this.state.redirect} />
-         )
+         this.props.history.push('/login');
       })
       .catch(() => {
          return(   

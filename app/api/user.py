@@ -74,7 +74,6 @@ def login():
         else:
             return 'Unauthorized', 401
 #Adds a new user
-#TODO add username
 @bp.route('/user', methods=['POST'])
 def user_post():
     if request.method == 'POST':

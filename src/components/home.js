@@ -69,24 +69,6 @@ render(){
             </h6>
          </div>
       </div>
-      {/*<div className="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-3">
-      <Tile key={this.state.myDevices.id} appliance_name={this.state.myDevices.appliance_name} device_battery={this.state.myDevices.battery_power} device_state={this.state.myDevices.device_state}/>
-   </div>*/}
-{/*      <GridContextProvider onChange={this.onChange}>
-         <div className="container">
-            <GridDropZone id="this.state.myDevices" boxesPerRow={4} rowHeight={100}>
-               {this.state.this.state.myDevices.map(device => (
-                  <GridItem key={device.id}>
-                     <div className="grid-item">
-                        <div className="grid-item-content" style={{width:"100%",height:"100%"}}>
-                           <Tile key={device.id} appliance_name={device.appliance_name} device_battery={device.battery_power} device_state={device.device_state}/>
-                        </div>
-                     </div>
-                  </GridItem>
-               ))}
-            </GridDropZone>
-         </div>
-      </GridContextProvider>*/}
       <GridApp/>      
    </div>
    )

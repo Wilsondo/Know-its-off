@@ -1,4 +1,3 @@
-import os
 from flask import Flask
 from flask_assistant import Assistant, tell
 from flask_ngrok import run_with_ngrok
@@ -6,9 +5,10 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_cors import CORS
 
 #Creation of app and database
-app = Flask(__name__, static_folder='../build', static_url_path='/')
+app = Flask(__name__, static_folder='/nfs/stak/users/titswort/capstone/build', static_url_path='/')
 #run_with_ngrok(app)
 app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -52,15 +52,3 @@ def load_user(user_id):
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db.session.remove()
-
-#Issues temporary tokens
-def temp_token():
-    import binascii
-    temp_token = binascii.hexlify(os.urandom(24))
-    return temp_token.decode('utf-8')
-
-WEBHOOK_VERIFY_TOKEN = os.getenv('WEBHOOK_VERIFY_TOKEN')
-
-if WEBHOOK_VERIFY_TOKEN is None:
-        token = temp_token()
-        os.environ["WEBHOOK_VERIFY_TOKEN"] = token

@@ -51,8 +51,8 @@ export default class editDevice extends Component {
       axiosBaseURL.patch(dbString, this.state.myDevice)
       .then((result) => {
          this.setState({loading: false});
-            alert("Device Updated Successfully!")
-            this.context.history.push('/home');
+            alert("Device Updated Successfully!");
+            this.props.history.push('/home');
       })
       .catch((error)=>{
          this.setState({loading:false, error:true})

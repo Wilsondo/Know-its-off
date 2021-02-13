@@ -31,6 +31,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'api.login'
 login_manager.init_app(app)
 
+def send_js(path):
+    return send_from_directory('js', path)
+
 @app.route('/')
 def index():
     return app.send_static_file('index.html')

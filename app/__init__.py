@@ -7,16 +7,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-#Creation of app and database
+### Creation of app and database
+## Extra config options
+# PREFERRED_URL_SCHEME: 'https'
 app = Flask(__name__, static_folder='../build', static_url_path='/')
-#run_with_ngrok(app)
 app.config.from_object(Config)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)
 
 #Create our Assistant
-assist = Assistant(app, project_id='know-its-off-jsyg') #know-its-off-jsyg
+assist = Assistant(app, project_id='know-its-off-jsyg')
 
 from app import models
 from app.api import bp as api_bp
@@ -29,8 +30,6 @@ login_manager = LoginManager(app)
 #Is this supposed to be api.user, its supposed to define the route for login
 login_manager.login_view = 'api.login'
 login_manager.init_app(app)
-
-
 
 @app.route('/')
 def index():

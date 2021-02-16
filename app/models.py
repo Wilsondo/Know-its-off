@@ -18,6 +18,16 @@ class BatteryLogger(db.Model):
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
     #device = db.relationship('Device')
 
+    def to_dict(self):
+        return {c.key: getattr(self, c.key)
+            for c in inspect(self).mapper.column_attrs}
+            
+    def update(self, myDict):
+        for key, value in myDict.items():
+            setattr(self, key, value)
+
+    def __repr__(self):
+        return '<Device {}, battery Logs>'.format(self.id)
 
 class Device(db.Model):
     __name__ = "device"

@@ -1,7 +1,7 @@
 from flask import request, abort, jsonify
 from flask_login import login_required, current_user
 from app.api import bp
-from app.models import Device
+from app.models import Device, BatteryLogger
 from app import db
 from cerberus import Validator
 from flask import abort
@@ -54,16 +54,29 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
+#This route takes in a device id and returns all of the associated battery logs with the device.
+@bp.route('/batteryLogs/<id>', methods=['GET'])
+@login_required
+def getDeviceLogs(id):
+    if request.method == 'GET':
+        myLogs = BatteryLogger.query.filter_by(device_id=id).all()
+        returnValue = []
+        for row in myLogs:
+            returnValue.append(row.to_dict())
+        return jsonify(returnValue), 200
+
+
 #This function gets all of the devices that the user owns.
 #login does not work correctly
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
-    results = Device.query.filter_by(user_id = current_user.get_id())
-    myList = []
-    for row in results:
-        myList.append(row.to_dict())
-    db.session.close()
+    if request.method == 'GET':
+        results = Device.query.filter_by(user_id = current_user.get_id())
+        myList = []
+        for row in results:
+            myList.append(row.to_dict())
+        db.session.close()
 
     return jsonify(myList), 200
 

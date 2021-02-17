@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
 import './App.css';
+import Logs from './components/logs';
 import MyNavbar from './components/navbar';
 import Default from './components/default';
 import Login from './components/login';
@@ -35,6 +36,7 @@ class App extends Component {
             <NavRoute exact path="/home" component={Home} />
             <NavRoute exact path="/device/new" component={addDevice} />
             <NavRoute exact path="/device/:handle" component={Device} />
+            <NavRoute exact path="/device/:handle/logs" component={Logs} />
             <NavRoute exact path="/device/:handle/edit" component={editDevice} />
             <NavRoute exact path="/user/edit" component={EditUser} />
             <NavRoute component={Default} />

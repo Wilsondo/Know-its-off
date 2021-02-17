@@ -72,7 +72,7 @@ export default class Login extends Component {
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
   <div className="form-check">
-    <input class="form-check-input" type="checkbox" checked={this.state.remember} onChange={this.toggleCheckbox} id="checkbox"/>
+    <input className="form-check-input" type="checkbox" checked={this.state.remember} onChange={this.toggleCheckbox} id="checkbox"/>
     <label className="form-check-label" for="checkbox">Remember Me</label>
   </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>

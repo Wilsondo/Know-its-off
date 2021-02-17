@@ -10,8 +10,16 @@ from flask_login import LoginManager
 ### Creation of app and database
 ## Extra config options
 # PREFERRED_URL_SCHEME: 'https'
+
+
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 app.config.from_object(Config)
+app.config['OAUTH_CREDENTIALS'] = {
+    'google': {
+        'id': GOOGLE_CLIENT_ID, 
+        'secret': SECRET_KEY
+    }
+}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)

@@ -19,6 +19,8 @@ def initial(appliance):
         status = "OFF"
     elif myDevice.device_state == 1:
         status = "ON"
+    else: 
+        return tell("Device not found")
     speech = f"Your {myDevice.appliance_name} is {status}"
     return ask(speech)
 

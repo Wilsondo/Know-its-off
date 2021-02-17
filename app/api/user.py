@@ -60,6 +60,8 @@ def user_get_patch_delete_by_id(id):
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
+        if g.user is not None and g.user.is_authenticated():
+            return '', 204
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         user_data = request.get_json()

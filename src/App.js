@@ -12,6 +12,7 @@ import EditUser from './components/editUser';
 import addDevice from './components/addDevice';
 import editDevice from './components/editDevice';
 import Device from './components/device';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const NavRoute = ({exact, path, component: Component}) => (

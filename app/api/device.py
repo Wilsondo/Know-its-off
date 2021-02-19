@@ -5,7 +5,6 @@ from app.models import Device, BatteryLogger
 from app import db
 from cerberus import Validator
 from flask import abort
-from app.api.auth import token_auth, basic_auth
 
 #Note token_auth is disabled as the backend never seems to recieve the token
 #This may be because of our odd problems working with local host

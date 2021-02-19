@@ -4,7 +4,6 @@ from cerberus import Validator
 from app.models import User, Device
 from app.api import bp
 from app import db
-from app.api.auth import token_auth
 
 #Do we have to update user schema?
 #Used with the validator to ensure that the incoming data is a user

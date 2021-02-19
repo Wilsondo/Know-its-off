@@ -2,7 +2,7 @@ from flask import url_for, current_app, redirect, request
 from app.models import User
 from app.api import bp
 from app.api.errors import error_response
-from flask.ext.login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, logout_user, current_user, login_required
 from rauth import OAuth2Service
 
 

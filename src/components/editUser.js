@@ -104,7 +104,7 @@ export default class EditUser extends Component {
          event.preventDefault();
       }
       else {
-         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
+         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password, remember: true})
          .then((result) => {
             axiosBaseURL.patch('/user/current', {email: this.state.current.email, password: this.state.confirmPass, username: this.state.current.username})
             .then((result) => {

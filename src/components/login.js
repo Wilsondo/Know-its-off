@@ -12,14 +12,15 @@ export default class Login extends Component {
 	    password: "",
       error: false,
       flag: false, 
-	    postLoading: false
+	    postLoading: false, 
+      remember: true
     };
   }
   
 
   doLogin = (event) => {
 	  this.setState({postLoading:true});
-	  axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password})
+	  axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password, remember: this.state.remember})
 	  .then(
 		  (result) =>{this.setState({postLoading: false, flag:false}); 
       this.props.history.push("/home"); 
@@ -36,6 +37,14 @@ export default class Login extends Component {
    //trys to check if authenticated already and redirect
    //when logging out its a little slow so it authenticates and redirects too quickly
 
+  toggleCheckbox = () => {
+    this.setState(({ remember }) => (
+      {
+        remember: !remember
+      }
+    ));
+  }
+
 	render(){
 		if(this.state.error){
 			return(<div classNameName="m-5"><h3>There was an error</h3></div>)
@@ -44,6 +53,7 @@ export default class Login extends Component {
       			return (<div classNameName="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
     }
     const {flag} = this.state;
+    // <a href={{ url_for('oauth_authorize', provider='google') }}><img src="{{ url_for('static', filename='img/sign-in-with-google.png') }}" /></a>
 		return(
 <div className="mt-5 mb-5 container bg-dark border">
 <div className="row justify-content-md-center text-light mt-5">
@@ -62,8 +72,12 @@ export default class Login extends Component {
     <label>Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
+  <div className="form-check">
+    <input className="form-check-input" type="checkbox" checked={this.state.remember} onChange={this.toggleCheckbox} id="checkbox"/>
+    <label className="form-check-label" for="checkbox">Remember Me</label>
+  </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
-  <Link id="signupHelp" to="/signup" className="form-text text-muted">Don't have an account? Click here to sign up.</Link>
+  <Link id="signupHelp" to="/signup" className="form-text text-muted">Register New User</Link>
 </form>
 </div>
 </div>

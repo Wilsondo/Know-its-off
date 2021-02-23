@@ -14,6 +14,8 @@
 ~MSle0~/<<<<<
 
 # Command Line History (newest to oldest):
+:wq
+|2,0,1614053616,,"wq"
 :q!
 |2,0,1613791695,,"q!"
 
@@ -28,53 +30,291 @@
 # Debug Line History (newest to oldest):
 
 # Registers:
-"1	LINE	0
-	>>>>>>> new_frontend
-|3,0,1,1,1,0,1613791683,">>>>>>> new_frontend"
+""1	LINE	0
+	GOOGLE_APPLICATION_CREDENTIALS=""
+|3,1,1,1,1,0,1614053615,"GOOGLE_APPLICATION_CREDENTIALS=\"\""
 "2	LINE	0
-	=======
-|3,0,2,1,1,0,1613791681,"======="
-"3	LINE	0
-	  integrity sha512-4tYhk26KRnK0myMEp2wvNjOvnHMwWfa6pWFIiCtj9wewYaTxP7TrCf7MwcIMBgUzyX0SJXx6UbbDG0+hObiXNg==
-|3,0,3,1,1,0,1613791680,"  integrity sha512-4tYhk26KRnK0myMEp2wvNjOvnHMwWfa6pWFIiCtj9wewYaTxP7TrCf7MwcIMBgUzyX0SJXx6UbbDG0+hObiXNg=="
-"4	LINE	0
-	  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.4.3.tgz#9a76a66800b57f422dd824c9dbe4c9dcef634790"
-|3,0,4,1,1,0,1613791680,"  resolved \"https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.4.3.tgz#9a76a66800b57f422dd824c9dbe4c9dcef634790\""
-"5	LINE	0
-	  version "1.4.3"
-|3,0,5,1,1,0,1613791679,"  version \"1.4.3\""
-"6	LINE	0
-	react-bootstrap@^1.4.0:
-|3,0,6,1,1,0,1613791679,"react-bootstrap@^1.4.0:"
-"7	LINE	0
-	<<<<<<< HEAD
-|3,0,7,1,1,0,1613791679,"<<<<<<< HEAD"
-"8	LINE	0
 	>>>>>>> new_frontend
-|3,0,8,1,1,0,1613791661,">>>>>>> new_frontend"
+|3,0,2,1,1,0,1614053467,">>>>>>> new_frontend"
+"3	LINE	0
+	app = Flask(__name__, static_folder='../build', static_url_path='/')
+|3,0,3,1,1,0,1614053465,"app = Flask(__name__, static_folder='../build', static_url_path='/')"
+"4	LINE	0
+	
+|3,0,4,1,1,0,1614053465,""
+"5	LINE	0
+	
+|3,0,5,1,1,0,1614053464,""
+"6	LINE	0
+	# PREFERRED_URL_SCHEME: 'https'
+|3,0,6,1,1,0,1614053464,"# PREFERRED_URL_SCHEME: 'https'"
+"7	LINE	0
+	## Extra config options
+|3,0,7,1,1,0,1614053463,"## Extra config options"
+"8	LINE	0
+	### Creation of app and database
+|3,0,8,1,1,0,1614053463,"### Creation of app and database"
 "9	LINE	0
-	"@types/react@>=16.9.35":
-	  version "17.0.2"
-|3,0,9,1,2,0,1613791655,"\"@types/react@>=16.9.35\":","  version \"17.0.2\""
-""-	CHAR	0
+	=======
+|3,0,9,1,1,0,1614053462,"======="
+"-	CHAR	0
 	n
-|3,1,36,0,1,0,1613791691,"n"
+|3,0,36,0,1,0,1613791691,"n"
 
 # File marks:
-'0  9282  4  ~/yarn.lock
-|4,48,9282,4,1613791695,"~/yarn.lock"
+'0  2  0  ~/.flaskenv
+|4,48,2,0,1614053616,"~/.flaskenv"
+'1  10  19  ~/app/__init__.py
+|4,49,10,19,1614053529,"~/app/__init__.py"
+'2  11  28  ~/app/__init__.py
+|4,50,11,28,1614053519,"~/app/__init__.py"
+'3  11  28  ~/app/__init__.py
+|4,51,11,28,1614053519,"~/app/__init__.py"
+'4  60  0  ~/app/__init__.py
+|4,52,60,0,1614053472,"~/app/__init__.py"
+'5  59  0  ~/app/__init__.py
+|4,53,59,0,1614053472,"~/app/__init__.py"
+'6  60  0  ~/app/__init__.py
+|4,54,60,0,1614053472,"~/app/__init__.py"
+'7  59  0  ~/app/__init__.py
+|4,55,59,0,1614053472,"~/app/__init__.py"
+'8  7  0  ~/src/axios.js
+|4,56,7,0,1614053393,"~/src/axios.js"
+'9  10  37  ~/main.py
+|4,57,10,37,1614053286,"~/main.py"
 
 # Jumplist (newest first):
--'  9282  4  ~/yarn.lock
-|4,39,9282,4,1613791695,"~/yarn.lock"
--'  1891  5  ~/yarn.lock
-|4,39,1891,5,1613791676,"~/yarn.lock"
--'  1881  2  ~/yarn.lock
-|4,39,1881,2,1613791657,"~/yarn.lock"
--'  1  0  ~/yarn.lock
-|4,39,1,0,1613791649,"~/yarn.lock"
+-'  2  0  ~/.flaskenv
+|4,39,2,0,1614053616,"~/.flaskenv"
+-'  1  0  ~/.flaskenv
+|4,39,1,0,1614053614,"~/.flaskenv"
+-'  10  19  ~/app/__init__.py
+|4,39,10,19,1614053529,"~/app/__init__.py"
+-'  10  19  ~/app/__init__.py
+|4,39,10,19,1614053529,"~/app/__init__.py"
+-'  11  28  ~/app/__init__.py
+|4,39,11,28,1614053524,"~/app/__init__.py"
+-'  11  28  ~/app/__init__.py
+|4,39,11,28,1614053524,"~/app/__init__.py"
+-'  11  28  ~/app/__init__.py
+|4,39,11,28,1614053519,"~/app/__init__.py"
+-'  11  28  ~/app/__init__.py
+|4,39,11,28,1614053519,"~/app/__init__.py"
+-'  60  0  ~/app/__init__.py
+|4,39,60,0,1614053485,"~/app/__init__.py"
+-'  60  0  ~/app/__init__.py
+|4,39,60,0,1614053485,"~/app/__init__.py"
+-'  60  0  ~/app/__init__.py
+|4,39,60,0,1614053485,"~/app/__init__.py"
+-'  60  0  ~/app/__init__.py
+|4,39,60,0,1614053485,"~/app/__init__.py"
+-'  59  0  ~/app/__init__.py
+|4,39,59,0,1614053472,"~/app/__init__.py"
+-'  59  0  ~/app/__init__.py
+|4,39,59,0,1614053472,"~/app/__init__.py"
+-'  59  0  ~/app/__init__.py
+|4,39,59,0,1614053472,"~/app/__init__.py"
+-'  59  0  ~/app/__init__.py
+|4,39,59,0,1614053472,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  1  0  ~/app/__init__.py
+|4,39,1,0,1614053451,"~/app/__init__.py"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  7  0  ~/src/axios.js
+|4,39,7,0,1614053393,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  1  0  ~/src/axios.js
+|4,39,1,0,1614053366,"~/src/axios.js"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  10  37  ~/main.py
+|4,39,10,37,1614053286,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
+-'  1  0  ~/main.py
+|4,39,1,0,1614053226,"~/main.py"
 
 # History of marks within files (newest to oldest):
+
+> ~/.flaskenv
+	*	1614053615	0
+	"	2	0
+	.	3	0
+	+	3	0
+
+> ~/app/__init__.py
+	*	1614053529	0
+	"	10	19
+	^	10	20
+	.	10	19
+	+	10	19
+
+> ~/src/axios.js
+	*	1614053392	0
+	"	7	0
+	.	7	0
+	+	3	0
+	+	5	5
+	+	6	4
+	+	7	0
+
+> ~/main.py
+	*	1614053285	0
+	"	10	37
+	^	10	38
+	.	10	37
+	+	10	37
 
 > ~/yarn.lock
 	*	1613791693	0

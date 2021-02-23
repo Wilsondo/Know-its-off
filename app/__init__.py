@@ -7,18 +7,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_cors import CORS
 
-<<<<<<< HEAD
-#Creation of app and database
-app = Flask(__name__, static_folder='/nfs/stak/users/titswort/capstone/build', static_url_path='/')
-#run_with_ngrok(app)
-=======
-### Creation of app and database
-## Extra config options
-# PREFERRED_URL_SCHEME: 'https'
-
-
 app = Flask(__name__, static_folder='../build', static_url_path='/')
->>>>>>> new_frontend
 app.config.from_object(Config)
 #app.config['OAUTH_CREDENTIALS'] = {
 #    'google': {

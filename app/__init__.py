@@ -7,11 +7,6 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_cors import CORS
 
-### Creation of app and database
-## Extra config options
-# PREFERRED_URL_SCHEME: 'https'
-
-
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 app.config.from_object(Config)
 #app.config['OAUTH_CREDENTIALS'] = {

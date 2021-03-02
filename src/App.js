@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Switch, Route, BrowserRouter as Router} from 'react-router-dom';
+import {Switch, Route, HashRouter as Router} from 'react-router-dom';
 import './App.css';
 import Logs from './components/logs';
 import MyNavbar from './components/navbar';
@@ -23,6 +23,7 @@ const NavRoute = ({exact, path, component: Component}) => (
     </div>
   )}/>
 )
+
 
 class App extends Component {
   render() {

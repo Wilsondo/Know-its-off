@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import Card from 'react-bootstrap/Card'
-import { ProgressBar } from 'react-bootstrap'; //https://react-bootstrap.github.io/components/progress/
 import {Link} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 
 export default class Tile extends Component {
    state={
       device_id: this.props.device_id,
-      device_battery: this.props.device_battery,
       appliance_name: this.props.appliance_name,
       device_state: this.props.state,
       timestamp: this.props.timestamp, 
@@ -46,9 +44,6 @@ export default class Tile extends Component {
                <Card.Text className="card-text-device_state">{this.state.state}</Card.Text>
                <Card.Text className="card-text-timestamp">Last Seen: {this.state.timestamp}</Card.Text>
                <Link className="card-button btn btn-primary text-wrap" to={"/device/"+this.state.device_id}>Details</Link>
-               <div className="progressBar">
-                  <ProgressBar max="100" min="0" animated variant="info" now={this.state.device_battery} label={`${this.state.device_battery}%`}/>
-               </div>
             </Card.Body>
          </Card>
       )

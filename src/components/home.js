@@ -22,8 +22,7 @@ export default class Home extends Component {
          setTokenFound: false, 
          show: false, 
          setShow: false, 
-         notification: {title: '', body: ''}, 
-         setNotification: {title: '', body: ''}
+//         notification: {title: '', body: ''}, 
       };
    };
 
@@ -37,6 +36,14 @@ count_dev_state = (arr) => {
    }
    return result;
 }
+
+setShow = (bool) => {
+   this.setState({setShow: bool});
+}
+
+//setNotification = (arr) => {
+//   this.setState({notification: arr});
+//}
 
 componentDidMount() {
    axiosBaseURL.get("/devices")
@@ -66,12 +73,14 @@ render(){
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
       return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
    }
-   const {isTokenFound, setTokenFound, show, setShow, notification, setNotification} = this.state;
-   
+   const {isTokenFound, setTokenFound, show, setShow, notification} = this.state;
+   const arr = {title: '', body: ''};
+
    getToken(setTokenFound);
    onMessageListener().then(payload => {
       setShow(true);
-      setNotification({title: payload.notification.title, body: payload.notification.body})
+//      arr = {title: payload.notification.title, body: payload.notification.body};
+//      setNotification(arr);
       console.log(payload);
     }).catch(err => console.log('failed: ', err));
    return(
@@ -88,10 +97,7 @@ render(){
                className="rounded mr-2"
                alt=""
                />
-               <strong className="mr-auto">{notification.title}</strong>
-               <small>just now</small>
             </Toast.Header>
-            <Toast.Body>{notification.body}</Toast.Body>
          </Toast>
       <div className="row m-3 text-light">
          <div className="col">

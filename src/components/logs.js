@@ -23,8 +23,6 @@ export default class batteryLogs extends Component {
 			this.setState({ 
 				battery: result.data
 			});
-            console.log(result)
-            console.log(this.state)
 			this.setState({loading: false})
 		})
 	};

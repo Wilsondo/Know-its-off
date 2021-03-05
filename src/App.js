@@ -12,6 +12,7 @@ import EditUser from './components/editUser';
 import addDevice from './components/addDevice';
 import editDevice from './components/editDevice';
 import Device from './components/device';
+import Firebase from './components/firebase'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const NavRoute = ({exact, path, component: Component}) => (
@@ -26,6 +27,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <Firebase/>
         <Router>
           <Switch>
             <Route exact path="/" component={Login} />

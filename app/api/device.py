@@ -73,12 +73,44 @@ def getDeviceLogs(id):
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
-    if request.method == 'GET':
-        results = Device.query.filter_by(user_id = current_user.get_id())
-        myList = []
-        for row in results:
-            myList.append(row.to_dict())
-        db.session.close()
+    results = Device.query.filter_by(user_id = current_user.get_id())
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+            print(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
+
+    return jsonify(myList), 200
+    #This function gets all of the devices that the user owns.
+#login does not work correctly
+
+@bp.route('/devicestime', methods=['GET'])
+@login_required
+def getDeviceTimes():
+    results = Device.query.filter_by(user_id = current_user.get_id())
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%X,%x")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+            print(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
 
     return jsonify(myList), 200
 

@@ -93,6 +93,28 @@ def getUserDevices():
     #This function gets all of the devices that the user owns.
 #login does not work correctly
 
+@bp.route('/allDevices', methods=['GET'])
+@login_required
+def getAllDevices():
+    results = Device.query.all()
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+            print(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
+
+    return jsonify(myList), 200
+
+
 @bp.route('/devicestime', methods=['GET'])
 @login_required
 def getDeviceTimes():

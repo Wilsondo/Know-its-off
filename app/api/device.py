@@ -149,7 +149,6 @@ def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
-        request.get_json().pop("id", None)
         new_device = Device(**request.get_json())
         new_device.user_id = current_user.get_id()
         db.session.add(new_device)

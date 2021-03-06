@@ -151,6 +151,7 @@ def device_get_post():
             abort(400, description=v.errors)
         new_device = Device(**request.get_json())
         new_device.user_id = current_user.get_id()
+        new_device.device_state = 2
         db.session.add(new_device)
         db.session.commit()
         returnValue = jsonify(new_device.to_dict())

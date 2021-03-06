@@ -3,8 +3,6 @@ import {Link, Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import axiosBaseURL from '../axios.js';
 
-var dbString
-
 export default class Devices extends Component {
 	constructor(props) {
 		super(props);
@@ -47,8 +45,10 @@ export default class Devices extends Component {
 	deleteDevice = (event) => {
 		const r = window.confirm("Do you really want to delete this, it will be permanent!");
 		if(r === true){
-		   axiosBaseURL.delete(dbString)
-		   .then((result) => {
+			const handle = this.props.match.params.handle;
+			var dbString = "/device/" + handle
+		   	axiosBaseURL.delete(dbString)
+		   	.then((result) => {
 			  this.setState({redirect: '/home', loading: false});
 			  alert("Device Removed Successfully!");
 			  this.props.history.push('/home');

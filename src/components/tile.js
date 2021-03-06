@@ -15,13 +15,19 @@ export default class Tile extends Component {
    }
 
    componentDidMount() {
-      if(this.props.state){
+      if(this.props.state === 1){
          this.setState({
             background: "success",
             statusText: "ON"
          })
       }
-      else if(!this.props.state){
+      else if(this.props.state === 2){
+         this.setState({
+            background: "warning", 
+            statusText: "UNINITIALIZED"
+         })
+      }
+      else if(this.props.state === 0){
          this.setState({background: "danger"})
       }
       this.setState({loading: false})

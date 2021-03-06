@@ -35,7 +35,8 @@ class Device(db.Model):
     device_state = db.Column(db.Integer, default=False, nullable=False)
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
     timestamp = db.Column(db.TIMESTAMP, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    users = db.relationship('User', backref=db.backref('device', passive_deletes=True))
 
    # logs = relationship ("BatteryLogger", back_populates="addresses")
 

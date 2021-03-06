@@ -3,6 +3,7 @@ import {Link, Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import axiosBaseURL from '../axios.js';
 
+var dbString
 
 export default class Devices extends Component {
 	constructor(props) {
@@ -19,6 +20,7 @@ export default class Devices extends Component {
 		loading: true
 		}
 	};
+
 	componentDidMount() {
 		const handle = this.props.match.params.handle;
 		var dbString = "/device/" + handle
@@ -41,6 +43,26 @@ export default class Devices extends Component {
             else if (error.response.data){console.log(error.response)}
 		})
 	};
+
+	deleteDevice = (event) => {
+		const r = window.confirm("Do you really want to delete this, it will be permanent!");
+		if(r === true){
+		   axiosBaseURL.delete(dbString)
+		   .then((result) => {
+			  this.setState({redirect: '/home', loading: false});
+			  alert("Device Removed Successfully!");
+			  this.props.history.push('/home');
+		   })
+		   .catch((error) => {
+			  this.setState({ error: true });
+			  if(error.response){
+				 console.log(error.response)
+				 this.setState({error_response: error.response.data})
+			  }
+		   })
+		   event.preventDefault();
+		}
+	 };
 	render() {
 		if(this.state.loading) {
 			return (
@@ -56,11 +78,13 @@ export default class Devices extends Component {
 			<div className="col mt-3 text-light">
 			<div className="card bg-dark">
   				<div className="card-body">
+				  		<button onClick={this.deleteDevice} className="btn btn-sm btn-danger float-right" data-toggle="tooltip" data-placement="bottom" title="Delete Device">✖<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>
     					<h5 className="card-title text-wrap">{this.state.myDevice.appliance_name}</h5>
+						<p className="card-title text-wrap">Device id: {this.state.myDevice.id}</p>
     					<p className="card-text">State: {this.state.myDevice.device_state ? 'ON' : 'OFF'}</p>
     					<p className="card-text">Battery: {this.state.myDevice.device_battery}%</p>
 						<p className="card-text">Last Seen: {this.state.myDevice.timestamp}</p>
-    					<Link to={"/device/" + this.state.myDevice.id + "/edit"} className="btn btn-primary text-wrap">Modify device details</Link>
+    					<Link to={"/device/" + this.state.myDevice.id + "/edit"} className="btn btn-primary text-wrap" data-toggle="tooltip" data-placement="bottom" title="Change Device Details">Modify</Link>
 						<Link to={"/device/" + this.state.myDevice.id + "/logs"} className="btn btn-success text-wrap float-right">Battery Logs</Link>
   				</div>
 			</div>

@@ -78,25 +78,7 @@ export default class editDevice extends Component {
 	   event.preventDefault();
    };
 
-   deleteDevice = (event) => {
-      const r = window.confirm("Do you really want to delete this, it will be permanent!");
-      if(r === true){
-         axiosBaseURL.delete(dbString)
-         .then((result) => {
-            this.setState({redirect: '/home', loading: false});
-            alert("Device Removed Successfully!");
-            this.props.history.push('/home');
-         })
-         .catch((error) => {
-            this.setState({ error: true });
-            if(error.response){
-               console.log(error.response)
-               this.setState({error_response: error.response.data})
-            }
-         })
-         event.preventDefault();
-      }
-   };
+
    handleChangeDevice = (event) => { 
       this.setState({
          myDevice : {...this.state.myDevice, [event.target.name]: event.target.value}
@@ -126,7 +108,6 @@ export default class editDevice extends Component {
    </div>
 
    <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>
-   <button onClick={this.deleteDevice} className="btn btn-danger">Delete<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>
 </form>
 </div>
 		)

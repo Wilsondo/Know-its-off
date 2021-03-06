@@ -81,7 +81,7 @@ export default class Firebase extends Component {
     for(var x = 0; myDevices.length > x; x++){
        if(myDevices[x].device_state === 1){
         if((currentDate.getTime() - Date.parse(myDevices[x].timestamp)) >= 1800000){
-          console.log(currentDate - Date.parse(myDevices[x].timestamp));
+          //console.log(currentDate - Date.parse(myDevices[x].timestamp));
           axios.post('https://fcm.googleapis.com/fcm/send', this.state.post, { 
             headers: {
               'content-type': 'application/json'
@@ -95,10 +95,6 @@ export default class Firebase extends Component {
   componentDidMount() {
     axiosBaseURL.get("/devices").then( (app_result) => {
       this.changeNotification(app_result.data);
-    })
-    .catch( (error) => {
-      this.setState({error: true});
-      console.log("error at get device: ", error.response)
     })
   }
 

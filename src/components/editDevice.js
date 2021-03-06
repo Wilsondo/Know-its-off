@@ -16,8 +16,9 @@ export default class editDevice extends Component {
             //timestamp: "2019-04-30T08:59:00.000Z",
             id: 1,
          },
-	   loading: true,
-	   error: false,
+         allDevices: [],
+	      loading: true,
+	      error: false,
       }
    };
    componentDidMount() {
@@ -44,41 +45,40 @@ export default class editDevice extends Component {
          }
       })
    }
-
+   
    updateDevice = (event) => {
       this.setState({loading:true});
-      axiosBaseURL.patch(dbString, this.state.myDevice)
+      axiosBaseURL.get("/allDevices")
       .then((result) => {
-         this.setState({loading: false});
-            alert("Device Updated Successfully!");
-            this.props.history.push('/home');
+         this.setState({
+            allDevices: result.data
+         })
       })
-      .catch((error)=>{
-         this.setState({loading:false, error:true})
-         if(error.response.data){console.log(error.response)}
-      })
+      let idVerify = true;
+      for(var x = 0;x < this.state.allDevices.length; x++)
+         if(this.state.myDevice.id === this.state.allDevices[x].id){
+            idVerify = false;
+         }
+      if(idVerify) {
+         axiosBaseURL.patch(dbString, this.state.myDevice)
+         .then((result) => {
+            this.setState({loading: false});
+               alert("Device Updated Successfully!");
+               this.props.history.push('/home');
+         })
+         .catch((error)=>{
+            this.setState({loading:false})
+            alert("Please enter a valid Device ID!");
+         })
+      }
+      else {
+         this.setState({loading:false})
+         alert("Please enter a valid Device ID!");
+      }
 	   event.preventDefault();
    };
 
-   deleteDevice = (event) => {
-      const r = window.confirm("Do you really want to delete this, it will be permanent!");
-      if(r === true){
-         axiosBaseURL.delete(dbString)
-         .then((result) => {
-            this.setState({redirect: '/home', loading: false});
-            alert("Device Removed Successfully!");
-            this.props.history.push('/home');
-         })
-         .catch((error) => {
-            this.setState({ error: true });
-            if(error.response){
-               console.log(error.response)
-               this.setState({error_response: error.response.data})
-            }
-         })
-         event.preventDefault();
-      }
-   };
+
    handleChangeDevice = (event) => { 
       this.setState({
          myDevice : {...this.state.myDevice, [event.target.name]: event.target.value}
@@ -102,11 +102,12 @@ export default class editDevice extends Component {
 <form>
    <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control text-dark" name="appliance_name" id="inputDeviceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <input className="form-control text-dark" name="appliance_name" id="inputApplianceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <label>Device ID</label>
+      <input className="form-control text-dark" name="id" id="inputDeviceId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.id} />
    </div>
 
    <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>
-   <button onClick={this.deleteDevice} className="btn btn-danger">Delete<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>
 </form>
 </div>
 		)

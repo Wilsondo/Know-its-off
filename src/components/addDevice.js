@@ -15,6 +15,7 @@ export default class addDevice extends Component {
 	   },
       userDevices: [],
       applianceNames: [],
+      allDevices: [],
       disabled: false,
 	   loading: true,
 	   error: false,
@@ -52,7 +53,20 @@ export default class addDevice extends Component {
    postData = (event) => {
       this.setState({postLoading:true});
       //if creating a new appliance post it first
-      if(this.state.myDevice.id === "0"){
+
+      axiosBaseURL.get("/allDevices")
+      .then((result) => {
+         this.setState({
+            allDevices: result.data
+         })
+      })
+      let idVerify = true;
+      for(var x = 0;x < this.state.allDevices.length; x++)
+         if(this.state.myDevice.id === this.state.allDevices[x].id){
+            idVerify = false;
+         }
+      if(idVerify || this.state.myDevice.id === "0"){
+         console.log(this.state.myDevice);
          axiosBaseURL.post('/device', this.state.myDevice)
          .then((result) => {
             this.setState({ myDevice: {...this.state.myDevice, id: result.data.id}, postLoading:false, revealDetails:true })
@@ -60,13 +74,11 @@ export default class addDevice extends Component {
             this.props.history.push('/home');
          })
          .catch((error) => {
-            this.setState({postLoading:false, error:true, error_response: error.response.data})
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response.data)}
+            this.setState({loading: false})
+            alert("Please enter a valid Device ID!");
          })
-         event.preventDefault();
       }
-      else {alert("New Device Already Created!")}
+      event.preventDefault();
    };
 
    handleChangeDevice = (event) => {
@@ -92,7 +104,9 @@ export default class addDevice extends Component {
 <form>
    <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control text-dark" name="appliance_name" id="inputScoutName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <input className="form-control text-dark" name="appliance_name" id="inputApplianceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <label>Device ID</label>
+      <input className="form-control text-dark" name="id" id="inputId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.id} />
    </div>
 
    <button onClick={this.postData} className="btn btn-success">Add this device<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>

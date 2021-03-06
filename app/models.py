@@ -10,12 +10,23 @@ import os, base64
 # has several columns -- the name of the appliance, its ID, the status of the appliance,
 # and its alert details.
 ##############
+
+battery_table = db.Table('battery_table',
+    db.Column('device_id', db.Integer, db.ForeignKey('device.id'), primary_key=True),
+    db.Column('battery_id', db.Integer, db.ForeignKey('batterylogger.id'), primary_key=True)
+)
+
 class BatteryLogger(db.Model):
-    __name__ = "batterylogger"
+    __tablename__ = "batterylogger"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    device_id = db.Column(db.Integer, nullable = False)
+    #device_id = db.Column(db.Integer, db.ForeignKey('device.id', ondelete='CASCADE'))
+    #parent_device = db.relationship('device', backref=db.backref)
     timestamp_time = db.Column(db.TIMESTAMP, nullable = False)
     device_battery = db.Column(db.Float, nullable=True) # May change from float later
+    db.Column('device_id', db.Integer, db.ForeignKey('device.id'), primary_key=True)
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
+    battery_table = db.relationship('Device', secondary = battery_table, backref=db.backref('battery_logs', lazy=True))
 
     def to_dict(self):
         return {c.key: getattr(self, c.key)

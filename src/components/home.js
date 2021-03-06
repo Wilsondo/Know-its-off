@@ -4,28 +4,17 @@ import {Redirect} from 'react-router-dom';
 import {CircleSpinner} from 'react-spinners-kit';
 import GridApp from './grid/GridApp';
 import GridContext from './grid/GridContext';
-import { getToken, onMessageListener } from './firebase';
-import {Button, Toast} from 'react-bootstrap';
-
-
 
 export default class Home extends Component {
    static contextType = GridContext
    constructor(props) {
       super(props);
       this.state = {
-         myDevices: [],
          loading: true,
          error: false,
          redirect: null,
-         isTokenFound: false, 
-         setTokenFound: false, 
-         show: false, 
-         setShow: false, 
-//         notification: {title: '', body: ''}, 
       };
    };
-
 
 count_dev_state = (arr) => {
    var result = 0;
@@ -37,19 +26,10 @@ count_dev_state = (arr) => {
    return result;
 }
 
-setShow = (bool) => {
-   this.setState({setShow: bool});
-}
-
-//setNotification = (arr) => {
-//   this.setState({notification: arr});
-//}
-
 componentDidMount() {
    axiosBaseURL.get("/devices")
       .then( (app_result) => {
          this.setState({
-            myDevices: app_result.data,
             num_on: this.count_dev_state(app_result.data)
          })
          const context = this.context
@@ -73,33 +53,9 @@ render(){
       if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
       return(<div><h3>There was an error</h3><h3>{this.state.error_response}</h3></div>)
    }
-   const {isTokenFound, setTokenFound, show, setShow, notification} = this.state;
-   const arr = {title: '', body: ''};
-
-   getToken(setTokenFound);
-   onMessageListener().then(payload => {
-      setShow(true);
-//      arr = {title: payload.notification.title, body: payload.notification.body};
-//      setNotification(arr);
-      console.log(payload);
-    }).catch(err => console.log('failed: ', err));
    return(
       <div>
-         <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide animation style={{
-            position: 'absolute',
-            top: 20,
-            right: 20,
-            minWidth: 200
-         }}>
-            <Toast.Header>
-               <img
-               src="holder.js/20x20?text=%20"
-               className="rounded mr-2"
-               alt=""
-               />
-            </Toast.Header>
-         </Toast>
-      <div className="row m-3 text-light">
+         <div className="row m-3 text-light">
          <div className="col">
             <h1 className="text-center">Home</h1>
          </div>
@@ -108,9 +64,6 @@ render(){
          <div className="col">
             <h6 className="text-muted text-center">
                {this.state.num_on} of your appliances are on.
-               {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
-               {!isTokenFound && <h1> Need notification permission ❗️ </h1>} 
-               <Button onClick={() => setShow(true)}>Show Toast</Button>
             </h6>
          </div>
       </div>

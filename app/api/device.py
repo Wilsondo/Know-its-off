@@ -10,6 +10,7 @@ from flask import abort
 #This may be because of our odd problems working with local host
 #Change login_required to token_auth.login_required when we get a server
 
+
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "device_state": {"type": "integer", "default": False, "nullable": False},
@@ -53,18 +54,27 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
+# SELECT *
+# FROM BatteryLogger
+# Where id = view_model ids
+
+# CREATE view_model ids
+# SELECT battery_id
+# FROM battery_table
+# WHERE device_id = id
+
+
 #This route takes in a device id and returns all of the associated battery logs with the device.
 @bp.route('/batteryLogs/<id>', methods=['GET'])
 #@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
-        myLogs = BatteryLogger.query.filter_by(device_id=id).order_by(BatteryLogger.timestamp_time.desc()).all()
+        myLogs = BatteryLogger.query.filter(BatteryLogger.battery_many_relation_table.any(id=id)).all()
         returnValue = []
         for row in myLogs:
             returnValue.append(row.to_dict())
         for row in returnValue:
             del row["id"]
-            del row["device_id"]
         return jsonify(returnValue), 200
 
 

@@ -3,6 +3,7 @@ import {CircleSpinner} from 'react-spinners-kit' ;
 import axiosBaseURL from '../axios.js';
 import { Redirect } from 'react-router-dom';
 
+var dbString
 export default class editDevice extends Component {
    constructor(props) {
      super(props);

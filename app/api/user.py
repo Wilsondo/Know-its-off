@@ -98,7 +98,8 @@ def login_OAuth():
             auth_url, state = google.authorization_url(gConfig.AUTH_URI, access_type='offline')
             session['oauth_state'] = state
 
-            return jsonify(auth_url), 200
+            # print(auth_url)
+            return auth_url, 200
 
 #Adds a new user
 @bp.route('/user', methods=['POST'])

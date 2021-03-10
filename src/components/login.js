@@ -22,16 +22,9 @@ export default class Login extends Component {
   doOAuth = (event) => {
     this.setState({OAuthLoading:true});
     axiosBaseURL.get('/glogin').then((result) => {
-      this.setState({
-        auth_url: result.data.auth_url
-      })
-      .catch( (error) => {
-        this.setState({loading: false, error: true});
-        console.log("error at Google Login", error.response)
-      })
+      window.location.href = result.data;
+      console.log("auth_url is: ", result.data)
     });
-    window.location.href = this.state.auth_url;
-    console.log(test)
     this.props.history.push("/home"); 
   }
 

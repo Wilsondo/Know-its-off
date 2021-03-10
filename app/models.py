@@ -70,6 +70,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), nullable=False, unique=True)
     devices = db.relationship('Device', backref='owner', lazy='dynamic')
 
+    tokens = db.Column(db.Text)
+
+
 
     def to_dict(self):
         return {c.key: getattr(self, c.key)

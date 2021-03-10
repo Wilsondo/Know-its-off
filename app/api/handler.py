@@ -3,8 +3,10 @@ from flask import Flask, request
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from app.api import bp
 from app import db
 import json
+from app.models import Device, BatteryLogger
 
 #These variables define the battery voltages
 #We can use these to calculate the battery power level
@@ -13,17 +15,16 @@ Vmax = 4.2
 Vmin = 3.0
 
 #We want to get the device iD, then modify the corresponding device
-@app.route('/updateState/<int:device_id>', methods=['PATCH'])
+@bp.route('/updateState/<int:device_id>', methods=['PATCH'])
 def device_data_post(device_id):
    if request.method == "PATCH":
-      from models import Device, BatteryLogger
       deviceStats = request.get_json()
       deviceStats = json.loads(deviceStats)
       #Set the time the state of the device changed to right now
       deviceStats['timestamp'] = datetime.now()
       
 
-      #Convert voltage to battery power.
+      #Convert voltage to battery power.d
       deviceVoltage = deviceStats['device_battery']
       # (Vactual - Vmin) * 100
       # ______________________
@@ -52,4 +53,4 @@ def device_data_post(device_id):
 
       db.session.add(myStamp)
       db.session.commit()
-      return 200
+      return '', 200

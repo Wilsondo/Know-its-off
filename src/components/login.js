@@ -13,10 +13,27 @@ export default class Login extends Component {
       error: false,
       flag: false, 
 	    postLoading: false, 
-      remember: true
+      OAuthLoading: false,
+      remember: true, 
+      auth_url: ""
     };
   }
   
+  doOAuth = (event) => {
+    this.setState({OAuthLoading:true});
+    axiosBaseURL.get('/glogin').then((result) => {
+      this.setState({
+        auth_url: result.data.auth_url
+      })
+      .catch( (error) => {
+        this.setState({loading: false, error: true});
+        console.log("error at Google Login", error.response)
+      })
+    });
+    window.location.href = this.state.auth_url;
+    console.log(test)
+    this.props.history.push("/home"); 
+  }
 
   doLogin = (event) => {
 	  this.setState({postLoading:true});
@@ -77,6 +94,7 @@ export default class Login extends Component {
     <label className="form-check-label" for="checkbox">Remember Me</label>
   </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
+  <button onClick={this.doOAuth} className="btn btn-primary">Sign in with Google<CircleSpinner size={20} color="#3BBCE5" loading={this.state.OAuthLoading}/></button>
   <Link id="signupHelp" to="/signup" className="form-text text-muted">Register New User</Link>
 </form>
 </div>

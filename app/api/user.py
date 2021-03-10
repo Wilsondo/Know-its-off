@@ -77,25 +77,29 @@ def get_google_auth(state=None, token=None):
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
+        if not v.validate(request.get_json()):
+            abort(400, description=v.errors)
+        user_data = request.get_json()
+        user_email = user_data['email']
+        check_user = User.query.filter_by(email=user_email).first()
+        if not check_user or not check_user.check_password(user_data['password']):
+            abort(403, description="The credentials you entered were incorrect")
+        result = login_user(check_user, remember=user_data['remember'])
+        db.session.close()
+        if result:
+            return '', 204
+        else:
+            return 'Unauthorized', 401
 
-        google = get_google_auth()
-        auth_url, state = google.authorization_url(gConfig.AUTH_URI, access_type='offline')
-        session['oauth_state'] = state
-        return render_template('login.html', auth_url=auth_url) # what do
+@bp.route('/glogin', methods=['GET'])
+def login_OAuth():
+        if request.method == 'GET':
+            google = get_google_auth()
+            auth_url, state = google.authorization_url(gConfig.AUTH_URI, access_type='offline')
+            session['oauth_state'] = state
 
-        # if not v.validate(request.get_json()):
-        #     abort(400, description=v.errors)
-        # user_data = request.get_json()
-        # user_email = user_data['email']
-        # check_user = User.query.filter_by(email=user_email).first()
-        # if not check_user or not check_user.check_password(user_data['password']):
-        #     abort(403, description="The credentials you entered were incorrect")
-        # result = login_user(check_user, remember=user_data['remember'])
-        # db.session.close()
-        # if result:
-        #     return '', 204
-        # else:
-        #     return 'Unauthorized', 401
+            return jsonify(auth_url), 200
+
 #Adds a new user
 @bp.route('/user', methods=['POST'])
 def user_post():

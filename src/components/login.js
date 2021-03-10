@@ -23,9 +23,9 @@ export default class Login extends Component {
     this.setState({OAuthLoading:true});
     axiosBaseURL.get('/glogin').then((result) => {
       window.location.href = result.data;
-      console.log("auth_url is: ", result.data)
     });
-    this.props.history.push("/home"); 
+
+    //this.props.history.push("/home"); 
   }
 
   doLogin = (event) => {
@@ -87,7 +87,7 @@ export default class Login extends Component {
     <label className="form-check-label" for="checkbox">Remember Me</label>
   </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
-  <button onClick={this.doOAuth} className="btn btn-primary">Sign in with Google<CircleSpinner size={20} color="#3BBCE5" loading={this.state.OAuthLoading}/></button>
+  <button onClick={this.doOAuth} className="btn btn-primary flex-right">Sign in with Google<CircleSpinner size={20} color="#3BBCE5" loading={this.state.OAuthLoading}/></button>
   <Link id="signupHelp" to="/signup" className="form-text text-muted">Register New User</Link>
 </form>
 </div>

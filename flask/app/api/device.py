@@ -10,6 +10,7 @@ from flask import abort
 #This may be because of our odd problems working with local host
 #Change login_required to token_auth.login_required when we get a server
 
+
 device_schema = {
                     "appliance_name": {"type": "string", "maxlength": 64, "nullable": True}, 
                     "device_state": {"type": "integer", "default": False, "nullable": False},
@@ -53,18 +54,27 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
+# SELECT *
+# FROM BatteryLogger
+# Where id = view_model ids
+
+# CREATE view_model ids
+# SELECT battery_id
+# FROM battery_table
+# WHERE device_id = id
+
+
 #This route takes in a device id and returns all of the associated battery logs with the device.
 @bp.route('/batteryLogs/<id>', methods=['GET'])
 #@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
-        myLogs = BatteryLogger.query.filter_by(device_id=id).order_by(BatteryLogger.timestamp_time.desc()).all()
+        myLogs = BatteryLogger.query.filter(BatteryLogger.battery_many_relation_table.any(id=id)).all()
         returnValue = []
         for row in myLogs:
             returnValue.append(row.to_dict())
         for row in returnValue:
             del row["id"]
-            del row["device_id"]
         return jsonify(returnValue), 200
 
 
@@ -73,12 +83,63 @@ def getDeviceLogs(id):
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
-    if request.method == 'GET':
-        results = Device.query.filter_by(user_id = current_user.get_id())
-        myList = []
-        for row in results:
-            myList.append(row.to_dict())
-        db.session.close()
+    results = Device.query.filter_by(user_id = current_user.get_id())
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
+
+    return jsonify(myList), 200
+    #This function gets all of the devices that the user owns.
+#login does not work correctly
+
+@bp.route('/allDevices', methods=['GET'])
+@login_required
+def getAllDevices():
+    results = Device.query.all()
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
+
+    return jsonify(myList), 200
+
+
+@bp.route('/devicestime', methods=['GET'])
+@login_required
+def getDeviceTimes():
+    results = Device.query.filter_by(user_id = current_user.get_id())
+    myList = []
+    for row in results:
+        rowDict = row.to_dict() 
+        if rowDict['timestamp'] != None:
+            given_date = rowDict['timestamp']
+            given_date = given_date.strftime("%X,%x")
+            rowDict['timestamp'] = given_date
+            myList.append(rowDict)
+        else:
+            rowDict['timestamp'] = "N/A"
+            myList.append(rowDict)
+
+    db.session.close()
 
     return jsonify(myList), 200
 
@@ -98,9 +159,9 @@ def device_get_post():
     if request.method == 'POST':
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
-        request.get_json().pop("id", None)
         new_device = Device(**request.get_json())
         new_device.user_id = current_user.get_id()
+        new_device.device_state = 2
         db.session.add(new_device)
         db.session.commit()
         returnValue = jsonify(new_device.to_dict())

@@ -1,6 +1,5 @@
-from flask import request, abort, jsonify, Response, redirect
+from flask import request, abort, jsonify, Response, redirect, session, render_template
 from flask_login import login_required, current_user, login_user
-from flask_cors import cross_origin
 from cerberus import Validator
 from app.models import User, Device
 from app.api import bp
@@ -14,6 +13,7 @@ user_schema = {
 }
 
 v = Validator(user_schema, allow_unknown=True)
+
 
 #Multifunction route that does things depending on the user id
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
@@ -60,8 +60,6 @@ def user_get_patch_delete_by_id(id):
 @bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        #if g.user is not None and g.user.is_authenticated():
-            #return '', 204
         if not v.validate(request.get_json()):
             abort(400, description=v.errors)
         user_data = request.get_json()
@@ -69,13 +67,13 @@ def login():
         check_user = User.query.filter_by(email=user_email).first()
         if not check_user or not check_user.check_password(user_data['password']):
             abort(403, description="The credentials you entered were incorrect")
-        #print(user_data)
         result = login_user(check_user, remember=user_data['remember'])
         db.session.close()
         if result:
             return '', 204
         else:
             return 'Unauthorized', 401
+
 #Adds a new user
 @bp.route('/user', methods=['POST'])
 def user_post():

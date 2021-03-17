@@ -1,0 +1,4 @@
+Creating network "lightsail-containers-nginx_default" with the default driver
+Building flask
+Step 1/6 : FROM python:3.8
+3.8: Pulling from library/python

@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {CircleSpinner} from 'react-spinners-kit' 
 import axiosBaseURL from '../axios.js'
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Accordion, AccordionDetails, AccordionSummary, AccordionActions, Typography} from '@material-ui/core/'
 
 export default class EditUser extends Component {
     constructor(props) {
@@ -12,17 +13,12 @@ export default class EditUser extends Component {
                 email: "", 
                 password: "",
             },
-            currentPass: "", 
-            confirmPass: "",
-            detail_form: false, 
-            flag: false,
-            loading: true, 
-            verifyLoad: false,
-            deleteLoad: false, 
-            changeLoad: false, 
+            loading: false, 
             error: false, 
             redirect: null,
-            remember: true
+
+            expanded: false, 
+            setExpanded: false
         };
     }
 
@@ -33,8 +29,8 @@ export default class EditUser extends Component {
             this.setState({
                loading: false, 
                current: {
-                  username: result.data.username, 
-                  email: result.data.email
+                  email: result.data.email,
+                  password: result.data.password
                }
             });
          })
@@ -50,7 +46,7 @@ export default class EditUser extends Component {
 
    verify = (event) => {
       this.setState({verifyLoad : true});
-      axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password, remember: this.state.remember})
+      axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
       .then((result) => {
          this.setState({verifyLoad: false, detail_form: true, flag: false});
       })
@@ -86,9 +82,10 @@ export default class EditUser extends Component {
         });
    };
 
-   handlePassChange = (event) => {
-      this.setState({[event.target.name]: event.target.value})
-   };
+   accordionChange = (panel) => (event, isExpanded) => {
+      const result = isExpanded ? panel : false;
+      this.setState({setExpanded: result});
+   }
 
 
    update = (event) => {
@@ -104,7 +101,7 @@ export default class EditUser extends Component {
          event.preventDefault();
       }
       else {
-         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password, remember: true})
+         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
          .then((result) => {
             axiosBaseURL.patch('/user/current', {email: this.state.current.email, password: this.state.confirmPass, username: this.state.current.username})
             .then((result) => {
@@ -126,6 +123,21 @@ export default class EditUser extends Component {
       }
    };
 
+   // useStyles = makeStyles((theme) => ({
+   //    root: {
+   //      width: '100%',
+   //    },
+   //    heading: {
+   //      fontSize: theme.typography.pxToRem(15),
+   //      flexBasis: '33.33%',
+   //      flexShrink: 0,
+   //    },
+   //    secondaryHeading: {
+   //      fontSize: theme.typography.pxToRem(15),
+   //      color: theme.palette.text.secondary,
+   //    },
+   //  }));
+
    render() {
       if(this.state.error) {
          return(<div className="m-5"><h3>Error: Not Logged In</h3></div>)  
@@ -135,52 +147,69 @@ export default class EditUser extends Component {
             <div className="d-flex justify-content-center m-5">
                <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
             </div>)
-         }
-      const {detail_form, flag} = this.state;
+      }
       return(
-<div className="m-5 text-light">
-{flag && (
-    <div color="red">Email or password incorrect</div>
-)}
-<h3>Enter User Details:</h3>
-<form>
-    <div className="form-group">
-        <label>Email</label>
-        <input className="form-control text-dark" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current.email}></input>
-    </div>
-
-    <div className="form-group">
-        <label>Password</label>
-        <input className="form-control text-dark" name="password" id="inputPassword" type="password" onChange={this.handleChange} value={this.state.current.password}></input>
-    </div>
-
-    <button onClick={this.verify} className="btn btn-success btn-space">Verify and Change User Details<CircleSpinner size={10} color="#3BBCE5" loading={this.state.verifyLoad} /></button>
-    <button onClick={this.delete} className="btn btn-danger btn-space">Delete User<CircleSpinner size={10} color="#3BBCE5" loading={this.state.deleteLoad} /></button>
-</form>
-{detail_form && (
-    <form>
-        <div className="form-group">
-            <label>Change Username</label>
-            <input className="form-control text-dark" name="username" id="inputUsername" type="username" onChange={this.handleChange} value={this.state.current.username} placeholder={this.state.current.username}/>
-        </div>
-        
-        <div className="form-group">
-            <label>Change Email</label>
-            <input className="form-control text-dark" name="email" id="inputEmail" type="email" onChange={this.handleChange} value={this.state.current.email} placeholder={this.state.current.email}/>
-        </div>
-
-        <div className="form-group">
-            <label>Change Password</label>
-            <input className="form-control text-dark" name="currentPass" id="inputCurrentPass" type="password" onChange={this.handlePassChange} value={this.state.currentPass} placeholder={this.state.currentPass}/>
-        </div>
-        <div className="form-group">
-            <label>Confirm Password</label>
-            <input className="form-control text-dark" name="confirmPass" id="inputConfirmPass" type="password" onChange={this.handlePassChange} value={this.state.confirmPass} placeholder={this.state.confirmPass}/>
-        </div>
-        <button onClick={this.update} className="btn btn-success btn-space">Update Information<CircleSpinner size={10} color="#3BBCE5" loading={this.state.changeLoad} /></button>
-    </form>
-    )}
+<div>
+   <Accordion {... this.setState({expanded: "panel1"})} onChange={this.accordionChange('panel1')}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+         <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Change Email</Typography>
+         <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">Enter a new Email Address</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+         <Typography>
+            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
+            maximus est, id dignissim quam.
+         </Typography>
+      </AccordionDetails>
+      </Accordion>
+      <Accordion {... this.setState({expanded: "panel2"})} onChange={this.accordionChange('panel2')}>
+         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
+            <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Users</Typography>
+            <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">
+               You are currently not an owner
+            </Typography>
+         </AccordionSummary>
+         <AccordionDetails>
+           <Typography>
+             Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
+             diam eros in elit. Pellentesque convallis laoreet laoreet.
+           </Typography>
+         </AccordionDetails>
+       </Accordion>
+       <Accordion {... this.setState({expanded: "panel3"})} onChange={this.accordionChange('panel3')}>
+         <AccordionSummary
+           expandIcon={<ExpandMoreIcon />}
+           aria-controls="panel3bh-content"
+           id="panel3bh-header"
+         >
+           <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Advanced settings</Typography>
+           <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">
+             Filtering has been entirely disabled for whole web server
+           </Typography>
+         </AccordionSummary>
+         <AccordionDetails>
+           <Typography>
+             Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
+             vitae egestas augue. Duis vel est augue.
+           </Typography>
+         </AccordionDetails>
+       </Accordion>
+       <Accordion {... this.setState({expanded: "panel4"})} onChange={this.accordionChange('panel4')}>
+         <AccordionSummary
+           expandIcon={<ExpandMoreIcon />}
+           aria-controls="panel4bh-content"
+           id="panel4bh-header"
+         >
+           <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Personal data</Typography>
+         </AccordionSummary>
+         <AccordionDetails>
+           <Typography>
+             Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
+             vitae egestas augue. Duis vel est augue.
+           </Typography>
+         </AccordionDetails>
+       </Accordion>        
 </div>
-        )
+       )
     }
 }

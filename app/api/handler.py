@@ -18,10 +18,12 @@ Vmin = 3.0
 @bp.route('/updateState/<int:device_id>', methods=['PATCH'])
 def device_data_post(device_id):
    if request.method == "PATCH":
+      print("Receiving Device at ID: ", device_id)
       deviceStats = request.get_json()
       deviceStats = json.loads(deviceStats)
       #Set the time the state of the device changed to right now
       deviceStats['timestamp'] = datetime.now()
+      print("Timestamp at time ", datetime.now())
       
 
       #Convert voltage to battery power.d
@@ -33,12 +35,14 @@ def device_data_post(device_id):
       deviceVoltage = deviceVoltage / (Vmax - Vmin)
       deviceVoltage = round(deviceVoltage, 1)
       deviceStats['device_battery'] = deviceVoltage
+      print("Device Voltage is ", deviceVoltage)
 
       #Select *
       #From Device
       #Where id = device_id
       #LIMIT 1
       myDevice = Device.query.filter_by(id=device_id).first()
+
 
       print(myDevice)
       myDevice.update(deviceStats)
@@ -49,8 +53,8 @@ def device_data_post(device_id):
 
       myStamp.device_battery = deviceStats['device_battery']
       myStamp.timestamp_time = deviceStats['timestamp']
-      myStamp.device_id = device_id
 
-      db.session.add(myStamp)
+      #Redo to 1 to many
+      myDevice.battery_logger.append(myStamp)
       db.session.commit()
       return '', 200

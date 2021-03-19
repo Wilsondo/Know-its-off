@@ -11,8 +11,7 @@ from config import gConfig
 #Do we have to update user schema?
 #Used with the validator to ensure that the incoming data is a user
 user_schema = {
-                    "username": {"type": "string", "maxlength": 64, "nullable": True}, 
-                    "email": {"type": "string", "maxlength": 64, "nullable": True}
+                    "email": {"type": "string", "maxlength": 64, "nullable": False}
 }
 
 v = Validator(user_schema, allow_unknown=True)

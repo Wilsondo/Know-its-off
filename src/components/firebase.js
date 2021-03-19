@@ -79,21 +79,21 @@ export default class Firebase extends Component {
 // Probably should add a cool down timer to prevent constant notifications.
 //Currently using a built in device id in this.state.to, reset it to use the users
 //Remember to rewrite notification to fit FCM format  changeNotification = (myDevices) => {
-    let currentDate = new Date();
-    for(var x = 0; myDevices.length > x; x++){
-       if(myDevices[x].device_state === 1){
-        if((currentDate.getTime() - Date.parse(myDevices[x].timestamp)) >= 1800000){
-          //console.log("currentDate - Date.parse(myDevices[x].timestamp"));
-        //  this.setState({to: getToken()});
-            axios.post('https://fcm.googleapis.com/fcm/send', this.state.post, { 
-            headers: {
-              'content-type': 'application/json'
-            }
-          });
-        }
-      }
-    }
-  }
+ //   let currentDate = new Date();
+    // for(var x = 0; myDevices.length > x; x++){
+    //    if(myDevices[x].device_state === 1){
+    //     if((currentDate.getTime() - Date.parse(myDevices[x].timestamp)) >= 1800000){
+    //       //console.log("currentDate - Date.parse(myDevices[x].timestamp"));
+    //     //  this.setState({to: getToken()});
+    //         axios.post('https://fcm.googleapis.com/fcm/send', this.state.post, { 
+    //         headers: {
+    //           'content-type': 'application/json'
+    //         }
+    //       });
+    //     }
+    //   }
+    // }
+  //}
 
   componentDidMount() {
     axiosBaseURL.get("/devices").then( (app_result) => {

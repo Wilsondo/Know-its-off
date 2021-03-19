@@ -11,10 +11,7 @@ import os, base64
 # and its alert details.
 ##############
 
-battery_many_relation_table = db.Table('battery_many_relation_table',
-    db.Column('device_id', db.Integer, db.ForeignKey('device.id'), primary_key=True),
-    db.Column('battery_id', db.Integer, db.ForeignKey('battery_logger.id'), primary_key=True)
-)
+
 
 class BatteryLogger(db.Model):
     __tablename__ = "battery_logger"
@@ -22,10 +19,10 @@ class BatteryLogger(db.Model):
     #device_id = db.Column(db.Integer, db.ForeignKey('device.id', ondelete='CASCADE'))
     #parent_device = db.relationship('device', backref=db.backref)
     timestamp_time = db.Column(db.TIMESTAMP, nullable = False)
-    device_battery = db.Column(db.Float, nullable=True) # May change from float later
-    db.Column('device_id', db.Integer, db.ForeignKey('device.id'))
+    device_battery = db.Column(db.Float, nullable=False) # May change from float later
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id', ondelete='CASCADE'), nullable=False)
 
-    battery_many_relation_table = db.relationship('Device', secondary = battery_many_relation_table, backref=db.backref('battery_logs', lazy=True))
+    device = relationship("Device", backref = "battery_logger")
 
     def to_dict(self):
         return {c.key: getattr(self, c.key)
@@ -65,13 +62,9 @@ class Device(db.Model):
 class User(UserMixin, db.Model):
     __name__ = "user"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    password = db.Column(db.String(512), nullable=True)
-    username = db.Column(db.String(64), nullable=True)
+    password = db.Column(db.String(512), nullable=False)
     email = db.Column(db.String(64), nullable=False, unique=True)
     devices = db.relationship('Device', backref='owner', lazy='dynamic')
-
-    tokens = db.Column(db.Text)
-
 
 
     def to_dict(self):
@@ -90,4 +83,4 @@ class User(UserMixin, db.Model):
     
     # This is how the object looks when printed out.
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.email)

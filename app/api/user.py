@@ -5,8 +5,6 @@ from cerberus import Validator
 from app.models import User, Device
 from app.api import bp
 from app import db
-from requests_oauthlib import OAuth2Session
-from config import gConfig
 
 #Do we have to update user schema?
 #Used with the validator to ensure that the incoming data is a user
@@ -58,20 +56,6 @@ def user_get_patch_delete_by_id(id):
         db.session.close()
         return '', 204
 
-def get_google_auth(state=None, token=None):
-    if token:
-        return OAuth2Session(gConfig.CLIENT_ID, token=token)
-    if state:
-        return OAuth2Session(
-            gConfig.CLIENT_ID,
-            state=state,
-            redirect_uri=gConfig.REDIRECT_URI)
-    oauth = OAuth2Session(
-        gConfig.CLIENT_ID,
-        redirect_uri=gConfig.REDIRECT_URI,
-        scope=gConfig.SCOPE)
-    return oauth
-
 #Logs the user in
 @bp.route('/login', methods=['POST'])
 def login():
@@ -83,22 +67,12 @@ def login():
         check_user = User.query.filter_by(email=user_email).first()
         if not check_user or not check_user.check_password(user_data['password']):
             abort(403, description="The credentials you entered were incorrect")
-        result = login_user(check_user, remember=user_data['remember'])
+        result = login_user(check_user)
         db.session.close()
         if result:
             return '', 204
         else:
             return 'Unauthorized', 401
-
-@bp.route('/glogin', methods=['GET'])
-def login_OAuth():
-        if request.method == 'GET':
-            google = get_google_auth()
-            auth_url, state = google.authorization_url(gConfig.AUTH_URI, access_type='offline')
-            session['oauth_state'] = state
-
-            # print(auth_url)
-            return auth_url, 200
 
 #Adds a new user
 @bp.route('/user', methods=['POST'])

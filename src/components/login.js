@@ -13,24 +13,12 @@ export default class Login extends Component {
       error: false,
       flag: false, 
 	    postLoading: false, 
-      OAuthLoading: false,
-      remember: true, 
-      auth_url: ""
     };
-  }
-  
-  doOAuth = (event) => {
-    this.setState({OAuthLoading:true});
-    axiosBaseURL.get('/glogin').then((result) => {
-      window.location.href = result.data;
-    });
-
-    //this.props.history.push("/home"); 
   }
 
   doLogin = (event) => {
 	  this.setState({postLoading:true});
-	  axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password, remember: this.state.remember})
+	  axiosBaseURL.post('/login', {email: this.state.email, password: this.state.password})
 	  .then(
 		  (result) =>{this.setState({postLoading: false, flag:false}); 
       this.props.history.push("/home"); 
@@ -44,16 +32,6 @@ export default class Login extends Component {
       [event.target.name]: event.target.value
     });
   };
-   //trys to check if authenticated already and redirect
-   //when logging out its a little slow so it authenticates and redirects too quickly
-
-  toggleCheckbox = () => {
-    this.setState(({ remember }) => (
-      {
-        remember: !remember
-      }
-    ));
-  }
 
 	render(){
 		if(this.state.error){
@@ -82,12 +60,7 @@ export default class Login extends Component {
     <label>Password</label>
     <input name="password" type="password" onChange={this.handleChange} value={this.state.password} className="form-control" id="exampleInputPassword1" placeholder="Password" />
   </div>
-  <div className="form-check">
-    <input className="form-check-input" type="checkbox" checked={this.state.remember} onChange={this.toggleCheckbox} id="checkbox"/>
-    <label className="form-check-label" for="checkbox">Remember Me</label>
-  </div>
   <button onClick={this.doLogin} className="btn btn-primary">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.postLoading} /></button>
-  <button onClick={this.doOAuth} className="btn btn-primary flex-right">Sign in with Google<CircleSpinner size={20} color="#3BBCE5" loading={this.state.OAuthLoading}/></button>
   <Link id="signupHelp" to="/signup" className="form-text text-muted">Register New User</Link>
 </form>
 </div>

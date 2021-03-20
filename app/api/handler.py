@@ -22,9 +22,7 @@ def device_data_post(device_id):
       deviceStats = request.get_json()
       deviceStats = json.loads(deviceStats)
       #Set the time the state of the device changed to right now
-      deviceStats['timestamp'] = datetime.now()
-      print("Timestamp at time ", datetime.now())
-      
+      deviceStats['timestamp'] = datetime.now()      
 
       #Convert voltage to battery power.d
       deviceVoltage = deviceStats['device_battery']
@@ -35,26 +33,19 @@ def device_data_post(device_id):
       deviceVoltage = deviceVoltage / (Vmax - Vmin)
       deviceVoltage = round(deviceVoltage, 1)
       deviceStats['device_battery'] = deviceVoltage
-      print("Device Voltage is ", deviceVoltage)
 
       #Select *
       #From Device
       #Where id = device_id
       #LIMIT 1
       myDevice = Device.query.filter_by(id=device_id).first()
-
-
-      print(myDevice)
       myDevice.update(deviceStats)
 
       myStamp = BatteryLogger()
-      #Temporary for adding device battery logs
-      print(deviceStats)
-
       myStamp.device_battery = deviceStats['device_battery']
       myStamp.timestamp_time = deviceStats['timestamp']
 
-      #Redo to 1 to many
+      #This adds a battery log associated with the device's ID
       myDevice.battery_logger.append(myStamp)
       db.session.commit()
       return '', 200

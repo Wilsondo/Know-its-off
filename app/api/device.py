@@ -54,22 +54,13 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
-# SELECT *
-# FROM BatteryLogger
-# Where id = view_model ids
-
-# CREATE view_model ids
-# SELECT battery_id
-# FROM battery_table
-# WHERE device_id = id
-
 
 #This route takes in a device id and returns all of the associated battery logs with the device.
 @bp.route('/batteryLogs/<id>', methods=['GET'])
 #@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
-        myLogs = BatteryLogger.query.filter(device_id = id).all()
+        myLogs = BatteryLogger.query.filter_by(device_id = id).all()
         returnValue = []
         for row in myLogs:
             returnValue.append(row.to_dict())
@@ -113,7 +104,6 @@ def getUserDevices():
    # return jsonify(deviceUserList)
     #return deviceUserList
 
-#The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])
 @login_required
 def device_get_post():

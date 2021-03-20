@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {CircleSpinner} from 'react-spinners-kit' 
+import {CircleSpinner} from 'react-spinners-kit'
 import axiosBaseURL from '../axios.js'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, AccordionActions, Typography} from '@material-ui/core/'
@@ -9,15 +9,15 @@ export default class EditUser extends Component {
         super(props);
         this.state = {
             current: {
-                username: "", 
-                email: "", 
+                username: "",
+                email: "",
                 password: "",
             },
-            loading: false, 
-            error: false, 
+            loading: false,
+            error: false,
             redirect: null,
 
-            expanded: false, 
+            expanded: false,
             setExpanded: false
         };
     }
@@ -27,7 +27,7 @@ export default class EditUser extends Component {
          axiosBaseURL.get("/user/current")
          .then((result) => {
             this.setState({
-               loading: false, 
+               loading: false,
                current: {
                   email: result.data.email,
                   password: result.data.password
@@ -140,7 +140,7 @@ export default class EditUser extends Component {
 
    render() {
       if(this.state.error) {
-         return(<div className="m-5"><h3>Error: Not Logged In</h3></div>)  
+         return(<div className="m-5"><h3>Error: Not Logged In</h3></div>)
       }
       if(this.state.loading){
          return (
@@ -208,7 +208,7 @@ export default class EditUser extends Component {
              vitae egestas augue. Duis vel est augue.
            </Typography>
          </AccordionDetails>
-       </Accordion>        
+       </Accordion>
 </div>
        )
     }

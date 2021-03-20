@@ -41,7 +41,6 @@ export default class Login extends Component {
       			return (<div classNameName="d-flex justify-content-center m-5"><CircleSpinner size={60} color="#686769" loading={this.state.loading} /></div>)
     }
     const {flag} = this.state;
-    // <a href={{ url_for('oauth_authorize', provider='google') }}><img src="{{ url_for('static', filename='img/sign-in-with-google.png') }}" /></a>
 		return(
 <div className="mt-5 mb-5 container bg-dark border">
 <div className="row justify-content-md-center text-light mt-5">
@@ -51,7 +50,7 @@ export default class Login extends Component {
 <form>
   <div className="form-group">
     {flag && (
-      <div color="red">Email or password incorrect</div>
+      <div className="text-danger">*Email or password incorrect</div>
     )}
     <label>Email address</label>
     <input name="email" type="email" className="form-control" value={this.state.email} onChange={this.handleChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />

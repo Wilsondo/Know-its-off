@@ -69,7 +69,7 @@ def device_get_patch_delete_by_id(id):
 #@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
-        myLogs = BatteryLogger.query.filter(BatteryLogger.battery_many_relation_table.any(id=id)).all()
+        myLogs = BatteryLogger.query.filter(device_id = id).all()
         returnValue = []
         for row in myLogs:
             returnValue.append(row.to_dict())

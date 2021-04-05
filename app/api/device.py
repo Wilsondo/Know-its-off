@@ -86,7 +86,6 @@ def getUserDevices():
             given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
             rowDict['timestamp'] = given_date
             myList.append(rowDict)
-            print(rowDict)
         else:
             rowDict['timestamp'] = "N/A"
             myList.append(rowDict)

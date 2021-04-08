@@ -20,7 +20,6 @@ export default class addDevice extends Component {
          device_battery: 100.0,
 	   },
       allDevices: [],
-	   loading: true,
 	   error: false,
 	   postLoading: false,
       redirect: null, 
@@ -51,7 +50,7 @@ export default class addDevice extends Component {
             this.props.history.push('/home'); // redirect the user to the homepage to view their device
          })                                   // but not before they get a sneak previous of what their device looks like
          .catch((error) => {
-            this.setState({loading: false})
+            this.setState({postLoading: false})
             alert("Please enter a valid Device ID!"); // error message if invalid device ID
          })
       }
@@ -67,12 +66,6 @@ export default class addDevice extends Component {
 	render(){
 		if(this.state.error){ 
          return(<div className="m-5 text-light"><h3>Error 404, Page Not Found</h3></div>) 
-      }
-		if(this.state.loading){
-         return (
-            <div className="d-flex justify-content-center m-5">
-               <CircleSpinner size={60} color="#686769" loading={this.state.loading} />
-            </div>)
       }
       const {revealDetails} = this.state;
 		return(

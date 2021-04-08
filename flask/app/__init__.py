@@ -3,11 +3,9 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-import os
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 app.config.from_object(Config)
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)
@@ -23,6 +21,7 @@ login_manager = LoginManager(app)
 #Is this supposed to be api.user, its supposed to define the route for login
 login_manager.login_view = 'api.login'
 login_manager.init_app(app)
+login_manager.session_protection = "strong"
 
 @app.route('/')
 def index():

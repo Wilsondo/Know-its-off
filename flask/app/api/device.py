@@ -54,22 +54,21 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
-# SELECT *
-# FROM BatteryLogger
-# Where id = view_model ids
-
-# CREATE view_model ids
-# SELECT battery_id
-# FROM battery_table
-# WHERE device_id = id
-
+@bp.route('/allDevices', methods=['GET'])
+@login_required
+def getAllDevices():
+    myQuery = Device.query.all()
+    myList = []
+    for row in myQuery:
+        myList.append(row.to_dict())
+    return jsonify(myList), 200
 
 #This route takes in a device id and returns all of the associated battery logs with the device.
 @bp.route('/batteryLogs/<id>', methods=['GET'])
-#@login_required
+@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
-        myLogs = BatteryLogger.query.filter(BatteryLogger.battery_many_relation_table.any(id=id)).all()
+        myLogs = BatteryLogger.query.filter_by(device_id = id).all()
         returnValue = []
         for row in myLogs:
             returnValue.append(row.to_dict())
@@ -77,37 +76,14 @@ def getDeviceLogs(id):
             del row["id"]
         return jsonify(returnValue), 200
 
-
-#This function gets all of the devices that the user owns.
-#login does not work correctly
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
     results = Device.query.filter_by(user_id = current_user.get_id())
     myList = []
     for row in results:
-        rowDict = row.to_dict() 
-        if rowDict['timestamp'] != None:
-            given_date = rowDict['timestamp']
-            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
-            rowDict['timestamp'] = given_date
-            myList.append(rowDict)
-        else:
-            rowDict['timestamp'] = "N/A"
-            myList.append(rowDict)
-
-    db.session.close()
-
-    return jsonify(myList), 200
-    #This function gets all of the devices that the user owns.
-#login does not work correctly
-
-@bp.route('/allDevices', methods=['GET'])
-@login_required
-def getAllDevices():
-    results = Device.query.all()
-    myList = []
-    for row in results:
+        #TODO check if there's a way to convert time to local (currently set to server locale only)
+        #Format M/D/Y HR:MIN AM/PM\
         rowDict = row.to_dict() 
         if rowDict['timestamp'] != None:
             given_date = rowDict['timestamp']
@@ -122,37 +98,6 @@ def getAllDevices():
 
     return jsonify(myList), 200
 
-
-@bp.route('/devicestime', methods=['GET'])
-@login_required
-def getDeviceTimes():
-    results = Device.query.filter_by(user_id = current_user.get_id())
-    myList = []
-    for row in results:
-        rowDict = row.to_dict() 
-        if rowDict['timestamp'] != None:
-            given_date = rowDict['timestamp']
-            given_date = given_date.strftime("%X,%x")
-            rowDict['timestamp'] = given_date
-            myList.append(rowDict)
-        else:
-            rowDict['timestamp'] = "N/A"
-            myList.append(rowDict)
-
-    db.session.close()
-
-    return jsonify(myList), 200
-
-    #Select * From Device
-    #Where Device.user_id = user_id
-   # deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
-   #db.session.close
-    #Converts the variable into a Python dictionary
-    #Then it can be turned into a JSON for easier parsing.
-   # return jsonify(deviceUserList)
-    #return deviceUserList
-
-#The get request for this route is never used.
 @bp.route('/device', methods=['POST', 'GET'])
 @login_required
 def device_get_post():

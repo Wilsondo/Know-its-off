@@ -64,6 +64,7 @@ export default class addDevice extends Component {
    };
    // Render a simple form that takes the Appliance name and Device ID with a submission button
 	render(){
+      this.setState({postLoading:false});
 		if(this.state.error){ 
          return(<div className="m-5 text-light"><h3>Error 404, Page Not Found</h3></div>) 
       }

@@ -15,6 +15,17 @@ user_schema = {
 v = Validator(user_schema, allow_unknown=True)
 
 
+@bp.route('/user/check/<passw>', methods=['POST'])
+@login_required
+def check_pass(passw):
+    if current_user is None:
+        db.session.close()
+        abort(404, description="This user does not exist")
+    if current_user.check_password(passw):
+        return '', 204
+    else:
+        return '', 401
+
 #Multifunction route that does things depending on the user id
 @bp.route('/user/<id>', methods=['GET', 'PATCH', 'DELETE'])
 @login_required
@@ -24,13 +35,9 @@ def user_get_patch_delete_by_id(id):
         abort(404, description="This user does not exist")
     #Returns the specific User
     if request.method == 'GET':
-        #returnValue = jsonify(current_user.to_dict())
-        myList = []
-        test = User.query.filter_by(id = current_user.get_id())
-        for row in test:
-            myList.append(row.to_dict())
+        returnValue = jsonify(current_user.to_dict())
         db.session.close()
-        return jsonify(myList), 200
+        return returnValue, 200
     #Updates the user password
     elif request.method == 'PATCH':
         obj = request.get_json()

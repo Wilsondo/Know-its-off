@@ -54,10 +54,18 @@ def device_get_patch_delete_by_id(id):
         print(myDevice, " Removed")
         return '', 204
 
+@bp.route('/allDevices', methods=['GET'])
+@login_required
+def getAllDevices():
+    myQuery = Device.query.all()
+    myList = []
+    for row in myQuery:
+        myList.append(row.to_dict())
+    return jsonify(myList), 200
 
 #This route takes in a device id and returns all of the associated battery logs with the device.
 @bp.route('/batteryLogs/<id>', methods=['GET'])
-#@login_required
+@login_required
 def getDeviceLogs(id):
     if request.method == 'GET':
         myLogs = BatteryLogger.query.filter_by(device_id = id).all()
@@ -68,10 +76,6 @@ def getDeviceLogs(id):
             del row["id"]
         return jsonify(returnValue), 200
 
-
-#This function gets all of the devices that the user owns.
-#login does not work correctly
-#TODO add ceberus validation to this method
 @bp.route('/devices', methods=['GET'])
 @login_required
 def getUserDevices():
@@ -86,7 +90,6 @@ def getUserDevices():
             given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
             rowDict['timestamp'] = given_date
             myList.append(rowDict)
-            print(rowDict)
         else:
             rowDict['timestamp'] = "N/A"
             myList.append(rowDict)
@@ -94,15 +97,6 @@ def getUserDevices():
     db.session.close()
 
     return jsonify(myList), 200
-
-    #Select * From Device
-    #Where Device.user_id = user_id
-   # deviceUserList = Device.query.filter_by(user_id=current_user.get_id()).all()
-   #db.session.close
-    #Converts the variable into a Python dictionary
-    #Then it can be turned into a JSON for easier parsing.
-   # return jsonify(deviceUserList)
-    #return deviceUserList
 
 @bp.route('/device', methods=['POST', 'GET'])
 @login_required

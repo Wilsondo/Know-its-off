@@ -1,146 +1,172 @@
+/****************************************************************************************************
+ * FILENAME: editUser.js
+ * DESCRIPTION: Accordian of options to change user settings or remove user
+ * AUTHOR(S): Capstone 2020-2021 (Tyler Titsworth)
+ * NOTES: Individual loading/expansion state variables can't be optimized because of the nature of js.
+ * Accordian HTML is based on the @material-ui docs
+ * Links from navbar.js (index.js/app.js)
+ ****************************************************************************************************/
 import React, { Component } from 'react'
 import {CircleSpinner} from 'react-spinners-kit'
 import axiosBaseURL from '../axios.js'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Accordion, AccordionDetails, AccordionSummary, AccordionActions, Typography} from '@material-ui/core/'
+import { Accordion, AccordionDetails, AccordionSummary} from '@material-ui/core/'
 
 export default class EditUser extends Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            current: {
-                username: "",
-                email: "",
-                password: "",
-            },
-            loading: false,
-            error: false,
-            redirect: null,
-
-            expanded: false,
-            setExpanded: false
-        };
-    }
-
+      super(props);
+      this.state = {
+         // current user information
+         current: {
+            email: "",
+            password: "",
+         },
+         // variables that will be changed or used to confirm information
+         toChange: {
+            email: "",
+            oldPass: "",
+            pass: "",
+            checkPass: "",
+            deleteconfirm: ""
+         },
+         loading: false, // this loading is for the page itself
+         error: false,
+         // each loading is for a different accordian section button, top->bottom
+         loading1: false, 
+         loading2: false, 
+         loading3: false, 
+         // used to capture the state of the individual accordian sections
+         expanded1: false,
+         expanded2: false,
+         expanded3: false
+      };
+   }
+   // Upon loading the page, populate user settings into 'current'
    componentDidMount() {
-      if(this.state.detail_form === false)
-         axiosBaseURL.get("/user/current")
-         .then((result) => {
-            this.setState({
-               loading: false,
-               current: {
-                  email: result.data.email,
-                  password: result.data.password
-               }
-            });
-         })
-         .catch((error) => {
-            this.setState({loading: false, error: true});
-            if(error.response){
-               this.setState({error_response: error.response.status});
-               if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response.data)}
+      axiosBaseURL.get("/user/current")
+      .then((result) => {
+         this.setState({
+            loading: false,
+            current: {
+               email: result.data.email,
+               password: result.data.password
+            }
+         });
+      })
+      .catch((error) => {
+         this.setState({loading: false, error: true});
+         if(error.response){
+            this.setState({error_response: error.response.status});
          }
       })
    }
-
-   verify = (event) => {
-      this.setState({verifyLoad : true});
-      axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
-      .then((result) => {
-         this.setState({verifyLoad: false, detail_form: true, flag: false});
-      })
-      .catch((error) => {
-         this.setState({verifyLoad: false, flag:true, error_response: error.response.status});
-         if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-         else if (error.response.data){console.log(error.response.data)}
-      })
-      event.preventDefault();
-   }
-
-   delete = (event) => {
-        this.setState({deleteLoad : true});
-        const r = window.confirm("Are you sure?");
-        if(r === true) {
-            axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
-            .then((result) => {
-                axiosBaseURL.delete('/user/current')
-                this.setState({deleteLoad: false, redirect: "/"})
-            })
-            .catch((error) => {
-                this.setState({deleteLoad: false, flag:true, error_response: error.response.status});
-                if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-                else if (error.response.data){console.log(error.response.data)}
-            })
-        }
-        else this.setState({loading : false})
-   }
-
+   // function to handle form changes with target variables, only works with the toChange associations
+   // so we can't change anything outside of that state context
    handleChange = (event) => {
         this.setState({
-           current: {...this.state.current,[event.target.name]: event.target.value}
+           toChange: {...this.state.toChange,[event.target.name]: event.target.value}
         });
    };
-
-   accordionChange = (panel) => (event, isExpanded) => {
-      const result = isExpanded ? panel : false;
-      this.setState({setExpanded: result});
-   }
-
-
-   update = (event) => {
-      this.setState({changeLoad: true})
-      if(this.state.current.email === undefined || this.state.current.username === undefined) {
-         alert("Fill out Username field.");
-         this.setState({changeLoad: false});
-         event.preventDefault();
+   // function to handle the expansion and compression of the accordian based on the id of the identifier
+   handleAccordion = (id) => (event) => {
+      switch(id) {
+         case 1:
+            var ex1 = !this.state.expanded1
+            this.setState({
+               expanded1: ex1
+             });
+            break;
+         case 2:
+            var ex2 = !this.state.expanded2
+            this.setState({
+               expanded2: ex2
+             });
+            break;
+         case 3:
+            var ex3 = !this.state.expanded3
+            this.setState({
+               expanded3: ex3
+             });
+            break;
+         default: 
+            break;
       }
-      else if(this.state.confirmPass !== this.state.currentPass) {
-         alert("Passwords do not match.");
-         this.setState({changeLoad: false});
+   };
+   // Email submit button, will attempt to change the email of the user to information present in the form field
+   doEmail = (event) => {
+      this.setState({loading1 : true});
+      // check if the form field is empty, or if the email to change it the same as the current email
+      if(this.state.toChange.email === undefined || this.state.toChange.email === this.state.current.email) {
+         alert("Please enter valid email into field"); // error message, prevent refreshing
+         this.setState({loading1: false});
          event.preventDefault();
       }
       else {
-         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.current.password})
+         axiosBaseURL.patch('/user/current', {email: this.state.toChange.email}) // patch the user
          .then((result) => {
-            axiosBaseURL.patch('/user/current', {email: this.state.current.email, password: this.state.confirmPass, username: this.state.current.username})
-            .then((result) => {
-               this.setState({changeLoad: false})
-               alert("User Information Successfully Updated!");
-            })
-            .catch((error) => {
-               this.setState({changeLoad: false, error: true, error_response: error.response.data})
-               if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-               else if (error.response.data){console.log(error.response.data)}
-            });
+            this.setState({loading1: false})
+            alert("User Information Successfully Updated!"); // allow page refreshing
          })
          .catch((error) => {
             this.setState({changeLoad: false, error: true, error_response: error.response.data})
-            if(error.response.data === "not authorized"){ this.setState({redirect: "/"}) }
-            else if (error.response.data){console.log(error.response.data)}
          });
-         event.preventDefault();
       }
-   };
-
-   // useStyles = makeStyles((theme) => ({
-   //    root: {
-   //      width: '100%',
-   //    },
-   //    heading: {
-   //      fontSize: theme.typography.pxToRem(15),
-   //      flexBasis: '33.33%',
-   //      flexShrink: 0,
-   //    },
-   //    secondaryHeading: {
-   //      fontSize: theme.typography.pxToRem(15),
-   //      color: theme.palette.text.secondary,
-   //    },
-   //  }));
-
+   }
+   // Password submit button, will attempt to change user password information based on a few form fields
+   doPass = (event) => {
+      this.setState({loading2 : true});
+      axiosBaseURL.post('/user/check/' + this.state.toChange.oldPass) // check if the 'current password' field matches 
+                                                                      // since passwords are always given as hash we use an API call
+                                                                      // this will reveal the password of a user who attempts to change it
+      .then(response => {
+         // If the password and confirm fields match AND the status response code of the password checking is valid
+         if(this.state.toChange.pass === this.state.toChange.checkPass && response.status === 204) {
+            axiosBaseURL.patch('/user/current', {password: this.state.toChange.pass})
+            .then((result) => {
+               this.setState({loading2: false})
+               alert("User Information Successfully Updated!"); // allow page refreshing
+            })
+         }
+         else { // error message otherwise, passwords have to not match in this case
+            alert("Your Passwords do not match");
+            this.setState({loading2: false});
+            event.preventDefault(); // prevent refreshing
+         }
+      })
+      .catch((error) => { // if the axios call fails, its because the API call returned a 401
+         this.setState({loading2: false, error_response: error.response.status})
+         alert("Your old password is incorrect") // error message
+         event.preventDefault(); // prevent refreshing
+      })
+   }
+   // Delete Account button, will attempt to remove an account given the password of the account is correct
+   delete = (event) => {
+      this.setState({loading3 : true});
+      const r = window.confirm("Are you sure?"); // Extra confirmation step
+      if(r === true) {
+         // Instead of using /user/check we can just try to login with the given password
+         axiosBaseURL.post('/login', {email: this.state.current.email, password: this.state.toChange.deleteconfirm})
+         .then((result) => {
+            axiosBaseURL.delete('/user/current') // delete API call if successful
+            this.setState({loading3: false})
+            this.props.history.push('/login'); // redirect the user to the login page
+         })
+         .catch((error) => { // if it fails the password must've been incorrect
+                             // There is an alternative scenario where the user isn't logged in
+                             // In which case they will never be able to delete the account 
+                             // More error checking is needed to activate the error state flag
+            this.setState({loading3: false, error_response: error.response.status});
+            alert("Password incorrect");
+         })
+      }
+      else this.setState({loading : false})
+      event.preventDefault(); // always prevent refreshing
+   }
+   // Render the accordian with all 3 forms
+   // The accordian starts collapsed and can be expanded by clicking it
    render() {
       if(this.state.error) {
-         return(<div className="m-5"><h3>Error: Not Logged In</h3></div>)
+         return(<div className="m-5 text-light"><h3>Error: Not Logged In</h3></div>)
       }
       if(this.state.loading){
          return (
@@ -149,66 +175,47 @@ export default class EditUser extends Component {
             </div>)
       }
       return(
-<div>
-   <Accordion {... this.setState({expanded: "panel1"})} onChange={this.accordionChange('panel1')}>
+<div className="m-5 text-light">
+   <Accordion className="bg-secondary text-light" expanded={this.state.expanded1} onChange={this.handleAccordion(1)}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
-         <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Change Email</Typography>
-         <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">Enter a new Email Address</Typography>
+         Change Email
       </AccordionSummary>
       <AccordionDetails>
-         <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.
-         </Typography>
+         <input name="email" type="email" className="form-control" value={this.state.toChange.email} onChange={this.handleChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter new email address" />
+         <button onClick={this.doEmail} className="btn btn-outline-info">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading1} /></button>
       </AccordionDetails>
-      </Accordion>
-      <Accordion {... this.setState({expanded: "panel2"})} onChange={this.accordionChange('panel2')}>
-         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
-            <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Users</Typography>
-            <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">
-               You are currently not an owner
-            </Typography>
-         </AccordionSummary>
-         <AccordionDetails>
-           <Typography>
-             Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-             diam eros in elit. Pellentesque convallis laoreet laoreet.
-           </Typography>
-         </AccordionDetails>
-       </Accordion>
-       <Accordion {... this.setState({expanded: "panel3"})} onChange={this.accordionChange('panel3')}>
-         <AccordionSummary
-           expandIcon={<ExpandMoreIcon />}
-           aria-controls="panel3bh-content"
-           id="panel3bh-header"
-         >
-           <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Advanced settings</Typography>
-           <Typography className="fontSize: theme.typography.pxToRem(15), color: theme.palette.text.secondary">
-             Filtering has been entirely disabled for whole web server
-           </Typography>
-         </AccordionSummary>
-         <AccordionDetails>
-           <Typography>
-             Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-             vitae egestas augue. Duis vel est augue.
-           </Typography>
-         </AccordionDetails>
-       </Accordion>
-       <Accordion {... this.setState({expanded: "panel4"})} onChange={this.accordionChange('panel4')}>
-         <AccordionSummary
-           expandIcon={<ExpandMoreIcon />}
-           aria-controls="panel4bh-content"
-           id="panel4bh-header"
-         >
-           <Typography className="fontSize: theme.typography.pxToRem(15), flexBasis: '33.33%', flexShrink: 0">Personal data</Typography>
-         </AccordionSummary>
-         <AccordionDetails>
-           <Typography>
-             Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-             vitae egestas augue. Duis vel est augue.
-           </Typography>
-         </AccordionDetails>
-       </Accordion>
+   </Accordion>
+   <Accordion className="bg-secondary text-light" expanded={this.state.expanded2} onChange={this.handleAccordion(2)}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2bh-content" id="panel2bh-header">
+         Change Password
+      </AccordionSummary>
+      <AccordionDetails>
+      <div className="d-grid gap-2 d-md-flex">
+         <div className="form-group container-fluid">
+               <label>Current Password</label>
+               <input name="oldPass" type="password" className="form-control" value={this.state.toChange.oldPass} onChange={this.handleChange} id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Current Password" />
+         </div>
+         <div className="form-group container-fluid">
+            <label>New Password</label>
+            <input name="pass" type="password" className="form-control" value={this.state.toChange.pass} onChange={this.handleChange} id="exampleInputPassword2" aria-describedby="passwordHelp" placeholder="New Password" />
+         </div>
+         <div className="form-group container-fluid gap-2">
+            <label>Confirm Password</label>
+            <input name="checkPass" type="password" className="form-control" value={this.state.toChange.checkPass} onChange={this.handleChange} id="exampleInputPassword1" aria-describedby="passwordHelp" placeholder="Confirm Password" />
+         </div>
+         <button onClick={this.doPass} className="btn btn-outline-info">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading2} /></button>
+      </div>
+      </AccordionDetails>
+   </Accordion>
+   <Accordion className="bg-secondary text-light" expanded={this.state.expanded3} onChange={this.handleAccordion(3)}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3bh-content" id="panel3bh-header">
+         Delete Account
+      </AccordionSummary>
+      <AccordionDetails>
+      <input name="deleteconfirm" type="password" className="form-control" value={this.state.toChange.deleteconfirm} onChange={this.handleChange} id="exampleInput5" aria-describedby="emailHelp" placeholder="Enter your account password" />
+         <button onClick={this.delete} className="btn btn-outline-info">Submit<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading3} /></button>
+      </AccordionDetails>
+   </Accordion>
 </div>
        )
     }

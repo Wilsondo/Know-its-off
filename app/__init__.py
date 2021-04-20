@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_cors import CORS
+from flask_assistant import Assistant, ask, tell
+
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 app.config.from_object(Config)
@@ -18,7 +20,7 @@ migrate = Migrate(app, db, compare_type=True)
 
 from app import models
 from app.api import bp as api_bp
-from app.models import User
+from app.models import User, Device
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
@@ -28,6 +30,21 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'api.login'
 login_manager.init_app(app)
 login_manager.session_protection = "strong"
+assist = Assistant(app, route='/assist', project_id='know-its-off-303802')
+
+@assist.action('deviceStateCheck')
+def deviceStateCheck(deviceName):
+    print(deviceName)
+    myDevice = Device.query.filter_by(appliance_name = deviceName).first()
+    if myDevice is None:
+        return tell("Can you try again?")
+    if myDevice.device_state == 1:
+        speech = "Your " + deviceName + " is on"
+    elif myDevice.device_state == 0:
+        speech = "Your " + deviceName + " is off"
+    else:
+        speech = "Your " + deviceName + " is not set up yet"
+    return tell(speech)
 
 @app.route('/')
 def index():

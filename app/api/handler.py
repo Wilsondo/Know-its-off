@@ -1,3 +1,11 @@
+#****************************************************************************************************
+# FILENAME: handler.py
+# DESCRIPTION: The handler.py file contains the route that controls interaction between the
+# physical device and the database.
+# AUTHOR(S): Capstone 2020-2021 Douglas Wilson
+# NOTES: Remember that every route has an /api written before it.
+# /device/id becomes /api/device/id
+#****************************************************************************************************
 import os
 from flask import Flask, request
 from config import Config
@@ -48,4 +56,4 @@ def device_data_post(device_id):
       #This adds a battery log associated with the device's ID
       myDevice.battery_logger.append(myStamp)
       db.session.commit()
-      return '', 200
+      return '', 204

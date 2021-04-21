@@ -1,3 +1,10 @@
+#****************************************************************************************************
+# FILENAME: errors.py
+# DESCRIPTION: This file contains the functions relating to error handling
+# AUTHOR(S): Capstone 2020-2021
+# NOTES: Notice how there are no actual routes in this file, the functions are used in other files
+# to handle errors.
+#****************************************************************************************************
 from flask import jsonify
 from werkzeug.http import HTTP_STATUS_CODES
 from app.api import bp

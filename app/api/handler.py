@@ -16,11 +16,14 @@ from app import db
 import json
 from app.models import Device, BatteryLogger
 
-#These variables define the battery voltages
+#These variables define the battery values coming in.
 #We can use these to calculate the battery power level
 #as a percentage.
-Vmax = 4.2
-Vmin = 3.0
+#This used to be voltage
+Vmax = 1023
+Vmin = 0
+
+#Sending values between 0 - 1023
 
 #We want to get the device iD, then modify the corresponding device
 @bp.route('/updateState/<int:device_id>', methods=['PATCH'])
@@ -28,11 +31,10 @@ def device_data_post(device_id):
    if request.method == "PATCH":
       print("Receiving Device at ID: ", device_id)
       deviceStats = request.get_json()
-      deviceStats = json.loads(deviceStats)
       #Set the time the state of the device changed to right now
       deviceStats['timestamp'] = datetime.now()      
 
-      #Convert voltage to battery power.d
+      #Convert voltage to battery power.
       deviceVoltage = deviceStats['device_battery']
       # (Vactual - Vmin) * 100
       # ______________________

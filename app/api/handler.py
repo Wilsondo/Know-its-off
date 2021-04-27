@@ -49,13 +49,16 @@ def device_data_post(device_id):
       #Where id = device_id
       #LIMIT 1
       myDevice = Device.query.filter_by(id=device_id).first()
-      myDevice.update(deviceStats)
+      if myDevice:
+         myDevice.update(deviceStats)
 
-      myStamp = BatteryLogger()
-      myStamp.device_battery = deviceStats['device_battery']
-      myStamp.timestamp_time = deviceStats['timestamp']
+         myStamp = BatteryLogger()
+         myStamp.device_battery = deviceStats['device_battery']
+         myStamp.timestamp_time = deviceStats['timestamp']
 
-      #This adds a battery log associated with the device's ID
-      myDevice.battery_logger.append(myStamp)
-      db.session.commit()
-      return '', 204
+         #This adds a battery log associated with the device's ID
+         myDevice.battery_logger.append(myStamp)
+         db.session.commit()
+         return '', 204
+      else: 
+         return '', 403

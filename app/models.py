@@ -30,7 +30,7 @@ class BatteryLogger(db.Model):
     timestamp_time = db.Column(db.TIMESTAMP, nullable = False)
     device_battery = db.Column(db.Float, nullable=False) 
     #The cascade allows the deletion of the battery logs automatically when the device is deleted.
-    device_id = db.Column(db.Integer, db.ForeignKey('device.id', ondelete='CASCADE'), nullable=False)
+    device_id = db.Column(db.Integer, db.ForeignKey('device.id', ondelete='CASCADE', onupdate="cascade"), nullable=False)
 
     device = relationship("Device", backref = "battery_logger")
 

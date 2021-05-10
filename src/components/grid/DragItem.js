@@ -4,6 +4,7 @@
  * AUTHOR(S): Capstone 2019-2020
  * NOTES: I wish it had comments so I knew what was going on. It looks like it enables drag properties, 
  * but it's not clear how to customize this to increase clarity in dnd mechanics
+ * A change was made 05/10/21 to 
  ****************************************************************************************************/
 import React, { memo, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
@@ -11,8 +12,9 @@ import { useDrag, useDrop } from "react-dnd";
 const DragItem = memo(({ id, onMoveItem, children }) => {
   const ref = useRef(null);
 
-  const [{ isDragging }, connectDrag] = useDrag({
-    item: { id, type: "IMG" },
+  const [{ isDragging }, connectDrag] = useDrag({ // https://github.com/react-dnd/react-dnd/releases/tag/v14.0.0
+    type: "IMG",
+    item: () => ({id}),
     collect: monitor => {
       return {
         isDragging: monitor.isDragging()

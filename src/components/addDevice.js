@@ -21,7 +21,6 @@
        },
        allDevices: [],
        error: false,
-       postLoading: false,
        redirect: null, 
        revealDetails: false, 
        loading: false, 
@@ -42,18 +41,22 @@
           if(String(this.state.myDevice.id) === String(this.state.allDevices[i].id)){ // verify the ID with string typecasting because javascript is %&#*#!^ terrible
              idVerify = false;
           }
-       if(idVerify || this.state.myDevice.id === "0"){ // Make sure the ID isn't already in use, or 0
-                                                       // an ID will be 0 if it's text or a non-integer
+       if(idVerify && String(this.state.myDevice.id) !== "0"){ // Make sure the ID isn't already in use, or 0
+                                                            // an ID will be 0 if it's text or a non-integer
           axiosBaseURL.post('/device', this.state.myDevice) // API call to create the new device
           .then((result) => {                               // This API call handles state and battery declaration
-             this.setState({ myDevice: {...this.state.myDevice, id: result.data.id}, postLoading:false, revealDetails:true })
+             this.setState({ myDevice: {...this.state.myDevice, id: result.data.id}, revealDetails:true })
              alert("Device Creation Successful!");
              this.props.history.push('/home'); // redirect the user to the homepage to view their device
           })                                   // but not before they get a sneak previous of what their device looks like
           .catch((error) => {
-             this.setState({postLoading: false})
+             this.setState({loading: false, })
              alert("Please enter a valid Device ID!"); // error message if invalid device ID
           })
+       }
+       else {
+         this.setState({loading: false, })
+         alert("Please enter a valid Device ID!"); // error message if invalid device ID
        }
        event.preventDefault(); // never refresh
     };
@@ -77,7 +80,7 @@
        <label>Appliance Name</label>
        <input className="form-control text-dark" name="appliance_name" id="inputApplianceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
        <label>Device ID</label>
-       <input className="form-control text-dark" name="id" id="inputId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.id} />
+       <input className="form-control text-dark" name="id" id="inputId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.id} min="1" step="1" type="number" />
     </div>
  
     <button onClick={this.postData} className="btn btn-success">Add this device<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>

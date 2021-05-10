@@ -15,11 +15,12 @@ export default class editDevice extends Component {
      super(props);
      this.state = {
          myDevice: {
-            appliance_name: "My Appliance",
-            //device_state: 1, 
-            //device_battery: 100.0,
-            //timestamp: "2019-04-30T08:59:00.000Z",
-            id: 1,
+            appliance_name: "",
+            id: 0,
+         },
+         newDevice: {
+            appliance_name: "",
+            id: 0,
          },
          allDevices: [], // array to store query of all devices within database
                          // this is not good with scale
@@ -36,6 +37,10 @@ export default class editDevice extends Component {
 		.then((result) => {
 			this.setState({ 
 				myDevice: {
+					id: result.data.id, 
+					appliance_name: result.data.appliance_name
+            },
+            newDevice: {
 					id: result.data.id, 
 					appliance_name: result.data.appliance_name
             },
@@ -65,7 +70,7 @@ export default class editDevice extends Component {
          var i = 0 // what is this c?
          for(i in this.state.allDevices) { // loop through all devices
             // Both values need to be typecasted because javascript is %&$*@!# terrible
-            if(String(this.state.allDevices[i].id) === String(this.state.myDevice.id)) { // compare ids
+            if(String(this.state.allDevices[i].id) === String(this.state.newDevice.id && String(this.state.allDevices[i].id !== String(this.state.myDevice.id)))) { // compare ids
                this.setState({idCheck:true});  // if they match set to prevent patching
             }
          }
@@ -74,7 +79,7 @@ export default class editDevice extends Component {
             alert("Please enter a valid Device ID!");
          }
          else {
-            axiosBaseURL.patch(dbString, this.state.myDevice) // API call to patch the device with new, overwritten information
+            axiosBaseURL.patch(dbString, this.state.newDevice) // API call to patch the device with new, overwritten information
             .then((result) => { // upon success
                this.setState({loading: false});
                   alert("Device Updated Successfully!");
@@ -100,7 +105,7 @@ export default class editDevice extends Component {
    // Handler function to let the form fields change the information stored in myDevice
    handleChangeDevice = (event) => { 
       this.setState({
-         myDevice : {...this.state.myDevice, [event.target.name]: event.target.value}
+         newDevice : {...this.state.newDevice, [event.target.name]: event.target.value}
       });
    };
    // Render simple form fields with a submit button
@@ -121,9 +126,9 @@ export default class editDevice extends Component {
 <form>
    <div className="form-group">
       <label>Appliance Name</label>
-      <input className="form-control text-dark" name="appliance_name" id="inputApplianceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.appliance_name} />
+      <input className="form-control text-dark" name="appliance_name" id="inputApplianceName" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.newDevice.appliance_name} />
       <label>Device ID</label>
-      <input className="form-control text-dark" name="id" id="inputDeviceId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.myDevice.id} />
+      <input className="form-control text-dark" name="id" id="inputDeviceId" aria-describedby="nameHelp" onChange={this.handleChangeDevice} value={this.state.newDevice.id} />
    </div>
 
    <button onClick={this.updateDevice} className="btn btn-success">Update<CircleSpinner size={20} color="#3BBCE5" loading={this.state.loading} /></button>

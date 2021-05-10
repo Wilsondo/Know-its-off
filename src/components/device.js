@@ -74,6 +74,9 @@ export default class Devices extends Component {
 	// Render a large card that displays all device information, with some buttons spread around
 	// Buttons not naturally justified are floating
 	render() {
+		console.log(this.state);
+		var myDate = new Date(this.state.myDevice.timestamp);
+		myDate = myDate.toLocaleString();
 		if(this.state.loading) {
 			return (
 			  <div className="d-flex justify-content-center m-5">
@@ -93,7 +96,7 @@ export default class Devices extends Component {
 							<p className="card-title text-wrap">Device ID: {this.state.myDevice.id}</p>
 							<p className="card-text">State: {this.state.myDevice.device_state ? 'ON' : 'OFF'}</p>
 							<p className="card-text">Battery: {this.state.myDevice.device_battery}%</p>
-							<p className="card-text">Last Seen: {this.state.myDevice.timestamp}</p>
+							<p className="card-text">Last Seen: {myDate}</p>
 							<Link to={"/device/" + this.state.myDevice.id + "/edit"} className="btn btn-primary text-wrap" data-toggle="tooltip" data-placement="bottom" title="Change Device Details">Modify</Link>
 							<Link to={"/device/" + this.state.myDevice.id + "/logs"} className="btn btn-success text-wrap float-right">Battery Logs</Link>
 					</div>

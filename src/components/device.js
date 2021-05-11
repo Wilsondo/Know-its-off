@@ -74,9 +74,12 @@ export default class Devices extends Component {
 	// Render a large card that displays all device information, with some buttons spread around
 	// Buttons not naturally justified are floating
 	render() {
-		console.log(this.state);
-		var myDate = new Date(this.state.myDevice.timestamp);
-		myDate = myDate.toLocaleString();
+		var myDate
+		if (this.state.myDevice.timestamp === "N/A") myDate = this.state.myDevice.timestamp;
+		else {
+		   myDate = new Date(this.state.myDevice.timestamp);
+		   myDate = myDate.toLocaleString();
+		}
 		if(this.state.loading) {
 			return (
 			  <div className="d-flex justify-content-center m-5">

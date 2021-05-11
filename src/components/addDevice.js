@@ -50,12 +50,12 @@
              this.props.history.push('/home'); // redirect the user to the homepage to view their device
           })                                   // but not before they get a sneak previous of what their device looks like
           .catch((error) => {
-             this.setState({loading: false, })
+             this.setState({loading: false })
              alert("Please enter a valid Device ID!"); // error message if invalid device ID
           })
        }
        else {
-         this.setState({loading: false, })
+         this.setState({loading: false })
          alert("Please enter a valid Device ID!"); // error message if invalid device ID
        }
        event.preventDefault(); // never refresh

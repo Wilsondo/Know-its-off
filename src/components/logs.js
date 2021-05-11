@@ -43,7 +43,7 @@ export default class batteryLogs extends Component {
 		if(this.state.error) {
 			if(this.state.redirect) {return <Redirect to={this.state.redirect} />}
 			return(<div><h3>Error 404, Page Not Found</h3><h3>{this.state.error_response}</h3></div>)
-		 }
+		}
 		return(
 			<React.Fragment>
 				{this.state.battery.map((battery) => ( // Map each element in the battery array as an individual card object
@@ -52,7 +52,7 @@ export default class batteryLogs extends Component {
 					<div className="card bg-dark">
 						<div className="card-body">
 								<p className="card-text">Battery: {battery.device_battery}%</p>
-								<p className="card-text">Last Seen: {battery.timestamp_time}</p>
+								<p className="card-text">Last Seen: {new Date(battery.timestamp_time).toLocaleString()}</p>
 						</div>
 					</div>
 					</div>

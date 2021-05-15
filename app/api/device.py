@@ -112,15 +112,7 @@ def getUserDevices():
     myList = []
     for row in results:
         rowDict = row.to_dict() 
-        if rowDict['timestamp'] != None:
-            given_date = rowDict['timestamp']
-            #Format M/D/Y HR:MIN AM/PM
-            given_date = given_date.strftime("%A %-I:%M %p, %B %d %Y")
-            rowDict['timestamp'] = given_date
-            myList.append(rowDict)
-        else:
-            rowDict['timestamp'] = "N/A"
-            myList.append(rowDict)
+        myList.append(rowDict)
 
     db.session.close()
 

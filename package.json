@@ -21,7 +21,6 @@
     "react-gesture-responder": "^2.1.0",
     "react-grid-dnd": "^2.1.2",
     "react-json-to-csv": "^1.0.4",
-    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-spinners-kit": "^1.9.1",

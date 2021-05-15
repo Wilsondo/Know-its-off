@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 // HashRouter uses browser cache to save the current and previous page data to allow for a user to navigate between them using their browser
 // A BrowserRouter uses HTML5 to cache page information, but doesn't work
 // URLs will be appended with a /#/ to signify that the hash router is working
-import {Switch, Route, HashRouter as Router} from 'react-router-dom';
+import { Switch, Route, HashRouter as Router } from 'react-router-dom';
 import './App.css';
 import Logs from './components/logs';
 import MyNavbar from './components/navbar';

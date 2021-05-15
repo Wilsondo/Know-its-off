@@ -25,13 +25,13 @@ export default class Signup extends Component {
   doSignup = (event) => {
 	  this.setState({postLoading:true});
 	    axiosBaseURL.post('/user', {email: this.state.email, password: this.state.password})
-	  .then((result) =>{this.setState({postLoading: false}); 
-      this.props.history.push("/login"); 
-    })
-    .catch((error)=>{this.setState({postLoading:false});
-      alert("Invalid email and password");
-	  event.preventDefault();
-    })
+	    .then((result) =>{this.setState({postLoading: false}); 
+        this.props.history.push("/login"); 
+      })
+      .catch((error)=>{this.setState({postLoading:false});
+        alert("Invalid email and password");
+      })
+    event.preventDefault();
   };
   // Page handler function will allow a form field to change its assigned value parameter
   handleChange = (event) => {

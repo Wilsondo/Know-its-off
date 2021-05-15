@@ -45,6 +45,12 @@ export default class Tile extends Component {
    }
 
    render(){
+      var myDate
+      if (this.state.timestamp === "N/A") myDate = this.state.timestamp;
+      else {
+         myDate = new Date(this.state.timestamp);
+         myDate = myDate.toLocaleString();
+      }
       if(this.state.loading) {
          return (
             <div className="d-flex justify-content-center m-5">
@@ -53,14 +59,14 @@ export default class Tile extends Component {
       } // Render a card object, bootstrap styles this object
         // The Detail Link leads to editDevice.js
       return(
-         <Card bg={this.state.background} className="tile text-center col ">
+         <Card bg={this.state.background} className="tile text-center col">
             <Card.Header>
-               <Card.Title className="card-title-device">{this.state.appliance_name}</Card.Title>
+               <Card.Title className="card-title-device">{this.state.appliance_name} : <b>{this.state.device_id}</b></Card.Title>
             </Card.Header>
             <Card.Body>
                <Card.Title className="card-title-status">{this.state.statusText}</Card.Title>
                <Card.Text className="card-text-device_state">{this.state.state}</Card.Text>
-               <Card.Text className="card-text-timestamp">Last Seen: {this.state.timestamp}</Card.Text>
+               <Card.Text className="card-text-timestamp">Last Seen: {myDate}</Card.Text>
                <Link className="card-button btn btn-primary text-wrap" to={"/device/"+this.state.device_id}>Details</Link>
             </Card.Body>
          </Card>

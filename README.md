@@ -25,11 +25,13 @@ If the current migration is not supported, delete the /migrations folder and use
 
 Then go to `src/axios` and change the baseURL to a domain that you own.
 
-Next run `yarn build` to make the static files for the website. Copy the default file in `/nginx` to `/etc/nginx/sites-available` and restart the nginx service.
+Next run `yarn build` to make the static files for the website. 
+
+Copy the default file in `/nginx` to `/etc/nginx/sites-available` and restart the nginx service.
 
 Then copy the contents of the `build` folder to `/var/www/html`.
 
-Lastly, you can run the service with`flask run &`.
+Lastly, run the service with`flask run &`.
 
 ## Contributing
 

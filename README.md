@@ -33,6 +33,10 @@ Then copy the contents of the `build` folder to `/var/www/html`.
 
 Lastly, run the service with`flask run &`.
 
+## AWS Legacy Code
+
+This folder contains files for running Know Its Off on Amazon's cloud servers. It's dockerized for easy setup and teardown, however, updating the files will require the developer to port over all Flask files from another branch, and move a premade `build` folder built with the correct baseURL into the `flask` folder.
+
 ## Contributing
 
 This is a private repository only intended to be used by Oregon State University EECS Capstone Students.

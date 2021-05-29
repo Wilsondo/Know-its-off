@@ -1,42 +1,44 @@
-# Know-its-off
+# Know It's Off
 
-Directions for use:
+The Know It's Off Capstone Project Web Interface Production Branch features stable code for use in public releases.
+
+## Requirements
+- Any Linux Distro, but preferably a Raspberry Pi.
 
 
-First, you need to check your database settings in `database_config.py` and define your database login credentials in `constants.py`. We have created an example of `constants.py` with the `example-constants.py` file.
+- A minimum of Python 3.8 on the system, update pip with ```python3 -m pip install --upgrade pip```. 
 
-`python3 -m pip install -r requirements.txt --user`
 
-then go into the `myClient` directory 
-edit .env with the appropriate baseURL address for the api server
+- The Yarn Package Manager must be installed, make sure you are manually installing the Alternatives section found on the [Yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable) site.
 
-and run 
-`yarn build`
 
-Then you can go back out of the `myClient` directory and run the server
+- A database constants.py and config.py while should be supplied with the proper options, secret key, and login information
+## Getting Started
 
-`python3 main.py`
+Create a python virutal environment with ```python3 -m venv venv```, source to the virtual environment using ```source ./venv/bin/activate```, and then install the required software using ```python3 -m pip install -r requirements.txt```. Afterwards, initialize yarn with ```yarn```.
 
-## Yarn
+To apply the /app/models.py file to your assigned database, perform the following:
+- ```flask db migrate```
+- ```flask db upgrade```
 
-`yarn` is a package management tool for javascript libraries. To learn more about Yarn, you can view their [webpage](https://classic.yarnpkg.com/en/). In order to get started using Yarn, you can [look here](https://classic.yarnpkg.com/en/docs/getting-started).
+If the current migration is not supported, delete the /migrations folder and use ```flask db init``` before running the previous steps again.
 
-## Project structure
+Then go to `src/axios` and change the baseURL to a domain that you own.
 
-This project is organized into 3 stacks -- the front-end, 
-the back-end, and the database. Using 
-[Flask blueprints](https://flask.palletsprojects.com/en/1.1.x/blueprints/), 
-we register different paths which specify access
-to different resources on the server. 
-All the paths can be found in the `routes` directory. 
-The front end is a
-[single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) 
-using [React](https://reactjs.org/). 
-Javascript is built and compiled into the `myClient/build` directory, 
-which is where all statically served files are sent from.
+Next run `yarn build` to make the static files for the website. Copy the default file in `/nginx` to `/etc/nginx/sites-available` and restart the nginx service.
 
+Then copy the contents of the `build` folder to `/var/www/html`.
+
+Lastly, you can run the service with`flask run &`.
+
+## Contributing
+
+This is a private repository only intended to be used by Oregon State University EECS Capstone Students.
+Students should create a separate branch to make changes to before submitting a pull request and assigning a reviewer to verify that the code submitted is valid and tested before performing a squash and merge.
+
+## Resources
+Check out our Alternative Documentation source on [Google Docs](https://drive.google.com/drive/folders/168pbWIIE01XvCgvPQocodXuJtvq9ZIGi?usp=sharing).
 
 ## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
-[MIT License](https://github.com/Tonyenike/Know-its-off/blob/master/LICENSE.md)
->>>>>>> 2403d4ed2908a12d2ea9cb927160b266a848d8a4
